@@ -52,15 +52,16 @@ public class UserService {
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
 
-		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
-		if (optionalAdminUser.isPresent()) {
-			UserInfo dbUser = optionalAdminUser.get();
-			if (dbUser != null) {
-				if (dbUser.getStoreInfo() != null) {
-					userInfo.setStoreInfo(dbUser.getStoreInfo());
-				}
-			}
-		}
+//		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
+//		if (optionalAdminUser.isPresent()) {
+//			UserInfo dbUser = optionalAdminUser.get();
+//			if (dbUser != null) {
+//				if (dbUser.getStoreInfo() != null) {
+//					userInfo.setStoreInfo(dbUser.getStoreInfo());
+//				}
+//			}
+//		}
+		
 		userInfoRepository.save(userInfo);
 	}
 
