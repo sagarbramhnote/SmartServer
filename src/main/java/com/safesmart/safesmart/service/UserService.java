@@ -51,16 +51,17 @@ public class UserService {
 		userInfo.setPassword(userInfoRequest.getPassword());
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
-
-//		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
-//		if (optionalAdminUser.isPresent()) {
-//			UserInfo dbUser = optionalAdminUser.get();
-//			if (dbUser != null) {
-//				if (dbUser.getStoreInfo() != null) {
-//					userInfo.setStoreInfo(dbUser.getStoreInfo());
-//				}
-//			}
-//		}
+		if(userInfoRequest.getLoggedUserId()!= null) {
+		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
+		if (optionalAdminUser.isPresent()) {
+			UserInfo dbUser = optionalAdminUser.get();
+			if (dbUser != null) {
+				if (dbUser.getStoreInfo() != null) {
+					userInfo.setStoreInfo(dbUser.getStoreInfo());
+				}
+			}
+		}
+		}
 		
 		userInfoRepository.save(userInfo);
 	}
@@ -85,13 +86,15 @@ public class UserService {
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
 		UserInfo userInfo = userInfoRepository.findByPassword(infoRequest.getPassword());
+		System.out.println("coming here 1");
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
 		}
-
+		System.out.println("coming here 2");
 		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
+		System.out.println("coming here 3");
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
 	}

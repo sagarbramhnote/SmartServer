@@ -18,7 +18,7 @@ import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.service.UserService;
 
 @RestController
-@RequestMapping(value = "/userInfo")
+@RequestMapping(value = "/userInfo/")
 @CrossOrigin
 public class UserInfoController {
 
@@ -43,7 +43,9 @@ public class UserInfoController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public UserInfoResponse doLogin(@RequestBody UserInfoRequest infoRequest) {
+		System.out.println("coming here 2");
 		infoRequest.validateLoginRequired();
+		System.out.println("coming here 2");
 		return userService.doLogin(infoRequest);
 	}
 

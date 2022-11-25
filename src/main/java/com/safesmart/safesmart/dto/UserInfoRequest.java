@@ -103,7 +103,7 @@ public class UserInfoRequest {
 	}
 
 	public void validateLoginRequired() {
-		if (StringUtils.isEmpty(password)) {
+		if (password.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Password");
 		}
 		String regex = "[0-9]+";
@@ -113,7 +113,8 @@ public class UserInfoRequest {
 			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
 		}
 
-		if (StringUtils.isEmpty(feature)) {
+		if (feature.isEmpty()) {
+			System.out.println("feature errror");
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
 		}
 	}
