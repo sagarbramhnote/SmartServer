@@ -1,5 +1,6 @@
 package com.safesmart.safesmart.service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.Printer;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.StoreInfoRepository;
@@ -78,9 +80,23 @@ public class StoreInfoService {
 		if (storeInfo != null && storeInfo.getId() != infoRequest.getId()) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, infoRequest.getStoreName());
 		}
-		storeInfo = storeInfoBuilder.toModel(infoRequest);
+		
+		storeInfo.setStoreName(infoRequest.getStoreName());
+		storeInfo.setCorpStoreNo(infoRequest.getCorpStoreNo());
+		storeInfo.setSerialNumber(infoRequest.getSerialNumber());
+		storeInfo.setAddress(infoRequest.getAddress());
+		storeInfo.setBankName(infoRequest.getBankName());
+		storeInfo.setAccountNumber(infoRequest.getAccountNumber());
+		storeInfo.setMinimumBalance(infoRequest.getMinimumBalance());
+		storeInfo.setStoreName(infoRequest.getStoreName());
+		
 		storeInfoRepository.save(storeInfo);
 
+	}
+
+	
+	public void deleteByStoreInfo(Long Id) {
+		storeInfoRepository.deleteById(Id);
 	}
 	
 	public void configureStore(StoreInfoRequest storeInfoRequest) {

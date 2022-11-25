@@ -50,6 +50,11 @@ public class StoreInfoController {
 		storeInfoService.updateStoreInfo(infoRequest);
 
 	}
+	
+	@RequestMapping(value = "/{Id}", method = RequestMethod.DELETE)
+	public void deleteByStoreInfo(@PathVariable("Id") Long Id) {
+		storeInfoService.deleteByStoreInfo(Id);
+	}
 
 	@RequestMapping(value = "/configure", method = RequestMethod.POST)
 	public void configureStore(@RequestBody StoreInfoRequest storeInfoRequest) {

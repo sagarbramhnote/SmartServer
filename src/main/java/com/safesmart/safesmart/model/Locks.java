@@ -1,9 +1,13 @@
 package com.safesmart.safesmart.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Locks {
@@ -25,6 +29,8 @@ public class Locks {
 	private String connectors;
 	
 	private boolean active;
+	
+
 
 	public Long getId() {
 		return id;
@@ -89,6 +95,23 @@ public class Locks {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+
+
+	
+
+	
+
+
+
+
+
+
+
+	
+	
+	
+	
 	
 	
 }
