@@ -1,6 +1,10 @@
 package com.safesmart.safesmart.dto;
 
+
 public class StoreInfoRequest {
+	
+	
+
 	private Long id;
 
 	private String storeName;

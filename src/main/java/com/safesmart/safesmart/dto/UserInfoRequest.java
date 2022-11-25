@@ -118,4 +118,8 @@ public class UserInfoRequest {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
 		}
 	}
+
+
+	
+	
 }
