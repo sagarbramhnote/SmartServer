@@ -30,6 +30,32 @@ public class UserInfo {
 	private LocalDate create_time;
 
 	private boolean active;
+	private String firstName;
+	private String lastName;
+
+	@Override
+	public String toString() {
+		return "UserInfo [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
+				+ ", create_time=" + create_time + ", active=" + active + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", mobile=" + mobile + ", email=" + email + ", storeInfo=" + storeInfo + ", insertBills="
+				+ insertBills + ", lastLoginTime=" + lastLoginTime + "]";
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
 	/**
 	 * only for truck guy

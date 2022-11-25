@@ -46,11 +46,16 @@ public class UserService {
 		}
 
 		userInfo = new UserInfo();
+		userInfo.setId(userInfoRequest.getId());
 		userInfo.setRole(role);
 		userInfo.setUsername(userInfoRequest.getUsername());
 		userInfo.setPassword(userInfoRequest.getPassword());
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
+		userInfo.setFirstName(userInfoRequest.getFirstName());
+		userInfo.setLastName(userInfoRequest.getLastName());
+		userInfo.setEmail(userInfoRequest.getEmail());
+		userInfo.setMobile(userInfoRequest.getMobile());
 		if(userInfoRequest.getLoggedUserId()!= null) {
 		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
 		if (optionalAdminUser.isPresent()) {
@@ -86,15 +91,12 @@ public class UserService {
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
 		UserInfo userInfo = userInfoRepository.findByPassword(infoRequest.getPassword());
-		System.out.println("coming here 1");
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
 		}
-		System.out.println("coming here 2");
 		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
-		System.out.println("coming here 3");
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
 	}
@@ -118,6 +120,10 @@ public class UserService {
 		info.setUsername(userInfoRequest.getUsername());
 		info.setRole(role);
 		info.setActive(userInfoRequest.isActive());
+		info.setFirstName(userInfoRequest.getFirstName());
+		info.setLastName(userInfoRequest.getLastName());
+		info.setEmail(userInfoRequest.getEmail());
+		info.setMobile(userInfoRequest.getMobile());
 		userInfoRepository.save(info);
 
 	}

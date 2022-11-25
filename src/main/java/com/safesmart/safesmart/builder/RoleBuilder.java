@@ -29,6 +29,17 @@ public class RoleBuilder {
 		}
 		return dtos;
 	}
+	
+	public Role toUpdate(RoleDto roleDto) {
+
+		Role role = new Role(); 
+		role.setId(roleDto.getId());
+		role.setFeatures(roleDto.getFeatures());
+		role.setName(roleDto.getName());
+		role.setDescription(roleDto.getDescription());
+
+		return role;
+	}
 
 	public Role toModel(RoleDto roleDto) {
 

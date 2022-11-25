@@ -21,6 +21,50 @@ public class UserInfoRequest {
 
 	private String feature;
 	
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String mobile;
+	
+	@Override
+	public String toString() {
+		return "UserInfoRequest [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
+				+ ", active=" + active + ", feature=" + feature + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", mobile=" + mobile + ", loggedUserId=" + loggedUserId + "]";
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
 	// admin or manager can create users
 	private Long loggedUserId;
 
@@ -82,22 +126,27 @@ public class UserInfoRequest {
 	}
 
 	public void validateRequiredAttributes() {
-
-		if (StringUtils.isEmpty(username)) {
+		if (username.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Username");
 		}
-		if (StringUtils.isEmpty(password)) {
+		if (password.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Password");
 		}
-		if (StringUtils.isEmpty(role)) {
+		if (role.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Role");
 		}
-
 		String regex = "[0-9]+";
-		// Compile the ReGex
 		Pattern p = Pattern.compile(regex);
+		if(role.equals("ADMIN") || role.equals("SHIFTMANAGER") || role.equals("MANAGER")) {
+			System.out.println("in pin error");
+			if (password.length() != 6 || !p.matcher(password).matches()) {
+				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_ADMIN_PIN);
+			}	
+		}
+		else {
 		if (password.length() != 4 || !p.matcher(password).matches()) {
 			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
+		}
 		}
 
 	}

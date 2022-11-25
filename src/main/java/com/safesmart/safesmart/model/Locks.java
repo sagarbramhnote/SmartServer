@@ -5,9 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Locks {
@@ -30,7 +29,19 @@ public class Locks {
 	
 	private boolean active;
 	
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = StoreInfo.class)
+	@JoinColumn(name="storeId")
+	private StoreInfo storeinfo;
+	
+	
+	
+	public StoreInfo getStoreinfo() {
+		return storeinfo;
+	}
 
+	public void setStoreinfo(StoreInfo storeinfo) {
+		this.storeinfo = storeinfo;
+	}
 
 	public Long getId() {
 		return id;

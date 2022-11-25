@@ -1,7 +1,6 @@
 package com.safesmart.safesmart.model;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -36,7 +35,26 @@ public class StoreInfo {
 	private boolean configured;
 
 	private List<UserInfo> users;
-	
+	 
+	private List<Locks> locks;
+
+	@OneToMany(targetEntity=Locks.class, mappedBy="storeinfo", fetch=FetchType.EAGER)
+	public List<Locks> getLocks() {
+		return locks;
+	}
+
+	@Override
+	public String toString() {
+		return "StoreInfo [id=" + id + ", storeName=" + storeName + ", corpStoreNo=" + corpStoreNo + ", serialNumber="
+				+ serialNumber + ", address=" + address + ", bankName=" + bankName + ", accountNumber=" + accountNumber
+				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", users=" + users + ", locks="
+				+ locks + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+	}
+
+	public void setLocks(List<Locks> locks) {
+		this.locks = locks;
+	}
+
 	private LocalTime startTime;
 	
 	private LocalTime endTime;
