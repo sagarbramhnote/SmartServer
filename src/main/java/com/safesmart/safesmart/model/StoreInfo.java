@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,7 +42,9 @@ public class StoreInfo {
 	
 	private LocalTime endTime;
 	
-
+	
+//	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy ="storeinfo1",orphanRemoval = true)
+//	private List<Locks> locks=new ArrayList<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -142,6 +145,14 @@ public class StoreInfo {
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
+
+//	public List<Locks> getLocks() {
+//		return locks;
+//	}
+//
+//	public void setLocks(List<Locks> locks) {
+//		this.locks = locks;
+//	}
 	
 	
 

@@ -91,10 +91,10 @@ public class DatabaseRunner implements CommandLineRunner {
 			sequenceInfo.setValue(1);
 			sequenceInfoRepository.save(sequenceInfo);
 
-			StoreInfo storeInfo = new StoreInfo();
-			storeInfo.setSerialNumber("UT0");
-			storeInfo.setCorpStoreNo("ABC");
-			storeInfo.setStoreName("XYZ");
+//			StoreInfo storeInfo = new StoreInfo();
+//			storeInfo.setSerialNumber("UT0");
+//			storeInfo.setCorpStoreNo("ABC");
+//			storeInfo.setStoreName("XYZ");
 
 			UserInfo userInfo = new UserInfo();
 			userInfo.setUsername("Admin");
@@ -102,7 +102,7 @@ public class DatabaseRunner implements CommandLineRunner {
 			userInfo.setRole(roleRepository.findByName("ADMIN"));
 			userInfoRepository.save(userInfo);
 
-			storeInfoRepository.save(storeInfo);
+		//	storeInfoRepository.save(storeInfo);
 
 		}
 	}
