@@ -33,8 +33,6 @@ public class Locks {
 	@JoinColumn(name="storeId")
 	private StoreInfo storeinfo;
 	
-	
-	
 	public StoreInfo getStoreinfo() {
 		return storeinfo;
 	}
