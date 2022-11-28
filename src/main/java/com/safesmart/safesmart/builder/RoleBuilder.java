@@ -46,7 +46,7 @@ public class RoleBuilder {
 		Role role = new Role();
 		role.setId(roleDto.getId());
 		role.setFeatures(roleDto.getFeatures());
-		role.setName(role.getName());
+		role.setName(roleDto.getName());
 		role.setDescription(roleDto.getDescription());
 
 		return role;

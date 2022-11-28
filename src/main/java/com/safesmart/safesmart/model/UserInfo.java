@@ -32,13 +32,23 @@ public class UserInfo {
 	private boolean active;
 	private String firstName;
 	private String lastName;
+	private String passLength;
+	
+
+	public String getPassLength() {
+		return passLength;
+	}
+
+	public void setPassLength(String passLength) {
+		this.passLength = passLength;
+	}
 
 	@Override
 	public String toString() {
 		return "UserInfo [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
 				+ ", create_time=" + create_time + ", active=" + active + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", mobile=" + mobile + ", email=" + email + ", storeInfo=" + storeInfo + ", insertBills="
-				+ insertBills + ", lastLoginTime=" + lastLoginTime + "]";
+				+ lastName + ", passLength=" + passLength + ", mobile=" + mobile + ", email=" + email + ", storeInfo="
+				+ storeInfo + ", insertBills=" + insertBills + ", lastLoginTime=" + lastLoginTime + "]";
 	}
 
 	public String getFirstName() {

@@ -25,12 +25,22 @@ public class UserInfoRequest {
 	private String lastName;
 	private String email;
 	private String mobile;
+	private String passLength;
 	
+	public String getPassLength() {
+		return passLength;
+	}
+
+	public void setPassLength(String passLength) {
+		this.passLength = passLength;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInfoRequest [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
 				+ ", active=" + active + ", feature=" + feature + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", mobile=" + mobile + ", loggedUserId=" + loggedUserId + "]";
+				+ ", email=" + email + ", mobile=" + mobile + ", passLength=" + passLength + ", loggedUserId="
+				+ loggedUserId + "]";
 	}
 
 	public String getFirstName() {
@@ -135,12 +145,16 @@ public class UserInfoRequest {
 		if (role.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Role");
 		}
+		if(!email.contains(".com"))
+		{
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Email");
+		}
 		String regex = "[0-9]+";
 		Pattern p = Pattern.compile(regex);
-		if(role.equals("ADMIN") || role.equals("SHIFTMANAGER") || role.equals("MANAGER")) {
+		if(passLength.equals("six")) {
 			System.out.println("in pin error");
 			if (password.length() != 6 || !p.matcher(password).matches()) {
-				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_ADMIN_PIN);
+				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_SIX_PIN);
 			}	
 		}
 		else {

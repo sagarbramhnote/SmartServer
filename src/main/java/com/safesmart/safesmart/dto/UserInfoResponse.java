@@ -15,8 +15,24 @@ public class UserInfoResponse {
 	private String firstName;
 	private String lastName;
 	private String email;
+	@Override
+	public String toString() {
+		return "UserInfoResponse [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
+				+ ", active=" + active + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", mobile=" + mobile + ", passLenght=" + passLenght + "]";
+	}
+
 	private String mobile;
+	private String passLenght;
 	
+	public String getPassLenght() {
+		return passLenght;
+	}
+
+	public void setPassLenght(String passLenght) {
+		this.passLenght = passLenght;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

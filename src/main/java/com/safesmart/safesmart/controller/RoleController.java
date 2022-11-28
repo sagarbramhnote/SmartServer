@@ -27,6 +27,7 @@ public class RoleController {
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<RoleDto> findAll() {
+		System.out.println("Coming into find all roles method ");
 		return roleService.findAll();
 	}
 	
