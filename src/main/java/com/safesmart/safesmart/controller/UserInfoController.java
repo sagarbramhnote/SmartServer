@@ -40,6 +40,15 @@ public class UserInfoController {
 	public void deleteByUser(@PathVariable("userId") Long userId) {
 		userService.deleteByUser(userId);
 	}
+	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+	public UserInfoResponse UpdateUserForm(@PathVariable("userId") Long userId) {
+		System.out.println("coming into updateuserform");
+		
+		return userService.updateUserForm(userId);
+		
+		
+		
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public UserInfoResponse doLogin(@RequestBody UserInfoRequest infoRequest) {
@@ -52,6 +61,7 @@ public class UserInfoController {
 	@RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
 	public void updateUser(@PathVariable("userId") Long userId, @RequestBody UserInfoRequest userInfoRequest) {
 		userInfoRequest.setId(userId);
+		System.out.println("coming into update");
 		userService.updateUser(userInfoRequest);
 	}
 
