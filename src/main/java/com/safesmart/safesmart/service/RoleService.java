@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.safesmart.safesmart.builder.RoleBuilder;
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
+import com.safesmart.safesmart.dto.LocksRequest;
 import com.safesmart.safesmart.dto.RoleDto;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.RoleRepository;
@@ -24,6 +26,10 @@ public class RoleService {
 
 	@Autowired
 	private RoleBuilder roleBuilder;
+	
+	public void deleteByRoles(Long Id) {
+		roleRepository.deleteById(Id);
+	}
 
 	public void add(RoleDto roleDto) {
 
@@ -31,13 +37,14 @@ public class RoleService {
 
 		roleRepository.save(role);
 	}
-public void upDate(RoleDto roleDto) {
-		
+
+	public void updateRoles(RoleDto roleDto) {
+
 		Long id = roleDto.getId();
-		
+
 		Role role = roleRepository.findById(id).get();
 		Role role2 = roleRepository.findByName(roleDto.getName());
-		if(role2!=null && !roleDto.getId().equals(role2.getId())) {
+		if (role2 != null && !roleDto.getId().equals(role2.getId())) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Role Name");
 		}
 		role = roleBuilder.toUpdate(roleDto);
@@ -52,5 +59,6 @@ public void upDate(RoleDto roleDto) {
 		return roleBuilder.toDtoList(roles);
 	}
 
+	 
 
 }
