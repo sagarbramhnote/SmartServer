@@ -205,8 +205,8 @@ public class UserInfo {
 	public String toString() {
 		return "UserInfo [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
 				+ ", create_time=" + create_time + ", active=" + active + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", mobile=" + mobile + ", email=" + email + ", storeInfo=" + storeInfo + ", insertBills="
-				+ insertBills + ", lastLoginTime=" + lastLoginTime + "]";
+				+ lastName + ", passLength=" + passLength + ", mobile=" + mobile + ", email=" + email + ", storeInfo="
+				+ storeInfo + ", insertBills=" + insertBills + ", lastLoginTime=" + lastLoginTime + "]";
 	}
 
 }

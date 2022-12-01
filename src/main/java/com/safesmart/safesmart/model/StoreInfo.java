@@ -46,7 +46,7 @@ public class StoreInfo {
 	private List<Printer> printer;
 
 
-	@OneToMany(targetEntity=Locks.class, mappedBy="storeinfo", fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=Locks.class, mappedBy="storeInfo", fetch=FetchType.EAGER)
 	public List<Locks> getLocks() {
 		return locks;
 	}

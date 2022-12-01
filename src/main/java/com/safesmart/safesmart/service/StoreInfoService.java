@@ -128,8 +128,10 @@ public class StoreInfoService {
 			UserInfo dbUser = optional.get();
 			if (optionalL.isPresent()) {
 				Locks dbLocks = optionalL.get();
+				
 			if (storeInfo != null) {
 				dbUser.setStoreInfo(storeInfo);
+				dbLocks.setStoreInfo(storeInfo);
 			} else {
 				throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store");
 			}

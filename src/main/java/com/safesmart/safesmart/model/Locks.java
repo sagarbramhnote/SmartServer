@@ -32,9 +32,18 @@ public class Locks {
 	
 	private boolean active;
 	
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = StoreInfo.class)
+	@JoinColumn(name="storeId")
+	private StoreInfo storeInfo;
 
+	
+	public StoreInfo getStoreInfo() {
+		return storeInfo;
+	}
 
-
+	public void setStoreInfo(StoreInfo storeInfo) {
+		this.storeInfo = storeInfo;
+	}
 
 	public Long getId() {
 		return id;
