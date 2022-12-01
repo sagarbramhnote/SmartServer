@@ -32,8 +32,17 @@ public class UserInfo {
 	private boolean active;
 	private String firstName;
 	private String lastName;
-
+	private String passLength;
 	
+
+	public String getPassLength() {
+		return passLength;
+	}
+
+	public void setPassLength(String passLength) {
+		this.passLength = passLength;
+	}
+
 
 	public String getFirstName() {
 		return firstName;

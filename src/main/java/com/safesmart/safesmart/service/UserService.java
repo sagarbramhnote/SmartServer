@@ -100,7 +100,17 @@ public class UserService {
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
 	}
-
+	public UserInfoResponse updateUserForm(Long id) {
+		UserInfo userInfo = userInfoRepository.findById(id).get();
+		System.out.println(userInfo);
+		System.out.println(userInfo.getEmail()+ " Here " + userInfo.getFirstName());
+		
+		UserInfoResponse info = new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
+		System.out.println(info.getFirstName()+ " " + info.getLastName());
+		return info;
+		
+	}
 	public void updateUser(UserInfoRequest userInfoRequest) {
 
 		Role role = roleRepository.findByName(userInfoRequest.getRole());
