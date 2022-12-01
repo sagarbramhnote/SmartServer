@@ -37,6 +37,7 @@ public class RoleBuilder {
 		role.setFeatures(roleDto.getFeatures());
 		role.setName(roleDto.getName());
 		role.setDescription(roleDto.getDescription());
+		System.out.println(roleDto.getDescription());
 
 		return role;
 	}

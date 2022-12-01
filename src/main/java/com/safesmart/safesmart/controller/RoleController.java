@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,16 @@ public class RoleController {
 	public List<RoleDto> findAll() {
 		System.out.println("Coming into find all roles method ");
 		return roleService.findAll();
+	}
+	@RequestMapping(value = "/{roleId}", method = RequestMethod.PUT)
+	public void update(@PathVariable("roleId") Long id,@RequestBody RoleDto roleDto) {
+		System.out.println("coming into role update");
+		roleDto.setId(id);
+		roleService.upDate(roleDto);
+	}
+	@RequestMapping(value="/{roleId}",method = RequestMethod.DELETE)
+	public void delete(@PathVariable("roleId") Long id) {
+		roleService.toDelete(id);
 	}
 	
 }
