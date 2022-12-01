@@ -53,11 +53,11 @@ public class StoreInfoBuilder {
 		}
 		storeInfoResponse.setUserIds(userIds);
 		
-		List<Long> lIds = new ArrayList<Long>();
-		for (Locks lock : storeInfo.getLocks()) {
-			lIds.add(lock.getId());
-		}
-		storeInfoResponse.setLockIds(lIds);
+//		List<Long> lIds = new ArrayList<Long>();
+//		for (Locks lock : storeInfo.getLocks()) {
+//			lIds.add(lock.getId());
+//		}
+//		storeInfoResponse.setLockIds(lIds);
 		
 		return storeInfoResponse;
 

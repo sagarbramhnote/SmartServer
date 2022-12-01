@@ -63,12 +63,11 @@ public class StoreInfoController {
 		storeInfoService.configureStore(storeInfoRequest);
 	}
 
-	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}/locks/{lId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}", method = RequestMethod.POST)
 	public void assignStore(@PathVariable(value = "storeId") Long storeId,
-			@PathVariable(value = "userId") Long userId ,
-	         @PathVariable(value = "lId") Long lId) {
+			@PathVariable(value = "userId") Long userId ) {
 
-		storeInfoService.assignStore(storeId, userId, lId);
+		storeInfoService.assignStore(storeId, userId);
 	}
 
 	@RequestMapping(value = "/all/unassigned", method = RequestMethod.GET)

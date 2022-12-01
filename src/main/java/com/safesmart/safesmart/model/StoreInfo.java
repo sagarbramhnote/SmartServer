@@ -41,19 +41,19 @@ public class StoreInfo {
 
 	private List<UserInfo> users;
 	 
-	private List<Locks> locks;
+//	private List<Locks> locks;
 	
 	private List<Printer> printer;
 
 
-	@OneToMany(targetEntity=Locks.class, mappedBy="storeinfo", fetch=FetchType.EAGER)
-	public List<Locks> getLocks() {
-		return locks;
-	}
-
-	public void setLocks(List<Locks> locks) {
-		this.locks = locks;
-	}
+//	@OneToMany(targetEntity=Locks.class, mappedBy="storeinfo", fetch=FetchType.EAGER)
+//	public List<Locks> getLocks() {
+//		return locks;
+//	}
+//
+//	public void setLocks(List<Locks> locks) {
+//		this.locks = locks;
+//	}
 
 
 	
@@ -171,8 +171,7 @@ public class StoreInfo {
 	public String toString() {
 		return "StoreInfo [id=" + id + ", storeName=" + storeName + ", corpStoreNo=" + corpStoreNo + ", serialNumber="
 				+ serialNumber + ", address=" + address + ", bankName=" + bankName + ", accountNumber=" + accountNumber
-				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", users=" + users + ", locks="
-				+ locks + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", users=" + users + " , startTime=" + startTime + ", endTime=" + endTime + "]";
 	}
 
 }
