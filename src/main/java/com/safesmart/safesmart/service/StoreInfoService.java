@@ -150,23 +150,36 @@ public class StoreInfoService {
 //
 //	}
 	
-	public void assignStore(Long storeId, Long userId) {
+	public void assignStore(Long storeId, Long userId, Long lId) {
 		
 		StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
 
 		Optional<UserInfo> optional = userInfoRepository.findById(userId);
-		
+		Optional<Locks> optionalL = locksRepository.findById(lId);
+
 		
 		if (optional.isPresent()) {
 			UserInfo dbUser = optional.get();
+
 		
+
+			if (optionalL.isPresent()) {
+				Locks dbLocks = optionalL.get();
+				
+
 			if (storeInfo != null) {
 				dbUser.setStoreInfo(storeInfo);
+				dbLocks.setStoreInfo(storeInfo);
 			} else {
 				throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store");
 			}
 			
-		
+			locksRepository.save(dbLocks);
+			}
+			
+			else {
+				throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Locks");
+			}
 
 			userInfoRepository.save(dbUser);
 		}

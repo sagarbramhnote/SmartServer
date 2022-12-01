@@ -1,10 +1,13 @@
 package com.safesmart.safesmart.model;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 
@@ -31,9 +34,18 @@ public class Locks {
 	
 	private boolean active;
 	
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = StoreInfo.class)
+	@JoinColumn(name="storeId")
+	private StoreInfo storeInfo;
 
+	
+	public StoreInfo getStoreInfo() {
+		return storeInfo;
+	}
 
-
+	public void setStoreInfo(StoreInfo storeInfo) {
+		this.storeInfo = storeInfo;
+	}
 
 	public Long getId() {
 		return id;
