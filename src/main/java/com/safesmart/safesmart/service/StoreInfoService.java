@@ -14,9 +14,12 @@ import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.dto.UserInfoRequest;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Printer;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.repository.LocksRepository;
 import com.safesmart.safesmart.repository.StoreInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
 
@@ -30,6 +33,9 @@ public class StoreInfoService {
 
 	@Autowired
 	private UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	private LocksRepository locksRepository;
 
 	@Autowired
 	private StoreInfoBuilder storeInfoBuilder;
@@ -89,6 +95,8 @@ public class StoreInfoService {
 		storeInfo.setAccountNumber(infoRequest.getAccountNumber());
 		storeInfo.setMinimumBalance(infoRequest.getMinimumBalance());
 		storeInfo.setStoreName(infoRequest.getStoreName());
+		storeInfo.setConfigured(infoRequest.isConfigured());
+
 		
 		storeInfoRepository.save(storeInfo);
 
@@ -96,6 +104,8 @@ public class StoreInfoService {
 
 	
 	public void deleteByStoreInfo(Long Id) {
+		
+
 		storeInfoRepository.deleteById(Id);
 	}
 	
@@ -106,24 +116,40 @@ public class StoreInfoService {
 
 	}
 
-	public void assignStore(Long storeId, Long userId) {
+	public void assignStore(Long storeId, Long userId, Long lId) {
+		
 		StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
 
 		Optional<UserInfo> optional = userInfoRepository.findById(userId);
+		
+		Optional<Locks> optionalL = locksRepository.findById(lId);
+		
 		if (optional.isPresent()) {
 			UserInfo dbUser = optional.get();
+			if (optionalL.isPresent()) {
+				Locks dbLocks = optionalL.get();
 			if (storeInfo != null) {
 				dbUser.setStoreInfo(storeInfo);
 			} else {
 				throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store");
 			}
+			
+			locksRepository.save(dbLocks);
+			}
+			
+			else {
+				throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Locks");
+			}
 
 			userInfoRepository.save(dbUser);
-		} else {
+		}
+		
+			else {
 			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "User");
 		}
 
 	}
+
 
 	public List<StoreInfoResponse> findUnassignedStores() {
 		List<StoreInfo> storeInfos = storeInfoRepository.findByConfigured(false);

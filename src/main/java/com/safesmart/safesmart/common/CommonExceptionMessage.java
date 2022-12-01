@@ -9,7 +9,8 @@ public enum CommonExceptionMessage {
 	VALIDATE_FROMDATE(5,"From Date mandatory"),
 	VALIDATE_TODATE(5,"To Date mandatory"),
 	PERMISSION_NOTEXISTS(5,"You dont have permission to access this screen."),
-	NOTFOUND(6,"%1$ not found.");
+	NOTFOUND(6,"%1$ not found."),
+	VALIDATE_ADMIN_PIN(7, "Please enter  6 digit PIN");
 
 	private int code;
 

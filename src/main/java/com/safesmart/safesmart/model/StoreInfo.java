@@ -1,7 +1,6 @@
 package com.safesmart.safesmart.model;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,16 +34,37 @@ public class StoreInfo {
 	private Double minimumBalance;
 	
 	private boolean configured;
-
-	private List<UserInfo> users;
 	
 	private LocalTime startTime;
 	
 	private LocalTime endTime;
+
+	private List<UserInfo> users;
+	 
+	private List<Locks> locks;
 	
+	private List<Printer> printer;
+
+
+	@OneToMany(targetEntity=Locks.class, mappedBy="storeinfo", fetch=FetchType.EAGER)
+	public List<Locks> getLocks() {
+		return locks;
+	}
+
+	public void setLocks(List<Locks> locks) {
+		this.locks = locks;
+	}
+
+
 	
-//	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy ="storeinfo1",orphanRemoval = true)
-//	private List<Locks> locks=new ArrayList<>();
+	@OneToMany(targetEntity=Printer.class, mappedBy="storeinfop")
+	public List<Printer> getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(List<Printer> printer) {
+		this.printer = printer;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -146,14 +166,13 @@ public class StoreInfo {
 		this.endTime = endTime;
 	}
 
-//	public List<Locks> getLocks() {
-//		return locks;
-//	}
-//
-//	public void setLocks(List<Locks> locks) {
-//		this.locks = locks;
-//	}
 	
-	
+	@Override
+	public String toString() {
+		return "StoreInfo [id=" + id + ", storeName=" + storeName + ", corpStoreNo=" + corpStoreNo + ", serialNumber="
+				+ serialNumber + ", address=" + address + ", bankName=" + bankName + ", accountNumber=" + accountNumber
+				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", users=" + users + ", locks="
+				+ locks + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+	}
 
 }

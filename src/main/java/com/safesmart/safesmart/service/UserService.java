@@ -46,21 +46,27 @@ public class UserService {
 		}
 
 		userInfo = new UserInfo();
+		userInfo.setId(userInfoRequest.getId());
 		userInfo.setRole(role);
 		userInfo.setUsername(userInfoRequest.getUsername());
 		userInfo.setPassword(userInfoRequest.getPassword());
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
-
-//		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
-//		if (optionalAdminUser.isPresent()) {
-//			UserInfo dbUser = optionalAdminUser.get();
-//			if (dbUser != null) {
-//				if (dbUser.getStoreInfo() != null) {
-//					userInfo.setStoreInfo(dbUser.getStoreInfo());
-//				}
-//			}
-//		}
+		userInfo.setFirstName(userInfoRequest.getFirstName());
+		userInfo.setLastName(userInfoRequest.getLastName());
+		userInfo.setEmail(userInfoRequest.getEmail());
+		userInfo.setMobile(userInfoRequest.getMobile());
+		if(userInfoRequest.getLoggedUserId()!= null) {
+		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
+		if (optionalAdminUser.isPresent()) {
+			UserInfo dbUser = optionalAdminUser.get();
+			if (dbUser != null) {
+				if (dbUser.getStoreInfo() != null) {
+					userInfo.setStoreInfo(dbUser.getStoreInfo());
+				}
+			}
+		}
+		}
 		
 		userInfoRepository.save(userInfo);
 	}
@@ -88,7 +94,6 @@ public class UserService {
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
 		}
-
 		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
@@ -115,6 +120,10 @@ public class UserService {
 		info.setUsername(userInfoRequest.getUsername());
 		info.setRole(role);
 		info.setActive(userInfoRequest.isActive());
+		info.setFirstName(userInfoRequest.getFirstName());
+		info.setLastName(userInfoRequest.getLastName());
+		info.setEmail(userInfoRequest.getEmail());
+		info.setMobile(userInfoRequest.getMobile());
 		userInfoRepository.save(info);
 
 	}

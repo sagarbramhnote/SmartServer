@@ -42,7 +42,7 @@ public class PrinterService {
 		printer.setMachineType(printerRequest.getMachineType());
 		printer.setPrintCapacity(printerRequest.getPrintCapacity());
 	
-		printer.setActive(true);
+		printer.setActive(printerRequest.isActive());
 
 	
 		printerRepository.save(printer);
@@ -76,7 +76,8 @@ public class PrinterService {
 		printer.setMachineType(printerRequest.getMachineType());
 		printer.setPrintCapacity(printerRequest.getPrintCapacity());
 	
-		printer.setActive(true);
+		printer.setActive(printerRequest.isActive());
+
 
 	
 		printerRepository.save(printer);

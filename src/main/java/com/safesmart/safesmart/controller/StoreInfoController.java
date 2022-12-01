@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.service.StoreInfoService;
 
@@ -62,11 +63,12 @@ public class StoreInfoController {
 		storeInfoService.configureStore(storeInfoRequest);
 	}
 
-	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}/locks/{lId}", method = RequestMethod.POST)
 	public void assignStore(@PathVariable(value = "storeId") Long storeId,
-			@PathVariable(value = "userId") Long userId) {
+			@PathVariable(value = "userId") Long userId ,
+	         @PathVariable(value = "lId") Long lId) {
 
-		storeInfoService.assignStore(storeId, userId);
+		storeInfoService.assignStore(storeId, userId, lId);
 	}
 
 	@RequestMapping(value = "/all/unassigned", method = RequestMethod.GET)

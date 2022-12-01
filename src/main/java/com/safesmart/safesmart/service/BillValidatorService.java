@@ -40,7 +40,7 @@ public class BillValidatorService {
 		billValidator.setMachineType(billValidatorRequest.getMachineType());
 		billValidator.setStorageCapacity(billValidatorRequest.getStorageCapacity());
 	
-		billValidator.setActive(true);
+		billValidator.setActive(billValidatorRequest.isActive());
 
 	
 		billValidatorRepository.save(billValidator);
@@ -75,7 +75,7 @@ public class BillValidatorService {
 		billValidator.setMachineType(billValidatorRequest.getMachineType());
 		billValidator.setStorageCapacity(billValidatorRequest.getStorageCapacity());
 	
-		billValidator.setActive(true);
+		billValidator.setActive(billValidatorRequest.isActive());
 		
 		billValidatorRepository.save(billValidator);
 

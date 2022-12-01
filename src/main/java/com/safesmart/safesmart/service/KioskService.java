@@ -44,9 +44,8 @@ public class KioskService {
 		kiosk.setHdd(kioskRequest.getHdd());
 		kiosk.setMemory(kioskRequest.getMemory());
 		kiosk.setScreenSize(kioskRequest.getScreenSize());
-		kiosk.setActive(true);
+		kiosk.setActive(kioskRequest.isActive());
 
-	
 		kioskRepository.save(kiosk);
 	}
 	
@@ -80,7 +79,7 @@ public class KioskService {
 		kiosk.setHdd(kioskRequest.getHdd());
 		kiosk.setMemory(kioskRequest.getMemory());
 		kiosk.setScreenSize(kioskRequest.getScreenSize());
-		kiosk.setActive(true);
+		kiosk.setActive(kioskRequest.isActive());
 		
 		kioskRepository.save(kiosk);
 

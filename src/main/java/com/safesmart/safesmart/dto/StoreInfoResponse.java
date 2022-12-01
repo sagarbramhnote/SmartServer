@@ -27,6 +27,9 @@ public class StoreInfoResponse {
 	private String endTime;
 
 	private List<Long> userIds;
+	
+	private List<Long> lockIds;
+	
 	public Long getId() {
 		return id;
 	}
@@ -114,6 +117,17 @@ public class StoreInfoResponse {
 
 	public void setUserIds(List<Long> userIds) {
 		this.userIds = userIds;
+	}
+	
+	
+	
+
+	public List<Long> getLockIds() {
+		return lockIds;
+	}
+
+	public void setLockIds(List<Long> lockIds) {
+		this.lockIds = lockIds;
 	}
 
 	public String getEndTime() {

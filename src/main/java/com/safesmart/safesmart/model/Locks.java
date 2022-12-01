@@ -1,12 +1,14 @@
 package com.safesmart.safesmart.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -30,9 +32,20 @@ public class Locks {
 	
 	private boolean active;
 	
-//	@JsonIgnore
-//	@ManyToOne
-//	private StoreInfo storeinfo1;
+
+
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = StoreInfo.class)
+	@JoinColumn(name="storeId")
+	private StoreInfo storeinfo;
+
+	
+	public StoreInfo getStoreinfo() {
+		return storeinfo;
+	}
+
+	public void setStoreinfo(StoreInfo storeinfo) {
+		this.storeinfo = storeinfo;
+	}
 
 	public Long getId() {
 		return id;
@@ -98,29 +111,6 @@ public class Locks {
 		this.active = active;
 	}
 
-//	public StoreInfo getStoreinfo1() {
-//		return storeinfo1;
-//	}
-//
-//	public void setStoreinfo1(StoreInfo storeinfo1) {
-//		this.storeinfo1 = storeinfo1;
-//	}
-
-
-
-	
-
-	
-
-
-
-
-
-
-
-	
-	
-	
 	
 	
 	

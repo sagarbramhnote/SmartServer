@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 
@@ -51,6 +52,13 @@ public class StoreInfoBuilder {
 			userIds.add(user.getId());
 		}
 		storeInfoResponse.setUserIds(userIds);
+		
+		List<Long> lIds = new ArrayList<Long>();
+		for (Locks lock : storeInfo.getLocks()) {
+			lIds.add(lock.getId());
+		}
+		storeInfoResponse.setLockIds(lIds);
+		
 		return storeInfoResponse;
 
 	}

@@ -14,6 +14,7 @@ import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.LocksRequest;
 import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.PrinterResponse;
+import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.service.LocksService;
 
 @RestController
@@ -45,4 +46,10 @@ public class LocksController {
 		locksRequest.setId(Id);
 		locksService.updateLocks(locksRequest);
 	}
+	
+//	@RequestMapping(value = "/lockName/{digitalLockName}/unassignedlocks", method = RequestMethod.GET)
+//	public List<LocksResponse> findUnassignedLocks(@PathVariable("digitalLockName") String digitalLockName) {
+//		return locksService.findUnassignedLocks(digitalLockName);
+//	}
+	
 }
