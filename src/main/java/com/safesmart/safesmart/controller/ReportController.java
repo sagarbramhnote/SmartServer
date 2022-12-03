@@ -1,6 +1,13 @@
 package com.safesmart.safesmart.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +58,22 @@ public class ReportController {
 		return reportService.managerBillReport(dateRangedto);
 	}
 	
+	@RequestMapping(value = "/employeeReportExport/{userId}/{sDate}/{endDate}",method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> employeeReportDataExport(@PathVariable("userId")Long userId, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {
+		DateRangedto dateRangedto = new DateRangedto() ;
+		dateRangedto.setStartDate(sDate);
+		dateRangedto.setEndDate(endDate);
+		dateRangedto.validateRequest();
+		ByteArrayInputStream in = reportService.reportToExcel(userId,dateRangedto);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename-report.xlsx");
+		 return ResponseEntity
+		         .ok()
+		         .headers(headers)
+		         .body(new InputStreamResource(in));
+
+//		return reportService.reportToExcel(userId,dateRangedto);
+	}
 	@RequestMapping(value = "/employeeReport/{userId}",method = RequestMethod.POST)
 	public EmployeeReportDto employeeReportData(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();

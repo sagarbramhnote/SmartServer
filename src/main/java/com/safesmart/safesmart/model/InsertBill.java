@@ -24,6 +24,12 @@ public class InsertBill {
 
 	private String transactionNumber;
 
+	@Override
+	public String toString() {
+		return "InsertBill [id=" + id + ", amount=" + amount + ", user=" + user + ", createdOn=" + createdOn
+				+ ", dateTime=" + dateTime + ", transactionNumber=" + transactionNumber + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
