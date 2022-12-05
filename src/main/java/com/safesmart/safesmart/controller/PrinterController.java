@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safesmart.safesmart.dto.BillValidatorResponse;
 import com.safesmart.safesmart.dto.LocksRequest;
+import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.PrinterRequest;
 import com.safesmart.safesmart.dto.PrinterResponse;
 import com.safesmart.safesmart.service.PrinterService;
@@ -45,6 +46,11 @@ public class PrinterController {
 	public void updatePrinter(@PathVariable("Id") Long Id, @RequestBody PrinterRequest printerRequest) {
 		printerRequest.setId(Id);
 		printerService.updatePrinter(printerRequest);
+	}
+	
+	@RequestMapping(value = "/unassignedPrinters", method = RequestMethod.GET)
+	public List<PrinterResponse> findUnassignedPrinters() {
+		return printerService.findUnassignedPrinters();
 	}
 	
 }

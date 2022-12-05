@@ -47,9 +47,9 @@ public class LocksController {
 		locksService.updateLocks(locksRequest);
 	}
 	
-//	@RequestMapping(value = "/lockName/{digitalLockName}/unassignedlocks", method = RequestMethod.GET)
-//	public List<LocksResponse> findUnassignedLocks(@PathVariable("digitalLockName") String digitalLockName) {
-//		return locksService.findUnassignedLocks(digitalLockName);
-//	}
+	@RequestMapping(value = "/unassignedlocks", method = RequestMethod.GET)
+	public List<LocksResponse> findUnassignedLocks() {
+		return locksService.findUnassignedLocks();
+	}
 	
 }

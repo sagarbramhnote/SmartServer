@@ -1,9 +1,12 @@
 package com.safesmart.safesmart.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Kiosk {
@@ -30,7 +33,23 @@ public class Kiosk {
 	
 	private boolean active;
 	
+	@ManyToOne(cascade = CascadeType.ALL, targetEntity = StoreInfo.class)
+	@JoinColumn(name="storeId")
+	private StoreInfo storeinfok;
 	
+	
+
+
+	public StoreInfo getStoreinfok() {
+		return storeinfok;
+	}
+
+
+
+	public void setStoreinfok(StoreInfo storeinfok) {
+		this.storeinfok = storeinfok;
+	}
+
 
 
 	public Long getId() {

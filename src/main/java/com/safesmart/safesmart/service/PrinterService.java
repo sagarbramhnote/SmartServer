@@ -11,6 +11,7 @@ import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.BillValidatorResponse;
 import com.safesmart.safesmart.dto.LocksRequest;
+import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.PrinterRequest;
 import com.safesmart.safesmart.dto.PrinterResponse;
 import com.safesmart.safesmart.model.BillValidator;
@@ -79,8 +80,19 @@ public class PrinterService {
 		printer.setActive(printerRequest.isActive());
 
 
-	
 		printerRepository.save(printer);
 
+	}
+	
+	public List<PrinterResponse> findUnassignedPrinters() {
+		List<Printer> printers = (List<Printer>) printerRepository.findByActive(true);
+		List<PrinterResponse> infoResponses = new ArrayList<PrinterResponse>();
+		for (Printer printer : printers) {
+			if (printer != null && printer.getStoreinfop() == null) {
+				infoResponses.add(new PrinterResponse(printer.getId(),printer.getPrinterNo(), printer.getPrinterName(), printer.getBrandName(),
+						printer.getModelName(), printer.getMachineType(), printer.getPrintCapacity(), printer.isActive()));
+			}
+		}
+		return infoResponses;
 	}
 }

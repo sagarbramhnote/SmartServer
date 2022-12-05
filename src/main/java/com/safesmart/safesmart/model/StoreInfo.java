@@ -40,14 +40,18 @@ public class StoreInfo {
 	private LocalTime endTime;
 
 	private List<UserInfo> users;
+	
+	private List<Kiosk> kiosk;
+	
+	private List<BillValidator> billValidator;
 	 
 	private List<Locks> locks;
 	
 	private List<Printer> printer;
 
 
-
-	@OneToMany(targetEntity=Locks.class, mappedBy="storeInfo", fetch=FetchType.EAGER)
+    @JsonIgnore
+	@OneToMany(targetEntity=Locks.class,cascade = CascadeType.ALL, mappedBy="storeInfo")
 	public List<Locks> getLocks() {
 		return locks;
 	}
@@ -58,14 +62,36 @@ public class StoreInfo {
 
 
 
-	
-	@OneToMany(targetEntity=Printer.class, mappedBy="storeinfop")
+	@JsonIgnore
+	@OneToMany(targetEntity=Printer.class,cascade = CascadeType.ALL, mappedBy="storeinfop")
 	public List<Printer> getPrinter() {
 		return printer;
 	}
 
 	public void setPrinter(List<Printer> printer) {
 		this.printer = printer;
+	}
+	
+	
+	
+	@JsonIgnore
+	@OneToMany(targetEntity=Kiosk.class,cascade = CascadeType.ALL, mappedBy="storeinfok")
+	public List<Kiosk> getKiosk() {
+		return kiosk;
+	}
+
+	public void setKiosk(List<Kiosk> kiosk) {
+		this.kiosk = kiosk;
+	}
+	
+	@JsonIgnore
+	@OneToMany(targetEntity=BillValidator.class,cascade = CascadeType.ALL, mappedBy="storeinfob")
+	public List<BillValidator> getBillValidator() {
+		return billValidator;
+	}
+
+	public void setBillValidator(List<BillValidator> billValidator) {
+		this.billValidator = billValidator;
 	}
 
 	@Id
