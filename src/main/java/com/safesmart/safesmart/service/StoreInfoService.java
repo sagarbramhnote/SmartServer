@@ -55,15 +55,19 @@ public class StoreInfoService {
 	private StoreInfoBuilder storeInfoBuilder;
 
 	public StoreInfoResponse getStoreInfoService() {
-		StoreInfo storeInfo = storeInfoRepository.findByStoreName("XYZ");
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName("TEST");
 		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
 				storeInfo.getSerialNumber());
 	}
 
 	public StoreInfoResponse getStoreInfoService(String storeName) {
-		StoreInfo storeInfo = storeInfoRepository.findByStoreNameAndConfigured(storeName, true);
-		StoreInfoResponse storeInfoResponse = storeInfoBuilder.toDto(storeInfo);
-		return storeInfoResponse;
+//		StoreInfo storeInfo = storeInfoRepository.findByStoreNameAndConfigured(storeName, true);
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
+
+//		StoreInfoResponse storeInfoResponse = storeInfoBuilder.toDto(storeInfo);
+//		return storeInfoResponse;
+		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
+				storeInfo.getSerialNumber());
 	}
 
 	public void addStore(StoreInfoRequest storeInfoRequest) {

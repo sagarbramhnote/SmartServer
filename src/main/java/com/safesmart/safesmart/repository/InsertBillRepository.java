@@ -22,7 +22,11 @@ public interface InsertBillRepository extends  PagingAndSortingRepository<Insert
 	List<InsertBill> findByCreatedOnBetween(LocalDate minusDays, LocalDate now);
 
 	List<InsertBill> findByUser_IdAndCreatedOnBetween(Long userId, LocalDate stDate, LocalDate endDate);
+	
+	List<InsertBill> findByUser_IdAndCreatedOn(Long userId, LocalDate now);
 
 	List<InsertBill> findByUser_IdAndDateTimeBetween(Long userId, LocalDateTime stDate, LocalDateTime endDate);
+	
+	
 
 }
