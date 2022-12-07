@@ -401,10 +401,10 @@ public class ReportService {
     		   amountRow.createCell(1).setCellValue(count);
     		   
     		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
-    			   a.equals("$50")?50*count:a.equals("$100")?100*count:a.equals("$40")?40*count:1*count;
+    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;
     		   
     		   
-    		   amountRow.createCell(2).setCellValue(product);
+    		   amountRow.createCell(2).setCellValue("$" + Long.toString(product));
     		   
     		   i++;
     		   totalCount+= count;
@@ -420,7 +420,7 @@ public class ReportService {
     	   
     	   totalRow.createCell(1).setCellValue(totalCount);
     	   
-    	   totalRow.createCell(2).setCellValue(sum);
+    	   totalRow.createCell(2).setCellValue("$" + Long.toString(sum));
     	   
     	   grandCount+= totalCount; 
     	    
@@ -435,11 +435,10 @@ public class ReportService {
 		      Row grandTotalRow = sheet.createRow(i);
 		      
 		      cell = grandTotalRow.createCell(0);
-		      cell.setCellValue("Grand Total");
+		      cell.setCellValue("Total Bills Per Day");
 		      cell.setCellStyle(headerCellStyle);
 		      grandTotalRow.createCell(1).setCellValue(grandCount);
-		      
-		      grandTotalRow.createCell(2).setCellValue(grandTotal);
+		      grandTotalRow.createCell(2).setCellValue("$" + Long.toString(grandTotal));
 		      workbook.write(out);
 		      OutputStream fileOut = new FileOutputStream("C:\\Users\\hp\\Desktop\\newEODReport.xlsx");
 		      workbook.write(fileOut);
@@ -565,10 +564,10 @@ public class ReportService {
 		    		   amountRow.createCell(1).setCellValue(count);
 		    		   
 		    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
-		    			   a.equals("$50")?50*count:a.equals("$100")?100*count:a.equals("$40")?40*count:1*count;
+		    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;
 		    		   
 		    		   
-		    		   amountRow.createCell(2).setCellValue(product);
+		    		   amountRow.createCell(2).setCellValue("$" + Long.toString(product));
 		    		   
 		    		   i++;
 		    		   totalCount+= count;
@@ -584,7 +583,7 @@ public class ReportService {
 		    	   
 		    	   totalRow.createCell(1).setCellValue(totalCount);
 		    	   
-		    	   totalRow.createCell(2).setCellValue(sum);
+		    	   totalRow.createCell(2).setCellValue("$" + Long.toString(sum));
 		    	    
 		    	   i+=2;
 		    	   grandTotal+=sum;
@@ -595,7 +594,7 @@ public class ReportService {
 		      Row grandTotalRow = sheet.createRow(i);
 		      
 		      cell = grandTotalRow.createCell(0);
-		      cell.setCellValue("Grand Total");
+		      cell.setCellValue("Total Bills ");
 		      cell.setCellStyle(headerCellStyle);
  		      grandTotalRow.createCell(1);
 		      grandTotalRow.createCell(2).setCellValue(grandTotal);

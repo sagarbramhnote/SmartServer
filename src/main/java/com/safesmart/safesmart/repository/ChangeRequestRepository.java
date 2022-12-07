@@ -7,7 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.safesmart.safesmart.model.ChangeRequest;
-import com.safesmart.safesmart.model.OrderStatus;
 
 @Repository
 public interface ChangeRequestRepository
