@@ -1,6 +1,15 @@
 package com.safesmart.safesmart.dto;
 
+import org.hibernate.internal.build.AllowSysOut;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.repository.UserInfoRepository;
+
 public class UserInfoResponse {
+	
+	@Autowired
+	UserInfoRepository userInfoRepository;
 
 	private Long id;
 
@@ -85,6 +94,9 @@ public class UserInfoResponse {
 		this.email = email;
 		this.mobile = mobile;
 	}
+	public UserInfoResponse () {
+	}
+	
 
 	public Long getId() {
 		return id;

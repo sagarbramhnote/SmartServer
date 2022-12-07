@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,6 +42,7 @@ import com.safesmart.safesmart.dto.ManagerReportDto;
 import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Dollar;
 import com.safesmart.safesmart.model.InsertBill;
 import com.safesmart.safesmart.model.SequenceInfo;
@@ -250,6 +253,192 @@ public class ReportService {
 
 		return reportDto;
 	}
+	
+	//Exporting EOD report to Excel
+	public  ByteArrayInputStream EODReportToExcel(String storeName) throws IOException {
+		
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+		List<Long> userIds = storeInfoResponse.getUserIds();
+		String stTime = storeInfoResponse.getStartTime();
+		String endTimes = storeInfoResponse.getEndTime();
+		LocalTime startTime = LocalTime.parse(stTime);
+		System.out.println("Start time is : " + startTime);
+		LocalTime endTime = LocalTime.parse(endTimes);
+		System.out.println("end time is : " + endTime);
+		LocalTime now = LocalTime.now();
+		System.out.println("current time is : " + now);
+		
+		
+		// returns positive if now is greater than end time 
+		// returns zero if equal 
+		//returns negative if now is less than end time 
+		int diff = now.compareTo(endTime);
+		
+		/*Logic for if report is generated after end time that current date report will be generated if 10:00 AM  is end time and report is generated at 10:01 AM then report will be from yesterday 10:00Am to todat 10 AM
+		if report is generated at 09:59 AM then report will be from day before yesterday 10:00 AM to yesterday 10:00 AM */
+		
+		LocalDate endDate = (diff>0)|| (diff==0)?LocalDate.now():diff<0?LocalDate.now().minusDays(1):null;
+		LocalDate startDate = null;
+		//Checking = difference between start time and end time of a Store
+		long hours = ChronoUnit.HOURS.between(startTime, endTime);
+		long minutes
+        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
+	
+		if(hours<0 || minutes <0) {
+			 startDate = endDate.minusDays(1);
+		}
+		
+			startDate = endDate;
+			System.out.println(" Start Date is " + startDate + " End date is " + endDate);
+			LocalDateTime startDateTime = startTime.atDate(startDate);
+			LocalDateTime endDateTime = endTime.atDate(endDate);
+			
+		System.out.println(userIds);
+		String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
+		try(
+		     Workbook workbook = new XSSFWorkbook();
+		     ByteArrayOutputStream out = new ByteArrayOutputStream();
+		     ){
+		     Sheet sheet = workbook.createSheet("report");
+		     Font headerFont = workbook.createFont();
+		     headerFont.setBold(true);
+		     
+		     headerFont.setColor (IndexedColors.BLACK.getIndex());
+		     
+		     CellStyle headerCellStyle = workbook.createCellStyle();
+		     headerCellStyle.setFont(headerFont);
+		     int i = 0;
+		     Row headerRow = sheet.createRow(i);
+		     i++;
+		     headerRow.setRowStyle(headerCellStyle);
+		     for (int col=0; col<columns.length; col++) {
+		    	 Cell cell = headerRow.createCell(col);
+		    	 cell.setCellValue(columns[col]);
+		    	 cell.setCellStyle(headerCellStyle);
+		     	}
+		     //Row for printing Store details 
+		  
+		      Row detailsRow = sheet.createRow(i);
+		      i++;
+		    		String serialNo = storeInfoResponse.getSerialNumber();
+		    		Cell cell = detailsRow.createCell(0);
+		    		cell.setCellValue(storeName);
+
+		    		 cell = detailsRow.createCell(1);
+		    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
+		    		 
+		    		 cell = detailsRow.createCell(2);
+		    		 cell.setCellValue(serialNo);
+		    		 
+		    // Row for printing start date and end date 
+		      Row datesRow = sheet.createRow(i);
+		      i+=2;
+		      datesRow.createCell(0).setCellValue("From Date :" + startDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      datesRow.createCell(2).setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      
+		      int grandTotal =0;
+		      int grandCount =0;
+		     for(Long userId : userIds) {
+		      List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndDateTimeBetween(userId, startDateTime, endDateTime);
+		      if(!insertBills.isEmpty()) {
+		    	  
+		    	  UserInfo user = userInfoRepository.findById(userId).get();
+		    	  // Printing employee name 
+		    	  Row userRow = sheet.createRow(i);
+		    	  i++;
+		    	  cell = userRow.createCell(0);
+		    	  cell.setCellValue("Name");
+		    	  cell.setCellStyle(headerCellStyle);
+		    	  cell = userRow.createCell(1);
+		    	  cell.setCellValue(user.getFirstName() + " " + user.getLastName());
+		   	 
+		    	  //Row for printing headings 
+		    	  Row headingsRow = sheet.createRow(i);
+		    	  cell = headingsRow.createCell(0);
+		    	  cell.setCellValue("Currency");
+		    	  cell.setCellStyle(headerCellStyle);
+    	   
+		    	  cell = headingsRow.createCell(1);
+		    	  cell.setCellValue("Count");
+		    	  cell.setCellStyle(headerCellStyle);
+    	   
+		    	  cell = headingsRow.createCell(2);
+		    	  cell.setCellValue("Value");
+		    	  cell.setCellStyle(headerCellStyle);
+    	   
+    	   Set<String> distinctDenominations =  new HashSet<String>();
+    	   for(InsertBill bill : insertBills) {
+    		   distinctDenominations.add(bill.getAmount());
+    		   }
+    	  i++;
+    	  int totalCount =0;
+    	  int sum = 0;
+    	  //Adding Distinct denominations in to a set like $1,$2,...
+    	   for(String a : distinctDenominations) {
+    		   int count = 0;
+    		   int product = 0;
+    		   //checking number of notes of same denomination present in the current date bill
+    		   for(InsertBill bill : insertBills) {
+    			  if(a.equals(bill.getAmount())) {
+    				  count++;
+    			  }
+    		   }
+    		   //Row for printing values i.e., denomination ($1,$2,.....) , NO of notes (Count), Value ( denominations * Count)
+    		   Row amountRow = sheet.createRow(i);
+    		   amountRow.createCell(0).setCellValue(a);
+    		   amountRow.createCell(1).setCellValue(count);
+    		   
+    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
+    			   a.equals("$50")?50*count:a.equals("$100")?100*count:a.equals("$40")?40*count:1*count;
+    		   
+    		   
+    		   amountRow.createCell(2).setCellValue(product);
+    		   
+    		   i++;
+    		   totalCount+= count;
+    		   sum+=product;
+    	   
+    	   	}
+    	   // Row for printing current day total
+    	   Row totalRow = sheet.createRow(i);
+    	   
+    	   cell = totalRow.createCell(0);
+    	   cell.setCellValue("All");
+    	   cell.setCellStyle(headerCellStyle);
+    	   
+    	   totalRow.createCell(1).setCellValue(totalCount);
+    	   
+    	   totalRow.createCell(2).setCellValue(sum);
+    	   
+    	   grandCount+= totalCount; 
+    	    
+    	   grandTotal +=sum;
+    	   i+=2;
+    	   
+    	   }
+		      
+		      
+		  }
+		     // Row for printing grand total
+		      Row grandTotalRow = sheet.createRow(i);
+		      
+		      cell = grandTotalRow.createCell(0);
+		      cell.setCellValue("Grand Total");
+		      cell.setCellStyle(headerCellStyle);
+		      grandTotalRow.createCell(1).setCellValue(grandCount);
+		      
+		      grandTotalRow.createCell(2).setCellValue(grandTotal);
+		      workbook.write(out);
+		      OutputStream fileOut = new FileOutputStream("C:\\Users\\hp\\Desktop\\newEODReport.xlsx");
+		      workbook.write(fileOut);
+		
+		
+		
+		return new ByteArrayInputStream(out.toByteArray());
+		}
+	}
+	
+	//Exporting Employees Reports to Excel 
 	public  ByteArrayInputStream reportToExcel(Long userId, DateRangedto dateRangedto) throws IOException {
 		
 		UserInfo user = userInfoRepository.findById(userId).get();
@@ -261,7 +450,7 @@ public class ReportService {
 			throw new RuntimeException("Start Date should be less than the End Date");
 		}
 		
-		String[] columns = {"Store Name", "Store corp No", "Serial No"};
+		String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
 		try(
 		     Workbook workbook = new XSSFWorkbook();
 		     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -296,8 +485,8 @@ public class ReportService {
 		    		 
 		    // Row for printing start date and end date 
 		      Row datesRow = sheet.createRow(2);
-		      datesRow.createCell(0).setCellValue("From date " + dateRangedto.getStartDate());
-		      datesRow.createCell(2).setCellValue("To Date " + dateRangedto.getEndDate());
+		      datesRow.createCell(0).setCellValue("From Date :" + stDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      datesRow.createCell(2).setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 		     
 		      Row userRow = sheet.createRow(3);
 		      cell = userRow.createCell(0);
@@ -374,7 +563,7 @@ public class ReportService {
 		    		   sum+=product;
 		    	   
 		    	   	}
-		    	   
+		    	   // Row for printing current day total
 		    	   Row totalRow = sheet.createRow(i);
 		    	   
 		    	   cell = totalRow.createCell(0);
@@ -389,7 +578,8 @@ public class ReportService {
 		    	   grandTotal+=sum;
 		    	   
 		    	   }
-		      }
+		      } 
+		      // Row for printing grand total
 		      Row grandTotalRow = sheet.createRow(i);
 		      
 		      cell = grandTotalRow.createCell(0);
@@ -400,7 +590,7 @@ public class ReportService {
 		      workbook.write(out);
 		      OutputStream fileOut = new FileOutputStream("C:\\Users\\hp\\Desktop\\newReport.xlsx");
 		      workbook.write(fileOut);
-		      return new ByteArrayInputStream(out.toByteArray()); 
+		      return new ByteArrayInputStream(out.toByteArray());
 		 } 
 		
 

@@ -50,10 +50,10 @@ public class StoreInfoService {
 //		StoreInfo storeInfo = storeInfoRepository.findByStoreNameAndConfigured(storeName, true);
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
 
-//		StoreInfoResponse storeInfoResponse = storeInfoBuilder.toDto(storeInfo);
-//		return storeInfoResponse;
-		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
-				storeInfo.getSerialNumber());
+		StoreInfoResponse storeInfoResponse = storeInfoBuilder.toDto(storeInfo);
+		return storeInfoResponse;
+//		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
+//				storeInfo.getSerialNumber());
 	}
 
 	public void addStore(StoreInfoRequest storeInfoRequest) {
