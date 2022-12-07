@@ -257,6 +257,7 @@ public class ReportService {
 	//Exporting EOD report to Excel
 	public  ByteArrayInputStream EODReportToExcel(String storeName, boolean toDay) throws IOException {
 		
+		// the path variable boolean toDay indicates if the check box " TODAY "in the EOD reports is true or false 
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 		List<Long> userIds = storeInfoResponse.getUserIds();
 		String stTime = storeInfoResponse.getStartTime();
@@ -272,6 +273,9 @@ public class ReportService {
 		LocalDateTime endDateTime = null;
 		LocalDate startDate = null;
 		LocalDate endDate = null;
+		// if check box Today is not checked then endDateTime will be assigned as certain conditions based on current time and Store default 
+		// Open time and Close time 
+	
 		if(!toDay){
 		// returns positive if now is greater than end time 
 		// returns zero if equal 
@@ -281,41 +285,25 @@ public class ReportService {
 		/*Logic for if report is generated after end time that current date report will be generated if 10:00 AM  is end time and report is generated at 10:01 AM then report will be from yesterday 10:00Am to todat 10 AM
 		if report is generated at 09:59 AM then report will be from day before yesterday 10:00 AM to yesterday 10:00 AM */
 		
-		 endDate = (diff>0)|| (diff==0)?LocalDate.now():diff<0?LocalDate.now().minusDays(1):null;
-		 startDate = null;
-		//Checking = difference between start time and end time of a Store
-		long hours = ChronoUnit.HOURS.between(startTime, endTime);
-		long minutes
-        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
-	
-			if(hours<0 || minutes <0) {
-			 startDate = endDate.minusDays(1);
-			}else {
+		 endDate = (diff>0)|| (diff==0)?LocalDate.now():LocalDate.now().minusDays(1);
 		
-			startDate = endDate;
-			}
-			System.out.println(" Start Date is " + startDate + " End date is " + endDate);
-			startDateTime = startTime.atDate(startDate);
 			endDateTime = endTime.atDate(endDate);
 		}else {
-			
-			 endDate = LocalDate.now();
-			 startDate = null;
-			//Checking = difference between start time and end time of a Store
-			long hours = ChronoUnit.HOURS.between(startTime, endTime);
-			long minutes
-	        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
-		
-			if(hours<0 || minutes <0) {
-				 startDate = endDate.minusDays(1);
-			}else {
-			
-				startDate = endDate;
-			}
-				System.out.println(" Start Date is " + startDate + " End date is " + endDate);
-				startDateTime = startTime.atDate(startDate);
+			 	endDate = LocalDate.now();
 				endDateTime = LocalTime.now().atDate(endDate);
 		}
+		//Checking = difference between start time and end time of a Store
+				long hours = ChronoUnit.HOURS.between(startTime, endTime);
+				long minutes
+		        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
+			
+					if(hours<0 || minutes <0) {
+					 startDate = endDate.minusDays(1);
+					}else {
+						startDate = endDate;
+					}
+					System.out.println(" Start Date is " + startDate + " End date is " + endDate);
+					startDateTime = startTime.atDate(startDate);
 			
 		System.out.println(userIds);
 		String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
