@@ -59,10 +59,11 @@ public class ReportController {
 	}
 	
 	// Exporting EOD reports to excel 
-	@RequestMapping(value = "/EODReportExport/{storeName}",method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> EODReportDataExport(@PathVariable("storeName")String storeName) throws IOException {
+	@RequestMapping(value = "/EODReportExport/{storeName}/{toDay}",method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> EODReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("toDay") boolean toDay) throws IOException {
 		System.out.println("Coming into eod report");
-		ByteArrayInputStream in = reportService.EODReportToExcel(storeName);
+		
+		ByteArrayInputStream in = reportService.EODReportToExcel(storeName,toDay);
 		
 		HttpHeaders headers = new HttpHeaders();
 		
