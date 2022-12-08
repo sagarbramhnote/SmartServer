@@ -486,13 +486,13 @@ public class ReportService {
 		      cell.setCellValue("$" + Long.toString(grandTotal));
 		      cell.setCellStyle(fullBold);
 		      workbook.write(out);
-		      if(!toDay) {
-		      OutputStream fileOut = new FileOutputStream("D:\\newEODReport.xlsx");
-		      workbook.write(fileOut);
-		      }else {
-		    	  OutputStream fileOut = new FileOutputStream("D:\\TodayEODReport.xlsx");
-			      workbook.write(fileOut);
-		      }
+//		      if(!toDay) {
+//		      OutputStream fileOut = new FileOutputStream("D:\\newEODReport.xlsx");
+//		      workbook.write(fileOut);
+//		      }else {
+//		    	  OutputStream fileOut = new FileOutputStream("D:\\TodayEODReport.xlsx");
+//			      workbook.write(fileOut);
+//		      }
 		
 		
 		
@@ -685,9 +685,9 @@ public class ReportService {
 		      cell.setCellStyle(full);
 		      workbook.write(out);
 
-		      OutputStream fileOut = new FileOutputStream("D:\\newReport.xlsx");
+//		      OutputStream fileOut = new FileOutputStream("D:\\newReport.xlsx");
+//		      workbook.write(fileOut);
 
-		      workbook.write(fileOut);
 		      return new ByteArrayInputStream(out.toByteArray());
 		 } 
 		
