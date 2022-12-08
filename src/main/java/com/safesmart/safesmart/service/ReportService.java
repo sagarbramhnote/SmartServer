@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -42,7 +43,6 @@ import com.safesmart.safesmart.dto.ManagerReportDto;
 import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
-import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Dollar;
 import com.safesmart.safesmart.model.InsertBill;
 import com.safesmart.safesmart.model.SequenceInfo;
@@ -296,8 +296,8 @@ public class ReportService {
 				long hours = ChronoUnit.HOURS.between(startTime, endTime);
 				long minutes
 		        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
-			
-					if(hours<0 || minutes <0) {
+			// To determine the start date is before day or same day based on the store start time and end time
+					if(hours<0 || minutes <0 || hours == 0|| minutes ==0) {
 					 startDate = endDate.minusDays(1);
 					}else {
 						startDate = endDate;
@@ -314,6 +314,7 @@ public class ReportService {
 		     Sheet sheet = workbook.createSheet("report");
 		     Font headerFont = workbook.createFont();
 		     headerFont.setBold(true);
+//		     BorderStyle bStyle = BorderStyle.THICK;
 		     
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
 		     
