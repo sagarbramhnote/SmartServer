@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
+import com.safesmart.safesmart.dto.PrinterResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.service.KioskService;
@@ -44,6 +45,11 @@ public class KioskController {
 	public void updateKiosk(@PathVariable("Id") Long Id, @RequestBody KioskRequest kioskRequest) {
 		kioskRequest.setId(Id);
 		kioskService.updateKiosk(kioskRequest);
+	}
+	
+	@RequestMapping(value = "/unassignedKiosks", method = RequestMethod.GET)
+	public List<KioskResponse> findUnassignedKiosk() {
+		return kioskService.findUnassignedKiosk();
 	}
 	
 }

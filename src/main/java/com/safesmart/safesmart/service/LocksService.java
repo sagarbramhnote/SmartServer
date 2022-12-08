@@ -17,6 +17,7 @@ import com.safesmart.safesmart.dto.RolesDto;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.BillValidator;
 import com.safesmart.safesmart.model.Locks;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.LocksRepository;
 
@@ -89,16 +90,16 @@ public class LocksService {
 
 	}
 	
-//	public List<LocksResponse> findUnassignedLocks(String digitalLockName) {
-//		List<Locks> lockss = locksRepository.findByDigitalLockName(digitalLockName);
-//		List<LocksResponse> infoResponses = new ArrayList<LocksResponse>();
-//		for (Locks locks : lockss) {
-//			if (locks != null && locks.getStoreinfo() == null) {
-//				infoResponses.add(new LocksResponse(locks.getId(),locks.getDigitalLockNo(), locks.getDigitalLockName(), locks.getBrandName(),
-//						locks.getModelName(), locks.getMachineType(), locks.getConnectors(), locks.isActive()));
-//			}
-//		}
-//		return infoResponses;
-//	}
+	public List<LocksResponse> findUnassignedLocks() {
+		List<Locks> lockss = (List<Locks>) locksRepository.findByActive(true);
+		List<LocksResponse> infoResponses = new ArrayList<LocksResponse>();
+		for (Locks locks : lockss) {
+			if (locks != null && locks.getStoreInfo() == null) {
+				infoResponses.add(new LocksResponse(locks.getId(),locks.getDigitalLockNo(), locks.getDigitalLockName(), locks.getBrandName(),
+						locks.getModelName(), locks.getMachineType(), locks.getConnectors(), locks.isActive()));
+			}
+		}
+		return infoResponses;
+	}
 	
 }

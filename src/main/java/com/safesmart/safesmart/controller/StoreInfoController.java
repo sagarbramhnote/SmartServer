@@ -63,12 +63,32 @@ public class StoreInfoController {
 		storeInfoService.configureStore(storeInfoRequest);
 	}
 
-	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}/locks/{lId}", method = RequestMethod.POST)
+//	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}/kiosk/{kId}/billValidator/{bId}/printer/{pId}/locks/{lId}", method = RequestMethod.POST)
+//	public void assignStore(@PathVariable(value = "storeId") Long storeId,
+//			@PathVariable(value = "userId") Long userId ,
+//			@PathVariable(value = "kId") Long kId ,
+//			@PathVariable(value = "bId") Long bId ,
+//			@PathVariable(value = "pId") Long pId ,
+//	         @PathVariable(value = "lId") Long lId) {
+//
+//		storeInfoService.assignStore(storeId, userId, kId, bId, pId, lId);
+//	}
+	
+	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}", method = RequestMethod.POST)
 	public void assignStore(@PathVariable(value = "storeId") Long storeId,
-			@PathVariable(value = "userId") Long userId ,
+			@PathVariable(value = "userId") Long userId) {
+
+		storeInfoService.assignStore(storeId, userId);
+	}
+	
+	@RequestMapping(value = "/assign/store/{storeId}/kiosk/{kId}/billValidator/{bId}/printer/{pId}/locks/{lId}", method = RequestMethod.POST)
+	public void assignStoreKBPL(@PathVariable(value = "storeId") Long storeId,
+			@PathVariable(value = "kId") Long kId ,
+			@PathVariable(value = "bId") Long bId ,
+			@PathVariable(value = "pId") Long pId ,
 	         @PathVariable(value = "lId") Long lId) {
 
-		storeInfoService.assignStore(storeId, userId, lId);
+		storeInfoService.assignStoreKBPL(storeId, kId, bId, pId, lId);
 	}
 
 	@RequestMapping(value = "/all/unassigned", method = RequestMethod.GET)

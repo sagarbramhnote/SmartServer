@@ -684,8 +684,10 @@ public class ReportService {
 		      cell.setCellValue(grandTotal);
 		      cell.setCellStyle(full);
 		      workbook.write(out);
+
 //		      OutputStream fileOut = new FileOutputStream("D:\\newReport.xlsx");
 //		      workbook.write(fileOut);
+
 		      return new ByteArrayInputStream(out.toByteArray());
 		 } 
 		

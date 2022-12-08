@@ -1,5 +1,7 @@
 package com.safesmart.safesmart.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,6 @@ public interface PrinterRepository extends PagingAndSortingRepository<Printer, L
 
 	
 	Printer findByPrinterName(String printerName);
+	
+	List<Printer> findByActive(boolean active);
 }
