@@ -58,6 +58,25 @@ public class ReportController {
 		return reportService.managerBillReport(dateRangedto);
 	}
 	
+	// Exporting EOD reports to excel 
+	@RequestMapping(value = "/EODReportExport/{storeName}/{toDay}",method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> EODReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("toDay") boolean toDay) throws IOException {
+		
+		System.out.println("Coming into eod report");
+		
+		ByteArrayInputStream in = reportService.EODReportToExcel(storeName,toDay);
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.add("Content-Disposition", "attachment; filename-report.xlsx");
+		 return ResponseEntity
+		         .ok()
+		         .headers(headers)
+		         .body(new InputStreamResource(in));
+
+//		return reportService.reportToExcel(userId,dateRangedto);
+	}
+	// Exporting Employee reports to excel 
 	@RequestMapping(value = "/employeeReportExport/{userId}/{sDate}/{endDate}",method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> employeeReportDataExport(@PathVariable("userId")Long userId, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {
 		DateRangedto dateRangedto = new DateRangedto() ;
