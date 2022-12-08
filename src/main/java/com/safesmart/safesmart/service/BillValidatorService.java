@@ -13,8 +13,10 @@ import com.safesmart.safesmart.dto.BillValidatorRequest;
 import com.safesmart.safesmart.dto.BillValidatorResponse;
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
+import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.model.BillValidator;
 import com.safesmart.safesmart.model.Kiosk;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.repository.BillValidatorRepository;
 
 @Service
@@ -79,6 +81,18 @@ public class BillValidatorService {
 		
 		billValidatorRepository.save(billValidator);
 
+	}
+	
+	public List<BillValidatorResponse> findUnassignedBillValidator() {
+		List<BillValidator> billValidators = (List<BillValidator>) billValidatorRepository.findByActive(true);
+		List<BillValidatorResponse> infoResponses = new ArrayList<BillValidatorResponse>();
+		for (BillValidator billValidator : billValidators) {
+			if (billValidator != null && billValidator.getStoreinfob() == null) {
+				infoResponses.add(new BillValidatorResponse(billValidator.getId(),billValidator.getBillAcceptorNo(), billValidator.getBillAcceptorName(), billValidator.getBrandName(),
+						billValidator.getModelName(), billValidator.getMachineType(), billValidator.getStorageCapacity(), billValidator.isActive()));
+			}
+		}
+		return infoResponses;
 	}
 	
 }

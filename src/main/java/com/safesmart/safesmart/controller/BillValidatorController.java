@@ -14,6 +14,7 @@ import com.safesmart.safesmart.dto.BillValidatorRequest;
 import com.safesmart.safesmart.dto.BillValidatorResponse;
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
+import com.safesmart.safesmart.dto.PrinterResponse;
 import com.safesmart.safesmart.service.BillValidatorService;
 
 @RestController
@@ -44,6 +45,11 @@ public class BillValidatorController {
 	public void updateBillValidator(@PathVariable("Id") Long Id, @RequestBody BillValidatorRequest billValidatorRequest) {
 		billValidatorRequest.setId(Id);
 		billValidatorService.updateBillValidator(billValidatorRequest);
+	}
+	
+	@RequestMapping(value = "/unassignedBillValidators", method = RequestMethod.GET)
+	public List<BillValidatorResponse> findUnassignedBillValidator() {
+		return billValidatorService.findUnassignedBillValidator();
 	}
 	
 }

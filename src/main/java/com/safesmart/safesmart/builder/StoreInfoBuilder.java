@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.BillValidator;
+import com.safesmart.safesmart.model.Kiosk;
 import com.safesmart.safesmart.model.Locks;
+import com.safesmart.safesmart.model.Printer;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 
@@ -53,11 +56,29 @@ public class StoreInfoBuilder {
 		}
 		storeInfoResponse.setUserIds(userIds);
 		
+		List<Long> kIds = new ArrayList<Long>();
+		for (Kiosk kiosk : storeInfo.getKiosk()) {
+			kIds.add(kiosk.getId());
+		}
+		storeInfoResponse.setKioskIds(kIds);
+		
+		List<Long> bIds = new ArrayList<Long>();
+		for (BillValidator billValidator : storeInfo.getBillValidator()) {
+			bIds.add(billValidator.getId());
+		}
+		storeInfoResponse.setBillValidatorIds(bIds);
+		
 		List<Long> lIds = new ArrayList<Long>();
 		for (Locks lock : storeInfo.getLocks()) {
 			lIds.add(lock.getId());
 		}
 		storeInfoResponse.setLockIds(lIds);
+		
+		List<Long> pIds = new ArrayList<Long>();
+		for (Printer printer : storeInfo.getPrinter()) {
+			pIds.add(printer.getId());
+		}
+		storeInfoResponse.setPrinterIds(pIds);
 		
 		return storeInfoResponse;
 

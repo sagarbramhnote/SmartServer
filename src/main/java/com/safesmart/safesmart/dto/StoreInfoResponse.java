@@ -2,6 +2,8 @@ package com.safesmart.safesmart.dto;
 
 import java.util.List;
 
+import com.safesmart.safesmart.model.Printer;
+
 public class StoreInfoResponse {
 	
 	private Long id;
@@ -27,6 +29,12 @@ public class StoreInfoResponse {
 	private String endTime;
 
 	private List<Long> userIds;
+	
+	private List<Long> kioskIds;
+	
+	private List<Long> billValidatorIds;
+	
+	private List<Long> printerIds;
 	
 	private List<Long> lockIds;
 	
@@ -121,6 +129,33 @@ public class StoreInfoResponse {
 	
 	
 	
+
+
+	public List<Long> getKioskIds() {
+		return kioskIds;
+	}
+
+	public void setKioskIds(List<Long> kioskIds) {
+		this.kioskIds = kioskIds;
+	}
+	
+	
+
+	public List<Long> getBillValidatorIds() {
+		return billValidatorIds;
+	}
+
+	public void setBillValidatorIds(List<Long> billValidatorIds) {
+		this.billValidatorIds = billValidatorIds;
+	}
+
+	public List<Long> getPrinterIds() {
+		return printerIds;
+	}
+
+	public void setPrinterIds(List<Long> printerIds) {
+		this.printerIds = printerIds;
+	}
 
 	public List<Long> getLockIds() {
 		return lockIds;

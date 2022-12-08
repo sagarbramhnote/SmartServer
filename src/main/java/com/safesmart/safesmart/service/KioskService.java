@@ -13,9 +13,11 @@ import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
+import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Kiosk;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.KioskRepository;
@@ -83,6 +85,18 @@ public class KioskService {
 		
 		kioskRepository.save(kiosk);
 
+	}
+	
+	public List<KioskResponse> findUnassignedKiosk() {
+		List<Kiosk> kiosks = (List<Kiosk>) kioskRepository.findByActive(true);
+		List<KioskResponse> infoResponses = new ArrayList<KioskResponse>();
+		for (Kiosk kiosk : kiosks) {
+			if (kiosk != null && kiosk.getStoreinfok() == null) {
+				infoResponses.add(new KioskResponse(kiosk.getId(),kiosk.getKioskId(), kiosk.getKioskName(), kiosk.getBrandName(),
+						kiosk.getModelName(), kiosk.getCpu(), kiosk.getHdd(), kiosk.getMemory(), kiosk.getScreenSize(), kiosk.isActive()));
+			}		
+		}
+		return infoResponses;
 	}
 
 }
