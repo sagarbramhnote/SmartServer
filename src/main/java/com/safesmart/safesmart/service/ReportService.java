@@ -263,11 +263,8 @@ public class ReportService {
 		String stTime = storeInfoResponse.getStartTime();
 		String endTimes = storeInfoResponse.getEndTime();
 		LocalTime startTime = LocalTime.parse(stTime);
-		System.out.println("Start time is : " + startTime);
 		LocalTime endTime = LocalTime.parse(endTimes);
-		System.out.println("end time is : " + endTime);
 		LocalTime now = LocalTime.now();
-		System.out.println("current time is : " + now);
 		
 		LocalDateTime startDateTime = null;
 		LocalDateTime endDateTime = null;
@@ -277,10 +274,11 @@ public class ReportService {
 		// Open time and Close time 
 	
 		if(!toDay){
-		// returns positive if now is greater than end time 
-		// returns zero if equal 
-		//returns negative if now is less than end time 
-		int diff = now.compareTo(endTime);
+			
+		/* now.compareTo(endTime) returns positive if now is greater than end time 
+		 returns zero if equal 
+		returns negative if now is less than end time */
+		int diff = now.compareTo(endTime); 
 		
 		/*Logic for if report is generated after end time that current date report will be generated if 10:00 AM  is end time and report is generated at 10:01 AM then report will be from yesterday 10:00Am to todat 10 AM
 		if report is generated at 09:59 AM then report will be from day before yesterday 10:00 AM to yesterday 10:00 AM */
@@ -296,8 +294,10 @@ public class ReportService {
 				long hours = ChronoUnit.HOURS.between(startTime, endTime);
 				long minutes
 		        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
+				long seconds
+	            = ChronoUnit.SECONDS.between(startTime, endTime) % 60;
 			// To determine the start date is before day or same day based on the store start time and end time
-					if(hours<0 || minutes <0 || hours == 0|| minutes ==0) {
+					if(hours<0 || minutes <0 || seconds <0 || (hours ==0 && minutes ==0 && seconds ==0)) {
 					 startDate = endDate.minusDays(1);
 					}else {
 						startDate = endDate;
@@ -314,40 +314,70 @@ public class ReportService {
 		     Sheet sheet = workbook.createSheet("report");
 		     Font headerFont = workbook.createFont();
 		     headerFont.setBold(true);
-//		     BorderStyle bStyle = BorderStyle.THICK;
-		     
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
 		     
-		     CellStyle headerCellStyle = workbook.createCellStyle();
-		     headerCellStyle.setFont(headerFont);
+		     BorderStyle bS = BorderStyle.THICK;
+		     CellStyle fullBold = workbook.createCellStyle();
+		     fullBold.setBorderTop(bS);
+		     fullBold.setBorderLeft(bS);
+		     fullBold.setBorderBottom(bS);
+		     fullBold.setBorderRight(bS);
+		     fullBold.setFont(headerFont);
+		     CellStyle full = workbook.createCellStyle();
+		     full.setBorderBottom(bS);
+		     full.setBorderLeft(bS);
+		     full.setBorderRight(bS);
+		     full.setBorderTop(bS);
+		     CellStyle leftRight = workbook.createCellStyle();
+		     leftRight.setBorderLeft(bS);
+		     
+		     
+		     
 		     int i = 0;
 		     Row headerRow = sheet.createRow(i);
 		     i++;
-		     headerRow.setRowStyle(headerCellStyle);
-		     for (int col=0; col<columns.length; col++) {
-		    	 Cell cell = headerRow.createCell(col);
-		    	 cell.setCellValue(columns[col]);
-		    	 cell.setCellStyle(headerCellStyle);
-		     	}
+		     
+		    	 Cell cell = headerRow.createCell(0);
+		    	 cell.setCellValue(columns[0]);
+		    	 cell.setCellStyle(fullBold);
+		    	 
+		    	 cell = headerRow.createCell(1);
+		    	 cell.setCellValue(columns[1]);
+		    	 cell.setCellStyle(fullBold);
+		    	 
+		    	 cell = headerRow.createCell(2);
+		    	 cell.setCellValue(columns[2]);
+		    	 cell.setCellStyle(fullBold);
+		     	
 		     //Row for printing Store details 
 		  
 		      Row detailsRow = sheet.createRow(i);
 		      i++;
 		    		String serialNo = storeInfoResponse.getSerialNumber();
-		    		Cell cell = detailsRow.createCell(0);
+		    		cell = detailsRow.createCell(0);
 		    		cell.setCellValue(storeName);
+		    		cell.setCellStyle(full);
 
 		    		 cell = detailsRow.createCell(1);
 		    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
+		    		 cell.setCellStyle(full);
 		    		 
 		    		 cell = detailsRow.createCell(2);
 		    		 cell.setCellValue(serialNo);
+		    		 cell.setCellStyle(full);
 		    		 
 		    // Row for printing start date and end date 
 		      Row datesRow = sheet.createRow(i);
 		      i+=2;
-		      datesRow.createCell(0).setCellValue("From Date :" + startDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-		      datesRow.createCell(2).setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell = datesRow.createCell(0);
+		      cell.setCellValue("From Date :" + startDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellStyle(full);
+		      cell = datesRow.createCell(1);
+		      cell.setCellStyle(full);
+		      
+		      cell = datesRow.createCell(2);
+		      cell.setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellStyle(full);
 		      
 		      int grandTotal =0;
 		      int grandCount =0;
@@ -361,23 +391,23 @@ public class ReportService {
 		    	  i++;
 		    	  cell = userRow.createCell(0);
 		    	  cell.setCellValue("Name");
-		    	  cell.setCellStyle(headerCellStyle);
+		    	  cell.setCellStyle(fullBold);
 		    	  cell = userRow.createCell(1);
 		    	  cell.setCellValue(user.getFirstName() + " " + user.getLastName());
-		   	 
+		    	  cell.setCellStyle(full);
 		    	  //Row for printing headings 
 		    	  Row headingsRow = sheet.createRow(i);
 		    	  cell = headingsRow.createCell(0);
 		    	  cell.setCellValue("Currency");
-		    	  cell.setCellStyle(headerCellStyle);
+		    	  cell.setCellStyle(fullBold);
     	   
 		    	  cell = headingsRow.createCell(1);
 		    	  cell.setCellValue("Count");
-		    	  cell.setCellStyle(headerCellStyle);
+		    	  cell.setCellStyle(fullBold);
     	   
 		    	  cell = headingsRow.createCell(2);
 		    	  cell.setCellValue("Value");
-		    	  cell.setCellStyle(headerCellStyle);
+		    	  cell.setCellStyle(fullBold);
     	   
     	   Set<String> distinctDenominations =  new HashSet<String>();
     	   for(InsertBill bill : insertBills) {
@@ -398,14 +428,19 @@ public class ReportService {
     		   }
     		   //Row for printing values i.e., denomination ($1,$2,.....) , NO of notes (Count), Value ( denominations * Count)
     		   Row amountRow = sheet.createRow(i);
-    		   amountRow.createCell(0).setCellValue(a);
+    		   cell = amountRow.createCell(0);
+    		   cell.setCellValue(a);
+    		   cell.setCellStyle(leftRight);
+    		   
     		   amountRow.createCell(1).setCellValue(count);
     		   
     		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
     			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;
     		   
     		   
-    		   amountRow.createCell(2).setCellValue("$" + Long.toString(product));
+    		   cell = amountRow.createCell(2);
+    		   cell.setCellValue("$" + Long.toString(product));
+    		   cell.setCellStyle(leftRight);
     		   
     		   i++;
     		   totalCount+= count;
@@ -417,11 +452,15 @@ public class ReportService {
     	   
     	   cell = totalRow.createCell(0);
     	   cell.setCellValue("All");
-    	   cell.setCellStyle(headerCellStyle);
+    	   cell.setCellStyle(fullBold);
     	   
-    	   totalRow.createCell(1).setCellValue(totalCount);
+    	   cell = totalRow.createCell(1);
+    	   cell.setCellValue(totalCount);
+    	   cell.setCellStyle(full);
     	   
-    	   totalRow.createCell(2).setCellValue("$" + Long.toString(sum));
+    	   cell = totalRow.createCell(2);
+    	   cell.setCellValue("$" + Long.toString(sum));
+    	   cell.setCellStyle(full);
     	   
     	   grandCount+= totalCount; 
     	    
@@ -437,12 +476,23 @@ public class ReportService {
 		      
 		      cell = grandTotalRow.createCell(0);
 		      cell.setCellValue("Total Bills Per Day");
-		      cell.setCellStyle(headerCellStyle);
-		      grandTotalRow.createCell(1).setCellValue(grandCount);
-		      grandTotalRow.createCell(2).setCellValue("$" + Long.toString(grandTotal));
+		      cell.setCellStyle(fullBold);
+		      
+		     cell =  grandTotalRow.createCell(1);
+		     cell.setCellValue(grandCount);
+		     cell.setCellStyle(fullBold);
+		      
+		      cell = grandTotalRow.createCell(2);
+		      cell.setCellValue("$" + Long.toString(grandTotal));
+		      cell.setCellStyle(fullBold);
 		      workbook.write(out);
-		      OutputStream fileOut = new FileOutputStream("C:\\Users\\hp\\Desktop\\newEODReport.xlsx");
+		      if(!toDay) {
+		      OutputStream fileOut = new FileOutputStream("D:\\newEODReport.xlsx");
 		      workbook.write(fileOut);
+		      }else {
+		    	  OutputStream fileOut = new FileOutputStream("D:\\TodayEODReport.xlsx");
+			      workbook.write(fileOut);
+		      }
 		
 		
 		
@@ -473,14 +523,26 @@ public class ReportService {
 		     
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
 		     
-		     CellStyle headerCellStyle = workbook.createCellStyle();
-		     headerCellStyle.setFont(headerFont);
+		     BorderStyle bS = BorderStyle.THICK;
+		     CellStyle fullBold = workbook.createCellStyle();
+		     fullBold.setBorderTop(bS);
+		     fullBold.setBorderLeft(bS);
+		     fullBold.setBorderBottom(bS);
+		     fullBold.setBorderRight(bS);
+		     fullBold.setFont(headerFont);
+		     CellStyle full = workbook.createCellStyle();
+		     full.setBorderBottom(bS);
+		     full.setBorderLeft(bS);
+		     full.setBorderRight(bS);
+		     full.setBorderTop(bS);
+		     CellStyle leftRight = workbook.createCellStyle();
+		     leftRight.setBorderLeft(bS);
+
 		     Row headerRow = sheet.createRow(0);
-		     headerRow.setRowStyle(headerCellStyle);
 		     for (int col=0; col<columns.length; col++) {
 		    	 Cell cell = headerRow.createCell(col);
 		    	 cell.setCellValue(columns[col]);
-		    	 cell.setCellStyle(headerCellStyle);
+		    	 cell.setCellStyle(fullBold);
 		     	}
 		     //Row for printing Store details 
 		      Row detailsRow = sheet.createRow(1);
@@ -488,25 +550,34 @@ public class ReportService {
 		    		String serialNo = storeInfoResponse.getSerialNumber();
 		    		Cell cell = detailsRow.createCell(0);
 		    		cell.setCellValue(storeName);
+		    		cell.setCellStyle(full);
 
 		    		 cell = detailsRow.createCell(1);
 		    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
+		    		 cell.setCellStyle(full);
 		    		 
 		    		 cell = detailsRow.createCell(2);
 		    		 cell.setCellValue(serialNo);
+		    		 cell.setCellStyle(full);
 		    		 
 		    // Row for printing start date and end date 
 		      Row datesRow = sheet.createRow(2);
-		      datesRow.createCell(0).setCellValue("From Date :" + stDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-		      datesRow.createCell(2).setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      
+		      cell = datesRow.createCell(0);
+		      cell.setCellValue("From Date :" + stDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellStyle(full);
+		      
+		      cell = datesRow.createCell(2);
+		      cell.setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellStyle(full);
 		     
 		      Row userRow = sheet.createRow(3);
 		      cell = userRow.createCell(0);
 		      cell.setCellValue("Employee Name : ");
-		      cell.setCellStyle(headerCellStyle);
+		      cell.setCellStyle(fullBold);
 		      cell = userRow.createCell(1);
 		      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
-		      
+		      cell.setCellStyle(full);
 		      List<LocalDate> totalDates = new ArrayList<>();
 		      // Adding in between dates into a List
 		      while (!stDate.isAfter(endDate)) {
@@ -527,20 +598,20 @@ public class ReportService {
 			    	   i++;
 		    	   cell = dateRow.createCell(0);
 		    	   cell.setCellValue("Date: "+date.format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
-		    	   cell.setCellStyle(headerCellStyle);
+		    	   cell.setCellStyle(fullBold);
 		    	   //Row for printing headings 
 		    	   Row headingsRow = sheet.createRow(i);
 		    	   cell = headingsRow.createCell(0);
 		    	   cell.setCellValue("Currency");
-		    	   cell.setCellStyle(headerCellStyle);
+		    	   cell.setCellStyle(fullBold);
 		    	   
 		    	   cell = headingsRow.createCell(1);
 		    	   cell.setCellValue("Count");
-		    	   cell.setCellStyle(headerCellStyle);
+		    	   cell.setCellStyle(fullBold);
 		    	   
 		    	   cell = headingsRow.createCell(2);
 		    	   cell.setCellValue("Value");
-		    	   cell.setCellStyle(headerCellStyle);
+		    	   cell.setCellStyle(fullBold);
 		    	   
 		    	   Set<String> distinctDenominations =  new HashSet<String>();
 		    	   for(InsertBill bill : insertBills) {
@@ -561,14 +632,19 @@ public class ReportService {
 		    		   }
 		    		   //Row for printing values i.e., denomination ($1,$2,.....) , NO of notes (Count), Value ( denominations * Count)
 		    		   Row amountRow = sheet.createRow(i);
-		    		   amountRow.createCell(0).setCellValue(a);
+		    		   
+		    		   cell = amountRow.createCell(0);
+		    		   cell.setCellValue(a);
+		    		   cell.setCellStyle(leftRight);
 		    		   amountRow.createCell(1).setCellValue(count);
 		    		   
 		    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
 		    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;
 		    		   
 		    		   
-		    		   amountRow.createCell(2).setCellValue("$" + Long.toString(product));
+		    		  cell =  amountRow.createCell(2);
+		    		  cell.setCellValue("$" + Long.toString(product));
+		    		  cell.setCellStyle(leftRight);
 		    		   
 		    		   i++;
 		    		   totalCount+= count;
@@ -580,11 +656,15 @@ public class ReportService {
 		    	   
 		    	   cell = totalRow.createCell(0);
 		    	   cell.setCellValue("All");
-		    	   cell.setCellStyle(headerCellStyle);
+		    	   cell.setCellStyle(full);
 		    	   
-		    	   totalRow.createCell(1).setCellValue(totalCount);
+		    	   cell = totalRow.createCell(1);
+		    	   cell.setCellValue(totalCount);
+		    	   cell.setCellStyle(full);
 		    	   
-		    	   totalRow.createCell(2).setCellValue("$" + Long.toString(sum));
+		    	   cell = totalRow.createCell(2);
+		    	   cell.setCellValue("$" + Long.toString(sum));
+		    	   cell.setCellStyle(full);
 		    	    
 		    	   i+=2;
 		    	   grandTotal+=sum;
@@ -596,11 +676,17 @@ public class ReportService {
 		      
 		      cell = grandTotalRow.createCell(0);
 		      cell.setCellValue("Total Bills ");
-		      cell.setCellStyle(headerCellStyle);
- 		      grandTotalRow.createCell(1);
-		      grandTotalRow.createCell(2).setCellValue(grandTotal);
+		      cell.setCellStyle(fullBold);
+ 		      cell = grandTotalRow.createCell(1);
+ 		      cell.setCellValue(" " );
+ 		      cell.setCellStyle(full);
+		      cell = grandTotalRow.createCell(2);
+		      cell.setCellValue(grandTotal);
+		      cell.setCellStyle(full);
 		      workbook.write(out);
-		      OutputStream fileOut = new FileOutputStream("C:\\Users\\LENOVO\\Desktop\\newReport.xlsx");
+
+		      OutputStream fileOut = new FileOutputStream("D:\\newReport.xlsx");
+
 		      workbook.write(fileOut);
 		      return new ByteArrayInputStream(out.toByteArray());
 		 } 
