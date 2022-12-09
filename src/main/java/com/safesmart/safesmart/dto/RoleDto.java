@@ -11,6 +11,9 @@ public class RoleDto {
 	private String description;
 
 	private List<String> features;
+	
+	private List<String> modules;
+
 
 	public Long getId() {
 		return id;
@@ -44,4 +47,11 @@ public class RoleDto {
 		this.features = features;
 	}
 
+	public List<String> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<String> modules) {
+		this.modules = modules;
+	}
 }
