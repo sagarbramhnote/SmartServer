@@ -2,6 +2,8 @@ package com.safesmart.safesmart.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.safesmart.safesmart.dto.ChangedCurrencyDto;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -25,6 +28,19 @@ public class ChangeValetDenominations implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String toString() {
+		return "ChangeValetDenominations [id=" + id + ", old_cents=" + old_cents + ", new_cents=" + new_cents
+				+ ", old_nickels=" + old_nickels + ", new_nickels=" + new_nickels + ", old_dimes=" + old_dimes
+				+ ", new_dimes=" + new_dimes + ", old_quarters=" + old_quarters + ", new_quarters=" + new_quarters
+				+ ", old_den_1$=" + old_den_1$ + ", new_den_1$=" + new_den_1$ + ", old_den_5$=" + old_den_5$
+				+ ", new_den_5$=" + new_den_5$ + ", old_den_10$=" + old_den_10$ + ", new_den_10$=" + new_den_10$
+				+ ", old_den_20$=" + old_den_20$ + ", new_den_20$=" + new_den_20$ + ", old_den_50$=" + old_den_50$
+				+ ", new_den_50$=" + new_den_50$ + ", old_den_100$=" + old_den_100$ + ", new_den_100$=" + new_den_100$
+				+ ", type=" + type + ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + ", valetDenominations="
+				+ valetDenominations + ", createdBy=" + createdBy + ", created=" + created + "]";
+	}
 
 	private Long id;
 
@@ -269,6 +285,112 @@ public class ChangeValetDenominations implements Serializable {
 	public void setValetDenominations(ValetDenominations valetDenominations) {
 		this.valetDenominations = valetDenominations;
 	}
+	
+//	public ChangedCurrencyDto compareCurrentBal(ValetDenominations v) {
+//		
+//	}
+//	
+//	public List<ChangedCurrencyDto> difference(ChangeValetDenominations c){
+//		
+//		List<ChangedCurrencyDto> list = new ArrayList<ChangedCurrencyDto>();
+//		int changeNeeded = 0;
+//		int depositedValue = 0;
+//		int diff = this.old_cents-c.old_cents;
+//		if((diff)>0) {
+//			list.add(new ChangedCurrencyDto("Pennies"," ","$"+Integer.toString(diff)));
+//			depositedValue+=diff;
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("Pennies","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_nickels-c.old_nickels;
+//		if((diff)>0) {
+//			list.add(new ChangedCurrencyDto("Nickels"," ","$"+Integer.toString(diff)));
+//			depositedValue+=diff;
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("Nickels","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff= this.old_dimes-c.old_dimes;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("Dimes"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("Dimes","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_quarters -c.old_quarters;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("Quarters"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("Quarters","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_1$-c.old_den_1$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$1"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$1","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_5$-c.old_den_5$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$5"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$5","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_10$-c.old_den_10$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$10"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$10","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_20$-c.old_den_20$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$20"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$20","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_50$-c.old_den_50$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$50"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$50","$"+Integer.toString(diff*-1)," "));
+//		}
+//		diff = this.old_den_100$-c.old_den_100$;
+//		if((diff)>0) {
+//			depositedValue+=diff;
+//			list.add(new ChangedCurrencyDto("$100"," ","$"+Integer.toString(diff)));
+//		}
+//		if((diff)<0) {
+//			changeNeeded+=diff*-1;
+//			list.add(new ChangedCurrencyDto("$100","$"+Integer.toString(diff*-1)," "));
+//		}
+//		
+//		list.add(new ChangedCurrencyDto("ALL" ,"$"+Integer.toString(changeNeeded),"$"+Integer.toString(depositedValue)));
+//		
+//		return list;
+//	}
+	
 
 	public LocalDateTime getUpdatedOn() {
 		return updatedOn;

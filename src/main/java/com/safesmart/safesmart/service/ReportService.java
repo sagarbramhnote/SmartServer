@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,10 +31,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safesmart.safesmart.dto.BillResponse;
+import com.safesmart.safesmart.dto.ChangeValetDenominationsDto;
+import com.safesmart.safesmart.dto.ChangedCurrencyDto;
 import com.safesmart.safesmart.dto.DateRangedto;
 import com.safesmart.safesmart.dto.EODReport;
 import com.safesmart.safesmart.dto.EmployeeReportDto;
@@ -43,14 +48,18 @@ import com.safesmart.safesmart.dto.ManagerReportDto;
 import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.ChangeValetDenominations;
 import com.safesmart.safesmart.model.Dollar;
 import com.safesmart.safesmart.model.InsertBill;
 import com.safesmart.safesmart.model.SequenceInfo;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.model.ValetDenominations;
+import com.safesmart.safesmart.repository.ChangeRquestDenominationsRepository;
 import com.safesmart.safesmart.repository.InsertBillRepository;
 import com.safesmart.safesmart.repository.SequenceInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
+import com.safesmart.safesmart.repository.ValetDenominationsRepository;
 import com.safesmart.safesmart.util.DateUtil;
 import com.safesmart.safesmart.util.EmailTemplate;
 
@@ -68,9 +77,15 @@ public class ReportService {
 
 	@Autowired
 	private UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	ValetDenominationsRepository valetDenominationsRepository;
 
 	@Autowired
 	private EmailTemplate emailTemplate;
+	
+	@Autowired
+	private ChangeRquestDenominationsRepository changeRequestDenominationsRepository;
 
 	public ReprintReportDto rePrintReport() {
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
@@ -316,7 +331,7 @@ public class ReportService {
 		     headerFont.setBold(true);
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
 		     
-		     BorderStyle bS = BorderStyle.THICK;
+		     BorderStyle bS = BorderStyle.THIN;
 		     CellStyle fullBold = workbook.createCellStyle();
 		     fullBold.setBorderTop(bS);
 		     fullBold.setBorderLeft(bS);
@@ -370,13 +385,13 @@ public class ReportService {
 		      Row datesRow = sheet.createRow(i);
 		      i+=2;
 		      cell = datesRow.createCell(0);
-		      cell.setCellValue("From Date :" + startDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellValue("From  :" + startDateTime.format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")));
 		      cell.setCellStyle(full);
 		      cell = datesRow.createCell(1);
 		      cell.setCellStyle(full);
 		      
 		      cell = datesRow.createCell(2);
-		      cell.setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+		      cell.setCellValue("To  :" + endDateTime.format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")));
 		      cell.setCellStyle(full);
 		      
 		      int grandTotal =0;
@@ -499,9 +514,225 @@ public class ReportService {
 		return new ByteArrayInputStream(out.toByteArray());
 		}
 	}
-	
+	//Stand Bank report
+	public  ByteArrayInputStream standBankReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
+		/* This report is generated on the logic of comparing two consecutive records in the Change Valet denominations and defining which denomination 
+		 * are removed and which denominations are added. If the next record is not available this method checks the current safe balance and determines
+		 * which denominations are removed and which denominations are added. 
+		 */
+		
+		/*Note: This report purely depends on the comparing 2 records and the removed amount might not be equal to the deposited value if total of 
+		 * two consecutive records are not same 
+		 * explanation : If the Total of two consecutive records are same then the amount deposited or removed might be not same which causes the deposited 
+		 * amount might not be equal to removed change
+		 */
+		
+		/*The records from the change Valet Denomination are retrieved based on the Requested safe and Created BY User and mentioned time period 
+		 * Then again sorted depending on the time created just to run the required operation smoothly in case some records are edited by any manner 
+		 */
+		
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+		ValetDenominations vD = valetDenominationsRepository.findByType(safeType);
+		List<Long> userIds = storeInfoResponse.getUserIds();
+		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalTime time =  LocalTime.of(0,0,0);
+		LocalTime time2 = LocalTime.of(23, 59,59);
+		
+		LocalDateTime startDateTime = time.atDate(sDate);
+		LocalDateTime endDateTime = time2.atDate(eDate);
+		UserInfo user;
+		
+			String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
+			try(
+			     Workbook workbook = new XSSFWorkbook();
+			     ByteArrayOutputStream out = new ByteArrayOutputStream();
+			     ){
+				Sheet sheet = workbook.createSheet("report");
+			     Font headerFont = workbook.createFont();
+			     headerFont.setBold(true);
+			     
+			     headerFont.setColor (IndexedColors.BLACK.getIndex());
+			     
+			     BorderStyle bS = BorderStyle.THIN;
+			     CellStyle fullBold = workbook.createCellStyle();
+			     fullBold.setBorderTop(bS);
+			     fullBold.setBorderLeft(bS);
+			     fullBold.setBorderBottom(bS);
+			     fullBold.setBorderRight(bS);
+			     fullBold.setFont(headerFont);
+			     CellStyle full = workbook.createCellStyle();
+			     full.setBorderBottom(bS);
+			     full.setBorderLeft(bS);
+			     full.setBorderRight(bS);
+			     full.setBorderTop(bS);
+			     CellStyle leftRight = workbook.createCellStyle();
+			     leftRight.setBorderLeft(bS);
+
+			     Row headerRow = sheet.createRow(0);
+			     for (int col=0; col<columns.length; col++) {
+			    	 Cell cell = headerRow.createCell(col);
+			    	 cell.setCellValue(columns[col]);
+			    	 cell.setCellStyle(fullBold);
+			     	}
+			     //Row for printing Store details 
+			      Row detailsRow = sheet.createRow(1);
+			    		String serialNo = storeInfoResponse.getSerialNumber();
+			    		Cell cell = detailsRow.createCell(0);
+			    		cell.setCellValue(storeName);
+			    		cell.setCellStyle(full);
+
+			    		 cell = detailsRow.createCell(1);
+			    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
+			    		 cell.setCellStyle(full);
+			    		 
+			    		 cell = detailsRow.createCell(2);
+			    		 cell.setCellValue(serialNo);
+			    		 cell.setCellStyle(full);
+			    		 
+			    // Row for printing start date and end date 
+			      Row datesRow = sheet.createRow(2);
+			      
+			      cell = datesRow.createCell(0);
+			      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+			      cell.setCellStyle(full);
+			      cell = datesRow.createCell(1);
+			      cell.setCellValue(" ");
+			      cell.setCellStyle(full);
+			      cell = datesRow.createCell(2);
+			      cell.setCellValue("To Date :" + eDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+			      cell.setCellStyle(full);
+			      int i =4;
+			      for(Long userId : userIds) {
+						user = userInfoRepository.findById(userId).get();
+						System.out.println("coming here");
+						List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
+						if(!list1.isEmpty()) {
+						System.out.println("coming here 2");
+						//Sorting the ChangeValetDenominations records based on time created 
+						Collections.sort(list1, new Comparator<ChangeValetDenominations>() {
+						    @Override
+						    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+						        return c1.getCreated().compareTo(c2.getCreated());
+						    }
+						});
+			      
+			    for(ChangeValetDenominations v : list1) {
+			    	System.out.println(v.getCreated());
+			    }
+
+			      
+				int size = list1.size();
+				int j =0;
+				while( j <size) {
+				// Compring every consecutive record 	
+				ChangeValetDenominationsDto c1 = new ChangeValetDenominationsDto();
+				BeanUtils.copyProperties(list1.get(j), c1);
+				ChangeValetDenominationsDto c2 = new ChangeValetDenominationsDto();
+				// to avoid index out of bound error we need to define upto when this operation should be carried out 
+				if(j+1<size) {
+				BeanUtils.copyProperties(list1.get(j+1), c2);
+				// Checking which denominations are removed and which denominations are added in the requested Safe
+				List<ChangedCurrencyDto> changes = c1.difference(c2); // This gives a list of changes made in the requested safe 
+				// For reference check method "difference" defined in ChangeValetDenominationsDto class 
+				
+				// Printing which user performed the operation
+				Row userRow = sheet.createRow(i);
+			      i++;
+			      cell = userRow.createCell(0);
+			      cell.setCellValue("Name : ");
+			      cell.setCellStyle(fullBold);
+			      cell = userRow.createCell(1);
+			      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
+			      cell.setCellStyle(fullBold);
+			      cell = userRow.createCell(2);
+			      cell.setCellValue(" ");
+			      cell.setCellStyle(full);
+				Row headingsRow = sheet.createRow(i);
+			      i++;
+			      cell = headingsRow.createCell(0);
+			      cell.setCellValue("Denominations");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow.createCell(1);
+			      cell.setCellValue("Change Needed");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow.createCell(2);
+			      cell.setCellValue("Deposited Value");
+			      cell.setCellStyle(fullBold);
+			      
+				for(ChangedCurrencyDto c:changes) {
+					// printing the Changed values 
+					Row valuesRow = sheet.createRow(i);
+					i++;
+					cell = valuesRow.createCell(0);
+				    cell.setCellValue(c.getCurrency());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(1);
+				    cell.setCellValue(c.getChangeNeeded());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(2);
+				    cell.setCellValue(c.getDepositedValue());
+				    cell.setCellStyle(full);
+					}
+					
+				}
+			//Comparing with Current balance of requested safe when c1 becomes the last record 
+				else{
+				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
+				Row userRow = sheet.createRow(i);
+			      i++;
+			      cell = userRow.createCell(0);
+			      cell.setCellValue("Name : ");
+			      cell.setCellStyle(fullBold);
+			      cell = userRow.createCell(1);
+			      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
+			      cell.setCellStyle(fullBold);
+			      cell = userRow.createCell(2);
+			      cell.setCellValue(" ");
+			      cell.setCellStyle(full);
+				Row headingsRow = sheet.createRow(i);
+			      i++;
+			      cell = headingsRow.createCell(0);
+			      cell.setCellValue("Denominations");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow.createCell(1);
+			      cell.setCellValue("Change Needed");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow.createCell(2);
+			      cell.setCellValue("Deposited Value");
+			      cell.setCellStyle(fullBold);
+				for(ChangedCurrencyDto c:lastChanges) {
+					
+					Row valuesRow = sheet.createRow(i);
+					i++;
+					cell = valuesRow.createCell(0);
+				    cell.setCellValue(c.getCurrency());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(1);
+				    cell.setCellValue(c.getChangeNeeded());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(2);
+				    cell.setCellValue(c.getDepositedValue());
+				    cell.setCellStyle(full);
+					}
+				
+				}
+				i++;
+				j++;
+			}
+		}
+			      }
+//			      OutputStream fileOut = new FileOutputStream("D:\\standBankReport.xlsx");
+//			      workbook.write(fileOut);
+		workbook.write(out);
+		return new ByteArrayInputStream(out.toByteArray());
+		}
+}
 	//Exporting Employees Reports to Excel 
 	public  ByteArrayInputStream reportToExcel(Long userId, DateRangedto dateRangedto) throws IOException {
+
+		
+		
 		
 		UserInfo user = userInfoRepository.findById(userId).get();
 		System.out.println(user.getStoreInfo().getStoreName());
@@ -523,7 +754,7 @@ public class ReportService {
 		     
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
 		     
-		     BorderStyle bS = BorderStyle.THICK;
+		     BorderStyle bS = BorderStyle.THIN;
 		     CellStyle fullBold = workbook.createCellStyle();
 		     fullBold.setBorderTop(bS);
 		     fullBold.setBorderLeft(bS);
@@ -703,17 +934,6 @@ public class ReportService {
 		List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndCreatedOnBetween(userId, stDate, endDate);
 		Map<LocalDate, List<InsertBill>> userByBills = insertBills.stream()
 				.collect(Collectors.groupingBy(InsertBill::getCreatedOn));
-		List<InsertBill> insertBills2 = insertBillRepository.findByUser_IdAndCreatedOn(userId, stDate);
-		for(InsertBill b : insertBills2) {
-			System.out.println(b.getAmount());
-			
-		}
-		System.out.println("One day bills ");
-		
-		for(InsertBill a : insertBills) {
-			System.out.println(a.getAmount());
-		}
-		 System.out.println("2 day bills");
 
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Employee Report");
