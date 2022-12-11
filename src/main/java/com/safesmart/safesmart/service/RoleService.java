@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.safesmart.safesmart.builder.RoleBuilder;
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
+import com.safesmart.safesmart.dto.LocksRequest;
 import com.safesmart.safesmart.dto.RoleDto;
+import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.RoleRepository;
@@ -54,6 +56,18 @@ public class RoleService {
 
 		return roleBuilder.toDtoList(roles);
 	}
+	
+	public void addWebModule(RoleDto roleDto) {
 
+		Role role = roleRepository.findByName(roleDto.getName());
+
+		if (role != null) {
+		role.setWebModule(roleDto.getWebModule());
+
+		roleRepository.save(role);
+		}
+			
+
+	}
 
 }

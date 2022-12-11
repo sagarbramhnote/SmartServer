@@ -9,10 +9,10 @@ public class RoleDto {
 	private String name;
 
 	private String description;
+	
+	private List<String> webModule;
 
 	private List<String> features;
-	
-	private List<String> modules;
 
 
 	public Long getId() {
@@ -38,6 +38,16 @@ public class RoleDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
+
+	public List<String> getWebModule() {
+		return webModule;
+	}
+
+	public void setWebModule(List<String> webModule) {
+		this.webModule = webModule;
+	}
 
 	public List<String> getFeatures() {
 		return features;
@@ -47,11 +57,4 @@ public class RoleDto {
 		this.features = features;
 	}
 
-	public List<String> getModules() {
-		return modules;
-	}
-
-	public void setModules(List<String> modules) {
-		this.modules = modules;
-	}
 }

@@ -59,8 +59,6 @@ public class StoreInfo {
 		this.locks = locks;
 	}
 
-
-
 	@JsonIgnore
 	@OneToMany(targetEntity=Printer.class,cascade = CascadeType.ALL, mappedBy="storeinfop")
 	public List<Printer> getPrinter() {

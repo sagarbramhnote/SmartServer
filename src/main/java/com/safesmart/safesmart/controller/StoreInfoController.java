@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
@@ -62,17 +63,6 @@ public class StoreInfoController {
 
 		storeInfoService.configureStore(storeInfoRequest);
 	}
-
-//	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}/kiosk/{kId}/billValidator/{bId}/printer/{pId}/locks/{lId}", method = RequestMethod.POST)
-//	public void assignStore(@PathVariable(value = "storeId") Long storeId,
-//			@PathVariable(value = "userId") Long userId ,
-//			@PathVariable(value = "kId") Long kId ,
-//			@PathVariable(value = "bId") Long bId ,
-//			@PathVariable(value = "pId") Long pId ,
-//	         @PathVariable(value = "lId") Long lId) {
-//
-//		storeInfoService.assignStore(storeId, userId, kId, bId, pId, lId);
-//	}
 	
 	@RequestMapping(value = "/assign/store/{storeId}/user/{userId}", method = RequestMethod.POST)
 	public void assignStore(@PathVariable(value = "storeId") Long storeId,
@@ -94,6 +84,11 @@ public class StoreInfoController {
 	@RequestMapping(value = "/all/unassigned", method = RequestMethod.GET)
 	public List<StoreInfoResponse> findUnassignedStores() {
 		return storeInfoService.findUnassignedStores();
+	}
+	
+	@RequestMapping(value = "/all/assigned", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStores() {
+		return storeInfoService.findAssignedStores();
 	}
 	
 	

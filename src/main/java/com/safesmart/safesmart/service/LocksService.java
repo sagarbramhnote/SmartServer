@@ -47,8 +47,6 @@ public class LocksService {
 	
 		locks.setActive(locksRequest.isActive());
 
-
-	
 		locksRepository.save(locks);
 	}
 	

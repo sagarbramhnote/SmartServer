@@ -22,11 +22,14 @@ public class Role {
 	private String name;
 
 	private String description;
+	
+	private List<String> webModule;
 
 	private List<String> features;
 
 	private List<UserInfo> users = new ArrayList<UserInfo>();
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
@@ -53,6 +56,19 @@ public class Role {
 		this.description = description;
 	}
 	
+	
+	
+	
+
+	@Convert(converter = StringListConverter.class)
+	public List<String> getWebModule() {
+		return webModule;
+	}
+
+	public void setWebModule(List<String> webModule) {
+		this.webModule = webModule;
+	}
+
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
 	public List<UserInfo> getUsers() {
@@ -62,6 +78,7 @@ public class Role {
 	public void setUsers(List<UserInfo> users) {
 		this.users = users;
 	}
+	
 
 	@Convert(converter = StringListConverter.class)
 	public List<String> getFeatures() {

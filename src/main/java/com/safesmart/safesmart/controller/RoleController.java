@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safesmart.safesmart.dto.LocksRequest;
 import com.safesmart.safesmart.dto.RoleDto;
 import com.safesmart.safesmart.service.RoleService;
 
@@ -40,6 +41,11 @@ public class RoleController {
 	@RequestMapping(value="/{roleId}",method = RequestMethod.DELETE)
 	public void delete(@PathVariable("roleId") Long id) {
 		roleService.toDelete(id);
+	}
+	
+	@RequestMapping(value = "/addwebmodule", method = RequestMethod.POST)
+	public void addWebModule(@RequestBody RoleDto roleDto) {
+		roleService.addWebModule(roleDto);
 	}
 	
 }

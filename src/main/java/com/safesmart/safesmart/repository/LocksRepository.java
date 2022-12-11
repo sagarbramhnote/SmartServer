@@ -15,4 +15,5 @@ public interface LocksRepository extends PagingAndSortingRepository<Locks, Long>
 	
 	List<Locks> findByActive(boolean active);
 	
+
 }
