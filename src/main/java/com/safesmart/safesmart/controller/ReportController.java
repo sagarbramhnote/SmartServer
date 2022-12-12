@@ -74,13 +74,13 @@ public class ReportController {
 
 //		return reportService.reportToExcel(userId,dateRangedto);
 	}
-	// Exporting Change Request reports to excel 
-		@RequestMapping(value = "/standBankReportExport/{storeName}/{safeType}/{sDate}/{endDate}",method = RequestMethod.GET)
-		public ResponseEntity<InputStreamResource> standBankReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate,@PathVariable("safeType") String safeType) throws IOException {
+	// Exporting  Stand Bank reports to excel 
+		@RequestMapping(value = "/standBankReportExport/{storeName}/{safeType}/{stDate}/{endDate}",method = RequestMethod.GET)
+		public ResponseEntity<InputStreamResource> standBankReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("stDate") String  stDate,@PathVariable("endDate")String endDate,@PathVariable("safeType") String safeType) throws IOException {
 			DateRangedto dateRangedto = new DateRangedto() ;
-			System.out.println("sDate is " + sDate);
+			System.out.println("sDate is " + stDate);
 			System.out.println("end Date is " +endDate);
-			dateRangedto.setStartDate(sDate);
+			dateRangedto.setStartDate(stDate);
 			dateRangedto.setEndDate(endDate);
 			dateRangedto.validateRequest();
 			ByteArrayInputStream in = reportService.standBankReportExport(storeName,safeType,dateRangedto);
