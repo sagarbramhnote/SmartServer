@@ -74,6 +74,25 @@ public class ReportController {
 
 //		return reportService.reportToExcel(userId,dateRangedto);
 	}
+	// Exporting Change Request reports to excel 
+		@RequestMapping(value = "/standBankReportExport/{storeName}/{safeType}/{sDate}/{endDate}",method = RequestMethod.GET)
+		public ResponseEntity<InputStreamResource> standBankReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate,@PathVariable("safeType") String safeType) throws IOException {
+			DateRangedto dateRangedto = new DateRangedto() ;
+			System.out.println("sDate is " + sDate);
+			System.out.println("end Date is " +endDate);
+			dateRangedto.setStartDate(sDate);
+			dateRangedto.setEndDate(endDate);
+			dateRangedto.validateRequest();
+			ByteArrayInputStream in = reportService.standBankReportExport(storeName,safeType,dateRangedto);
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Disposition", "attachment; filename-report.xlsx");
+			 return ResponseEntity
+			         .ok()
+			         .headers(headers)
+			         .body(new InputStreamResource(in));
+
+		}
+		
 	// Exporting Employee reports to excel 
 	@RequestMapping(value = "/employeeReportExport/{userId}/{sDate}/{endDate}",method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> employeeReportDataExport(@PathVariable("userId")Long userId, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {
