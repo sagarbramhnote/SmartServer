@@ -90,7 +90,7 @@ public class UserService {
 
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
-		UserInfo userInfo = userInfoRepository.findByPassword(infoRequest.getPassword());
+		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),infoRequest.getPassword());
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
 		}
