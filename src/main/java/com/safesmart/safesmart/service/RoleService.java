@@ -63,6 +63,7 @@ public class RoleService {
 
 		if (role != null) {
 		role.setWebModule(roleDto.getWebModule());
+		role.setFeatures(roleDto.getFeatures());
 
 		roleRepository.save(role);
 		}

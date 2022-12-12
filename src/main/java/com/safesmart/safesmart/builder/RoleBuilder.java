@@ -17,6 +17,7 @@ public class RoleBuilder {
 		dto.setDescription(role.getDescription());
 		dto.setName(role.getName());
 		dto.setFeatures(role.getFeatures());
+		dto.setWebModule(role.getWebModule());
 		return dto;
 
 	}

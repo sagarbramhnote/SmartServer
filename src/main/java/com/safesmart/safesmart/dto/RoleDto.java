@@ -39,8 +39,6 @@ public class RoleDto {
 		this.description = description;
 	}
 	
-	
-
 	public List<String> getWebModule() {
 		return webModule;
 	}
