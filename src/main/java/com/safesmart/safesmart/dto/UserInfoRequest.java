@@ -136,6 +136,17 @@ public class UserInfoRequest {
 	}
 
 	public void validateRequiredAttributes() {
+		if (firstName.isEmpty()) {
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "fisrtname");
+		}		
+		if (lastName.isEmpty()) {
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "lastname");
+		}
+		if (mobile.isEmpty()) {
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "mobile");
+		}
+		 
+	
 		if (username.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Username");
 		}
