@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.safesmart.safesmart.model.ChangeRequest;
 
 @Repository
-public interface ChangeRequestRepository
-		extends PagingAndSortingRepository<ChangeRequest, Long> {
+public interface ChangeRequestRepository extends PagingAndSortingRepository<ChangeRequest, Long> {
 
 	Optional<ChangeRequest> findById(Long id);
 	

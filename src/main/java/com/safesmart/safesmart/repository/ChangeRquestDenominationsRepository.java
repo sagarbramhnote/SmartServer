@@ -16,6 +16,8 @@ public interface ChangeRquestDenominationsRepository
 
 	List<ChangeValetDenominations> findByValetDenominations_Id(Long valetDenominationsId);
 	
+	ChangeValetDenominations findByType(String type);
+	
 	List<ChangeValetDenominations> findBycreatedByAndCreatedBetweenAndValetDenominations(UserInfo user,LocalDateTime stDate,LocalDateTime endDate,ValetDenominations valetDenominations);
 	
 }

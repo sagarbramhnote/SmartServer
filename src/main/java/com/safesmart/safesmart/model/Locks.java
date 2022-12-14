@@ -11,8 +11,6 @@ import javax.persistence.ManyToOne;
 
 
 
-
-
 @Entity
 public class Locks {
 
