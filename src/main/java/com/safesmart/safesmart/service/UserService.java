@@ -44,7 +44,19 @@ public class UserService {
 		if (infoPassword != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Password");
 		}
-
+		//user mobile
+		UserInfo usermobile = userInfoRepository.findByMobile(userInfoRequest.getMobile());
+		if (usermobile != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "mobile");
+		}
+ 
+		//user email
+		UserInfo infoMail = userInfoRepository.findByEmail(userInfoRequest.getEmail());
+		if (infoMail != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "email");
+		}
+		
+		
 		userInfo = new UserInfo();
 		userInfo.setId(userInfoRequest.getId());
 		userInfo.setRole(role);
