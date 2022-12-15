@@ -962,7 +962,7 @@ public class ReportService {
 			}
 		}
 			      }
-			      OutputStream fileOut = new FileOutputStream("D:\\changeReport.xlsx");
+			      OutputStream fileOut = new FileOutputStream("D:\\changeRequestReport.xlsx");
 			      workbook.write(fileOut);
 		workbook.write(out);
 		return new ByteArrayInputStream(out.toByteArray());
@@ -1105,7 +1105,11 @@ public class ReportService {
 		    		   cell = amountRow.createCell(0);
 		    		   cell.setCellValue(a);
 		    		   cell.setCellStyle(leftRight);
-		    		   amountRow.createCell(1).setCellValue(count);
+		    		   
+		    		   cell=amountRow.createCell(1);
+		    		   cell.setCellValue(count);
+		    		   cell.setCellStyle(leftRight);
+
 		    		   
 		    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
 		    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;
@@ -1150,7 +1154,7 @@ public class ReportService {
  		      cell.setCellValue(" " );
  		      cell.setCellStyle(full);
 		      cell = grandTotalRow.createCell(2);
-		      cell.setCellValue(grandTotal);
+		      cell.setCellValue("$" + Long.toString(grandTotal));
 		      cell.setCellStyle(full);
 		      workbook.write(out);
 

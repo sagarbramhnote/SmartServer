@@ -68,6 +68,7 @@ public class UserService {
 		userInfo.setLastName(userInfoRequest.getLastName());
 		userInfo.setEmail(userInfoRequest.getEmail());
 		userInfo.setMobile(userInfoRequest.getMobile());
+		userInfo.setPassLength(userInfoRequest.getPassLength());
 		if(userInfoRequest.getLoggedUserId()!= null) {
 		Optional<UserInfo> optionalAdminUser = userInfoRepository.findById(userInfoRequest.getLoggedUserId());
 		if (optionalAdminUser.isPresent()) {
