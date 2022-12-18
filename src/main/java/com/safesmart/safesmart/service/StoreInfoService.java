@@ -93,11 +93,28 @@ public class StoreInfoService {
 
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
 		if (storeInfo == null) {
+			
 			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
-		}
-
+         }
 		return storeInfoBuilder.toDto(storeInfo);
 	}
+	
+//	public StoreInfoResponse findByStoreName(String storeName) {
+//
+//		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
+//
+//		if (storeInfo == null) {
+//			
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
+//		
+//		}
+//		if(storeInfo.getUsers() !=null) {
+//
+//		return storeInfoBuilder.toDto(storeInfo);
+//	}
+//		return storeInfoBuilder.toDto(storeInfo);
+//	}
+	
 
 	public void updateStoreInfo(StoreInfoRequest infoRequest) {
 

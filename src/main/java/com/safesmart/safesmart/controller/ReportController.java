@@ -112,7 +112,7 @@ public class ReportController {
 
 		}
 		
-	// Exporting Employee reports to excel 
+	//Exporting InsertBill reports to excel 
 	@RequestMapping(value = "/employeeReportExport/{userId}/{sDate}/{endDate}",method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> employeeReportDataExport(@PathVariable("userId")Long userId, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {
 		DateRangedto dateRangedto = new DateRangedto() ;

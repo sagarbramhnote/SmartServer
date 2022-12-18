@@ -15,6 +15,7 @@ import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.RoleDto;
 import com.safesmart.safesmart.dto.RolesDto;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Role;
@@ -171,6 +172,11 @@ public class UserService {
 		}
 		return infoResponses;
 	}
+	
+//	List<Long> userIds = StoreInfoResponse.getUserIds();
+//	UserInfo user;
+//	for(Long userId : userIds) {
+//		user = userInfoRepository.findById(userId).get();
 
 	public List<UserInfoResponse> findUserbyRoles(RolesDto rolesDto) {
 		List<UserInfo> users = userInfoRepository.findByRole_NameIn(rolesDto.getRoles());

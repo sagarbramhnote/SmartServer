@@ -22,6 +22,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -346,9 +350,12 @@ public class ReportService {
 		     CellStyle leftRight = workbook.createCellStyle();
 		     leftRight.setBorderLeft(bS);
 		     
+		     Row headerRow1 = sheet.createRow(0);		     		
+		     Cell cell1 = headerRow1.createCell(1);
+		     cell1.setCellValue("EODReport");
+		     cell1.setCellStyle(fullBold);
 		     
-		     
-		     int i = 0;
+		     int i = 1;
 		     Row headerRow = sheet.createRow(i);
 		     i++;
 		     
@@ -383,7 +390,7 @@ public class ReportService {
 		    		 
 		    // Row for printing start date and end date 
 		      Row datesRow = sheet.createRow(i);
-		      i+=2;
+		      i+=3;
 		      cell = datesRow.createCell(0);
 		      cell.setCellValue("From  :" + startDateTime.format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")));
 		      cell.setCellStyle(full);
@@ -570,14 +577,20 @@ public class ReportService {
 			     CellStyle leftRight = workbook.createCellStyle();
 			     leftRight.setBorderLeft(bS);
 
-			     Row headerRow = sheet.createRow(0);
+			     
+			     Row headerRow1 = sheet.createRow(0);		     		
+			     Cell cell1 = headerRow1.createCell(1);
+			     cell1.setCellValue("StandBankReport");
+			     cell1.setCellStyle(fullBold);
+			     
+			     Row headerRow = sheet.createRow(1);
 			     for (int col=0; col<columns.length; col++) {
 			    	 Cell cell = headerRow.createCell(col);
 			    	 cell.setCellValue(columns[col]);
 			    	 cell.setCellStyle(fullBold);
 			     	}
 			     //Row for printing Store details 
-			      Row detailsRow = sheet.createRow(1);
+			      Row detailsRow = sheet.createRow(2);
 			    		String serialNo = storeInfoResponse.getSerialNumber();
 			    		Cell cell = detailsRow.createCell(0);
 			    		cell.setCellValue(storeName);
@@ -592,7 +605,7 @@ public class ReportService {
 			    		 cell.setCellStyle(full);
 			    		 
 			    // Row for printing start date and end date 
-			      Row datesRow = sheet.createRow(2);
+			      Row datesRow = sheet.createRow(3);
 			      
 			      cell = datesRow.createCell(0);
 			      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
@@ -790,15 +803,21 @@ public class ReportService {
 			     full.setBorderTop(bS);
 			     CellStyle leftRight = workbook.createCellStyle();
 			     leftRight.setBorderLeft(bS);
+			     
+			     
+			     Row headerRow1 = sheet.createRow(0);		     		
+			     Cell cell1 = headerRow1.createCell(1);
+			     cell1.setCellValue("ChangeRequestReport");
+			     cell1.setCellStyle(fullBold);
 
-			     Row headerRow = sheet.createRow(0);
+			     Row headerRow = sheet.createRow(1);
 			     for (int col=0; col<columns.length; col++) {
 			    	 Cell cell = headerRow.createCell(col);
 			    	 cell.setCellValue(columns[col]);
 			    	 cell.setCellStyle(fullBold);
 			     	}
 			     //Row for printing Store details 
-			      Row detailsRow = sheet.createRow(1);
+			      Row detailsRow = sheet.createRow(2);
 			    		String serialNo = storeInfoResponse.getSerialNumber();
 			    		Cell cell = detailsRow.createCell(0);
 			    		cell.setCellValue(storeName);
@@ -813,7 +832,7 @@ public class ReportService {
 			    		 cell.setCellStyle(full);
 			    		 
 			    // Row for printing start date and end date 
-			      Row datesRow = sheet.createRow(2);
+			      Row datesRow = sheet.createRow(3);
 			      
 			      cell = datesRow.createCell(0);
 			      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
@@ -980,7 +999,7 @@ public class ReportService {
 		if (stDate.isAfter(endDate)) {
 			throw new RuntimeException("Start Date should be less than the End Date");
 		}
-		
+
 		String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
 		try(
 		     Workbook workbook = new XSSFWorkbook();
@@ -991,6 +1010,7 @@ public class ReportService {
 		     headerFont.setBold(true);
 		     
 		     headerFont.setColor (IndexedColors.BLACK.getIndex());
+
 		     
 		     BorderStyle bS = BorderStyle.THIN;
 		     CellStyle fullBold = workbook.createCellStyle();
@@ -1007,14 +1027,20 @@ public class ReportService {
 		     CellStyle leftRight = workbook.createCellStyle();
 		     leftRight.setBorderLeft(bS);
 
-		     Row headerRow = sheet.createRow(0);
+		     
+		     Row headerRow1 = sheet.createRow(0);		     		
+		     Cell cell1 = headerRow1.createCell(1);
+		     cell1.setCellValue("InsertBillReport");
+		     cell1.setCellStyle(fullBold);
+			     
+		     Row headerRow = sheet.createRow(1);
 		     for (int col=0; col<columns.length; col++) {
 		    	 Cell cell = headerRow.createCell(col);
 		    	 cell.setCellValue(columns[col]);
 		    	 cell.setCellStyle(fullBold);
 		     	}
 		     //Row for printing Store details 
-		      Row detailsRow = sheet.createRow(1);
+		      Row detailsRow = sheet.createRow(2);
 		    	  	String storeName = storeInfoResponse.getStoreName();
 		    		String serialNo = storeInfoResponse.getSerialNumber();
 		    		Cell cell = detailsRow.createCell(0);
@@ -1030,7 +1056,7 @@ public class ReportService {
 		    		 cell.setCellStyle(full);
 		    		 
 		    // Row for printing start date and end date 
-		      Row datesRow = sheet.createRow(2);
+		      Row datesRow = sheet.createRow(3);
 		      
 		      cell = datesRow.createCell(0);
 		      cell.setCellValue("From Date :" + stDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
@@ -1040,7 +1066,7 @@ public class ReportService {
 		      cell.setCellValue("To Date :" + endDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 		      cell.setCellStyle(full);
 		     
-		      Row userRow = sheet.createRow(3);
+		      Row userRow = sheet.createRow(4);
 		      cell = userRow.createCell(0);
 		      cell.setCellValue("Employee Name : ");
 		      cell.setCellStyle(fullBold);
@@ -1104,11 +1130,11 @@ public class ReportService {
 		    		   
 		    		   cell = amountRow.createCell(0);
 		    		   cell.setCellValue(a);
-		    		   cell.setCellStyle(leftRight);
+		    		   cell.setCellStyle(full);
 		    		   
 		    		   cell=amountRow.createCell(1);
 		    		   cell.setCellValue(count);
-		    		   cell.setCellStyle(leftRight);
+		    		   cell.setCellStyle(full);
 
 		    		   
 		    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
@@ -1117,7 +1143,7 @@ public class ReportService {
 		    		   
 		    		  cell =  amountRow.createCell(2);
 		    		  cell.setCellValue("$" + Long.toString(product));
-		    		  cell.setCellStyle(leftRight);
+		    		  cell.setCellStyle(full);
 		    		   
 		    		   i++;
 		    		   totalCount+= count;
@@ -1158,7 +1184,7 @@ public class ReportService {
 		      cell.setCellStyle(full);
 		      workbook.write(out);
 
-		      OutputStream fileOut = new FileOutputStream("D:\\newReport.xlsx");
+		      OutputStream fileOut = new FileOutputStream("D:\\InsertBillReport.xlsx");
 		      workbook.write(fileOut);
 
 		      return new ByteArrayInputStream(out.toByteArray());
