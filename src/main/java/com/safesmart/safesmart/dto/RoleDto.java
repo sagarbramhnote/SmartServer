@@ -54,5 +54,18 @@ public class RoleDto {
 	public void setFeatures(List<String> features) {
 		this.features = features;
 	}
+	public void validateRequiredAttributes() {
+	if (name.isEmpty()) {
+		throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "name");
+		}		
+		if (description.isEmpty()) {
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "description");
+		}
+//		if (webModule.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "webModule");
+//		}
+//		if (features.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "features");
+//		}
 
 }
