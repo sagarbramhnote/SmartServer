@@ -35,6 +35,12 @@ public class KioskService {
 		if (kiosk != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "KioskName");
 		}
+		//validation for kioskId
+		Kiosk kioskId = kioskRepository.findByKioskId(kioskRequest.getKioskId());
+		if (kioskId != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "KioskId");
+		}
+	
 	
 
 		kiosk = new Kiosk();

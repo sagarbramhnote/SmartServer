@@ -15,4 +15,6 @@ public interface BillValidatorRepository extends PagingAndSortingRepository<Bill
 	
 	List<BillValidator> findByActive(boolean active);
 
+	BillValidator findByBillAcceptorNo(String billAcceptorNo);
+
 }

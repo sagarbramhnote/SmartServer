@@ -35,6 +35,12 @@ public class LocksService {
 		if (locks != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "DigitalLockName");
 		}
+		
+		//validation for lockNo
+		Locks locksNo = locksRepository.findByDigitalLockNo(locksRequest.getDigitalLockNo());
+		if (locksNo != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "DigitalLockNo");
+		}
 	
 
 		locks = new Locks();

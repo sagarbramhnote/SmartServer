@@ -15,6 +15,8 @@ public interface KioskRepository extends PagingAndSortingRepository<Kiosk, Long>
 	Kiosk findByKioskName(String kioskName);
 	
 	List<Kiosk> findByActive(boolean active);
+
+	Kiosk findByKioskId(String kioskId);
 	
 	
 	

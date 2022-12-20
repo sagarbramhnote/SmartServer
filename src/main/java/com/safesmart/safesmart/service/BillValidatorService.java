@@ -32,6 +32,12 @@ public class BillValidatorService {
 		if (billValidator != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "BillAcceptorName");
 		}
+		
+		//validation for billvalidatorNo
+		BillValidator billValidatorNo = billValidatorRepository.findByBillAcceptorNo(billValidatorRequest.getBillAcceptorNo());
+		if (billValidatorNo != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "BillAcceptorNo");
+		}
 	
 
 		billValidator = new BillValidator();
