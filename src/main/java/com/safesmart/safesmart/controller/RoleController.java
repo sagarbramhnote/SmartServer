@@ -24,6 +24,7 @@ public class RoleController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void add(@RequestBody RoleDto roleDto) {
+		roleDto.validateRequiredAttributes();
 		roleService.add(roleDto);
 	}
 
