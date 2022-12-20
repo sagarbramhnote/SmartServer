@@ -14,4 +14,6 @@ public interface PrinterRepository extends PagingAndSortingRepository<Printer, L
 	Printer findByPrinterName(String printerName);
 	
 	List<Printer> findByActive(boolean active);
+
+	Printer findByPrinterNo(String printerNo);
 }

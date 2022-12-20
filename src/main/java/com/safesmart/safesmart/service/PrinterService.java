@@ -33,6 +33,11 @@ public class PrinterService {
 		if (printer != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "PrinterName");
 		}
+		// validation for printerId
+		Printer printerNo = printerRepository.findByPrinterNo(printerRequest.getPrinterNo());
+		if (printerNo  != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "PrinterNo");
+		}
 	
 
 		printer = new Printer();

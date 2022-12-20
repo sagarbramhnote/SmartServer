@@ -14,6 +14,8 @@ public interface LocksRepository extends PagingAndSortingRepository<Locks, Long>
 	Locks findByDigitalLockName(String digitalLockName);
 	
 	List<Locks> findByActive(boolean active);
+
+	Locks findByDigitalLockNo(String digitalLockNo);
 	
 
 }
