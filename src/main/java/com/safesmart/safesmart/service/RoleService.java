@@ -30,6 +30,20 @@ public class RoleService {
 	public void add(RoleDto roleDto) {
 
 		Role role = roleBuilder.toModel(roleDto);
+		Role rolename = roleRepository.findByname(roleDto.getName());
+		if (rolename != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Rolename");
+		}
+		Role roledescription = roleRepository.findByDescription(roleDto.getDescription());
+		if (roledescription != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Description");
+		}
+
+		role = new Role();
+		role.setId(roleDto.getId());
+		role.setName(roleDto.getName());
+		role.setDescription(roleDto.getDescription());
+
 
 		roleRepository.save(role);
 	}
