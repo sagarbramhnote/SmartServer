@@ -16,5 +16,12 @@ public interface StoreInfoRepository extends PagingAndSortingRepository<StoreInf
 	
 	StoreInfo findByStoreNameAndConfigured(String string, boolean configured);
 	
+	
+	StoreInfo findByCorpStoreNo(String string);
+	
+	StoreInfo findBySerialNumber(String serialNumber);
+	
+	StoreInfo findByAccountNumber(String accountNumber);
+	
 
 }

@@ -1,6 +1,7 @@
 package com.safesmart.safesmart.service;
 
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,9 +76,25 @@ public class StoreInfoService {
 	public void addStore(StoreInfoRequest storeInfoRequest) {
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeInfoRequest.getStoreName());
 		if (storeInfo != null) {
-			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS,
-					storeInfoRequest.getStoreName());
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS,"StoreName");
 		}
+		//CorpNo
+		StoreInfo storecorp = storeInfoRepository.findByCorpStoreNo(storeInfoRequest.getCorpStoreNo());
+		if (storecorp != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS,"CorpStoreNo");	
+		}
+		//SerialNo
+		StoreInfo storeserial = storeInfoRepository.findBySerialNumber(storeInfoRequest.getSerialNumber());
+		if (storeserial != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "SerialNumber");
+		}
+		//AccNo
+		StoreInfo storeacc = storeInfoRepository.findByAccountNumber(storeInfoRequest.getAccountNumber());
+		if (storeacc != null) {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "AccountNumber");
+		}
+		
+		
 		storeInfo = storeInfoBuilder.toModel(storeInfoRequest);
 		storeInfoRepository.save(storeInfo);
 
