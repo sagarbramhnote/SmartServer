@@ -2,6 +2,9 @@ package com.safesmart.safesmart.dto;
 
 import java.util.List;
 
+import com.safesmart.safesmart.common.CommonException;
+import com.safesmart.safesmart.common.CommonExceptionMessage;
+
 public class RoleDto {
 
 	private Long id;
@@ -68,4 +71,5 @@ public class RoleDto {
 //			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "features");
 //		}
 
+}
 }

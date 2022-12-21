@@ -106,11 +106,11 @@ public class UserService {
 
 		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),infoRequest.getPassword());
 		if (userInfo == null) {
-			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
-		if (!userInfo.checkfeature(infoRequest.getFeature())) {
-			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
-		}
+//		if (!userInfo.checkfeature(infoRequest.getFeature())) {
+//			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
+//		}
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
 	}
@@ -163,12 +163,24 @@ public class UserService {
 		return infoResponses;
 	}
 
+//	public List<UserInfoResponse> findUsersByRole(String role) {
+//		List<UserInfo> users = userInfoRepository.findByRole_Name(role);
+//		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+//		for (UserInfo userInfo : users) {
+//			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+//					userInfo.getRole().getName(), userInfo.isActive()));
+//		}
+//		return infoResponses;
+//	}
+	
 	public List<UserInfoResponse> findUsersByRole(String role) {
 		List<UserInfo> users = userInfoRepository.findByRole_Name(role);
 		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
 		for (UserInfo userInfo : users) {
+			if (userInfo.getStoreInfo() !=null) {
 			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 					userInfo.getRole().getName(), userInfo.isActive()));
+		}
 		}
 		return infoResponses;
 	}
