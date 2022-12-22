@@ -16,6 +16,7 @@ import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.service.StoreInfoService;
+import com.safesmart.safesmart.service.UserService;
 
 @RestController
 @RequestMapping(value = "/storeinfo")
@@ -24,7 +25,10 @@ public class StoreInfoController {
 
 	@Autowired
 	private StoreInfoService storeInfoService;
-
+	
+	@Autowired
+	private UserService userService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public StoreInfoResponse findStoreInfo() {
 		return storeInfoService.getStoreInfoService();
@@ -90,6 +94,12 @@ public class StoreInfoController {
 	public List<StoreInfoResponse> findAssignedStores() {
 		return storeInfoService.findAssignedStores();
 	}
+	
+	@RequestMapping(value = "/all/bystore/{id}", method = RequestMethod.GET)
+	public List<UserInfo> findByStoreInfoId(@PathVariable  Long id) {
+		return  userService.findByStoreInfo_Id(id);
+	}
+	
 	
 	
 }
