@@ -95,7 +95,8 @@ public class StoreInfoController {
 		return storeInfoService.findAssignedStores();
 	}
 	
-	@RequestMapping(value = "/all/bystore/{id}", method = RequestMethod.GET)
+	//Find Store to User
+	@RequestMapping(value = "/all/assigneduser/{id}", method = RequestMethod.GET)
 	public List<UserInfo> findByStoreInfoId(@PathVariable  Long id) {
 		return  userService.findByStoreInfo_Id(id);
 	}

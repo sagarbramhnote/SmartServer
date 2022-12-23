@@ -249,6 +249,7 @@ public class UserService {
 		return infoResponses;
 	}
 	
+	// Store to user
 	public List<UserInfo> findByStoreInfo_Id(Long id){
 		return userInfoRepository.findByStoreInfo_Id(id);
 	}
