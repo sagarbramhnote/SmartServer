@@ -253,5 +253,29 @@ public class UserService {
 	public List<UserInfo> findByStoreInfo_Id(Long id){
 		return userInfoRepository.findByStoreInfo_Id(id);
 	}
+	
+	public List<UserInfoResponse> findUsersByStore(String storeInfo) {
+	List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreName(storeInfo);
+	List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+	for (UserInfo userInfo : users) {
+		if (userInfo.getStoreInfo() !=null) {
+		infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(),userInfo.isActive()));
+	}
+	}
+	return infoResponses;
+ }
+	
+//	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
+//		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
+//		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+//		for (UserInfo userInfo : users) {
+//			if (userInfo.getStoreInfo() !=null) {
+//			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+//					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
+//		}
+//		}
+//		return infoResponses;
+//	}
 
 }

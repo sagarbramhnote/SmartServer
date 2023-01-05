@@ -23,6 +23,11 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	UserInfo findByEmail(String email);
 	
 	List<UserInfo> findByStoreInfo_Id(Long id);
+	
+	List<UserInfo> findByStoreInfo_StoreName(String storeInfo);
+
+	
+	List<UserInfo> findByStoreInfo_StoreNameAndRole_Name(String storeInfo,String role);
 
 	
 	

@@ -92,6 +92,8 @@ public class ChangeValetDenominations implements Serializable {
 
 	private ValetDenominations valetDenominations;
 	
+	private ChangeRequest changeRequest;
+	
 	private UserInfo createdBy;
 
 	private LocalDateTime created;
@@ -273,6 +275,20 @@ public class ChangeValetDenominations implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	
+	
+
+	@JsonIgnore
+	@ManyToOne
+	public ChangeRequest getChangeRequest() {
+		return changeRequest;
+	}
+
+	@JsonProperty
+	public void setChangeRequest(ChangeRequest changeRequest) {
+		this.changeRequest = changeRequest;
 	}
 
 	@JsonIgnore

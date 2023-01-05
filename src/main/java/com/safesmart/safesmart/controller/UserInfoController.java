@@ -75,6 +75,16 @@ public class UserInfoController {
 		return userService.findUsersByRole(role);
 	}
 	
+	@RequestMapping(value = "/store/{storeName}", method = RequestMethod.GET)
+	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName) {
+		return userService.findUsersByStore(storeName);
+	}
+	
+//	@RequestMapping(value = "/store/{storeName}/{role}", method = RequestMethod.GET)
+//	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName,@PathVariable("role") String role) {
+//		return userService.findUsersByStore(storeName,role);
+//	}
+	
 	@RequestMapping(value = "/role/{role}/unassignedusers", method = RequestMethod.GET)
 	public List<UserInfoResponse> findunassignedUsersByRole(@PathVariable("role") String role) {
 		return userService.findunassignedUsersByRole(role);

@@ -112,23 +112,6 @@ public class ReportController {
 
 		}
 		
-//		@RequestMapping(value = "/changeRequestReportExport/{storeName}/{sDate}/{endDate}",method = RequestMethod.GET)
-//		public ResponseEntity<InputStreamResource> changeRequestReportDataExport(@PathVariable("storeName")Long storeName, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {
-//			DateRangedto dateRangedto = new DateRangedto() ;
-//			dateRangedto.setStartDate(sDate);
-//			dateRangedto.setEndDate(endDate);
-//			dateRangedto.validateRequest();
-//			ByteArrayInputStream in = reportService.changeRequestReportExport(storeName,dateRangedto);
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.add("Content-Disposition", "attachment; filename-report.xlsx");
-//			 return ResponseEntity
-//			         .ok()
-//			         .headers(headers)
-//			         .body(new InputStreamResource(in));
-//
-////			return reportService.reportToExcel(userId,dateRangedto);
-//		}
-		
 	//Exporting InsertBill reports to excel 
 	@RequestMapping(value = "/employeeReportExport/{userId}/{sDate}/{endDate}",method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> employeeReportDataExport(@PathVariable("userId")Long userId, @PathVariable("sDate") String  sDate,@PathVariable("endDate")String endDate) throws IOException {

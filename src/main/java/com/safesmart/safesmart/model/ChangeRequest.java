@@ -2,6 +2,7 @@ package com.safesmart.safesmart.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,9 +10,12 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -47,6 +51,8 @@ public class ChangeRequest implements Serializable {
 	private String type;
 	
 	private String orderStatus;
+	
+	private List<ChangeValetDenominations> changeValetDenominations;
  
     private UserInfo createdBy;
 
@@ -171,6 +177,18 @@ public class ChangeRequest implements Serializable {
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
+	
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "changeRequest")
+	public List<ChangeValetDenominations> getChangeValetDenominations() {
+		return changeValetDenominations;
+	}
+
+	public void setChangeValetDenominations(List<ChangeValetDenominations> changeValetDenominations) {
+		this.changeValetDenominations = changeValetDenominations;
+	}
+	
 
 	@OneToOne(cascade = CascadeType.MERGE)
 	public UserInfo getModifiedBy() {

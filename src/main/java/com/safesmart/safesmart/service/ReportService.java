@@ -767,12 +767,12 @@ public class ReportService {
 		}
 }
 	
-	   //Change Request report
-	public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
+	   //Change Request report	
+      public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
 
 		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
-		ValetDenominations vD = valetDenominationsRepository.findByType(safeType);
+		ChangeRequest cR = changeRequestRepo.findByType(safeType);
 		List<Long> userIds = storeInfoResponse.getUserIds();
 		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -853,10 +853,8 @@ public class ReportService {
 			      for(Long userId : userIds) {
 						user = userInfoRepository.findById(userId).get();
 						System.out.println("coming here");
-					// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
-//						List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
-					// This is the list of the transactions done by a particular user in between from date to the current date time
-						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, currentDateTime,vD);
+						
+						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndChangeRequest(user, startDateTime, currentDateTime,cR);
 						List<ChangeValetDenominations> list1 = new ArrayList<ChangeValetDenominations>();
 						for(ChangeValetDenominations cVD : list2) {
 							if(cVD.getCreated().compareTo(endDateTime)<1 ||cVD.getCreated().compareTo(endDateTime)==0 ) {
@@ -943,7 +941,7 @@ public class ReportService {
 				}
 			//Comparing with Current balance of requested safe when c1 becomes the last record 
 				else{
-				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
+				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(cR);
 				Row userRow = sheet.createRow(i);
 			      i++;
 			      cell = userRow.createCell(0);
@@ -993,212 +991,6 @@ public class ReportService {
 		return new ByteArrayInputStream(out.toByteArray());
 		}
 }
-	
-//public  ByteArrayInputStream changeRequestReportExport(String storeName,DateRangedto dateRangedto) throws IOException {
-//
-//		
-//		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
-//		List<Long> userIds = storeInfoResponse.getUserIds();
-//		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//		LocalTime time =  LocalTime.of(0,0,0);
-//		LocalTime time2 = LocalTime.of(23, 59,59);
-//		LocalDateTime currentDateTime = LocalDateTime.now();
-//		
-//		LocalDateTime startDateTime = time.atDate(sDate);
-//		LocalDateTime endDateTime = time2.atDate(eDate);
-//		UserInfo user;
-//		
-//		String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
-//		try(
-//		     Workbook workbook = new XSSFWorkbook();
-//		     ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		     ){
-//			Sheet sheet = workbook.createSheet("report");
-//		     Font headerFont = workbook.createFont();
-//		     headerFont.setBold(true);
-//		     
-//		     headerFont.setColor (IndexedColors.BLACK.getIndex());
-//		     
-//		     BorderStyle bS = BorderStyle.THIN;
-//		     CellStyle fullBold = workbook.createCellStyle();
-//		     fullBold.setBorderTop(bS);
-//		     fullBold.setBorderLeft(bS);
-//		     fullBold.setBorderBottom(bS);
-//		     fullBold.setBorderRight(bS);
-//		     fullBold.setFont(headerFont);
-//		     CellStyle full = workbook.createCellStyle();
-//		     full.setBorderBottom(bS);
-//		     full.setBorderLeft(bS);
-//		     full.setBorderRight(bS);
-//		     full.setBorderTop(bS);
-//		     CellStyle leftRight = workbook.createCellStyle();
-//		     leftRight.setBorderLeft(bS);
-//		     
-//		     
-//		     Row headerRow1 = sheet.createRow(0);		     		
-//		     Cell cell1 = headerRow1.createCell(1);
-//		     cell1.setCellValue("ChangeRequestReport");
-//		     cell1.setCellStyle(fullBold);
-//
-//		     Row headerRow = sheet.createRow(1);
-//		     for (int col=0; col<columns.length; col++) {
-//		    	 Cell cell = headerRow.createCell(col);
-//		    	 cell.setCellValue(columns[col]);
-//		    	 cell.setCellStyle(fullBold);
-//		     	}
-//		     //Row for printing Store details 
-//		      Row detailsRow = sheet.createRow(2);
-//		    		String serialNo = storeInfoResponse.getSerialNumber();
-//		    		Cell cell = detailsRow.createCell(0);
-//		    		cell.setCellValue(storeName);
-//		    		cell.setCellStyle(full);
-//
-//		    		 cell = detailsRow.createCell(1);
-//		    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
-//		    		 cell.setCellStyle(full);
-//		    		 
-//		    		 cell = detailsRow.createCell(2);
-//		    		 cell.setCellValue(serialNo);
-//		    		 cell.setCellStyle(full);
-//		    		 
-//		    // Row for printing start date and end date 
-//		      Row datesRow = sheet.createRow(3);
-//		      
-//		      cell = datesRow.createCell(0);
-//		      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-//		      cell.setCellStyle(full);
-//		      cell = datesRow.createCell(1);
-//		      cell.setCellValue(" ");
-//		      cell.setCellStyle(full);
-//		      cell = datesRow.createCell(2);
-//		      cell.setCellValue("To Date :" + eDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-//		      cell.setCellStyle(full);
-//		      
-//		      int i =4;
-//		      for(Long userId : userIds) {
-//					user = userInfoRepository.findById(userId).get();
-//					System.out.println("coming here");
-//				// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
-////					List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
-//				// This is the list of the transactions done by a particular user in between from date to the current date time
-//					List<ChangeRequest> list2 = changeRequestRepo.findByCreatedBy_IdAndCreated(user, startDateTime);
-//					List<ChangeRequest> list1 = new ArrayList<ChangeRequest>();
-//
-//	
-//			int size = list1.size();
-//			int size2 = list2.size();
-//			int j =0;
-//			while( j <size) {
-//			// Comparing every consecutive record 	
-//			ChangerequestDto c1 = new ChangeValetDenominationsDto();
-//			BeanUtils.copyProperties(list1.get(j), c1);
-//			ChangeValetDenominationsDto c2 = new ChangeValetDenominationsDto();
-//			// to avoid index out of bound error we need to define up to when this operation should be carried out 
-//			if(j+1<size&& j+1<size2) {
-//				if(j+1<size) {
-//			BeanUtils.copyProperties(list1.get(j+1), c2);
-//				}else {
-//					BeanUtils.copyProperties(list2.get(j+1), c2);
-//
-//				}
-//				
-//			// Checking which denominations are removed and which denominations are added in the requested Safe
-//			List<ChangedCurrencyDto> changes = c1.difference(c2); // This gives a list of changes made in the requested safe 
-//			// For reference check method "difference" defined in ChangeValetDenominationsDto class 
-//			
-//			// Printing which user performed the operation
-//			Row userRow = sheet.createRow(i);
-//		      i++;
-//		      cell = userRow.createCell(0);
-//		      cell.setCellValue("Name : ");
-//		      cell.setCellStyle(fullBold);
-//		      cell = userRow.createCell(1);
-//		      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
-//		      cell.setCellStyle(fullBold);
-//		      cell = userRow.createCell(2);
-//		      cell.setCellValue(" ");
-//		      cell.setCellStyle(full);
-//			Row headingsRow = sheet.createRow(i);
-//		      i++;
-//		      cell = headingsRow.createCell(0);
-//		      cell.setCellValue("Denominations");
-//		      cell.setCellStyle(fullBold);
-//		      cell = headingsRow.createCell(1);
-//		      cell.setCellValue("Change Requested");
-//		      cell.setCellStyle(fullBold);
-//		      cell = headingsRow.createCell(2);
-//		      cell.setCellValue("Deposited Value");
-//		      cell.setCellStyle(fullBold);
-//		      
-//			for(ChangedCurrencyDto c:changes) {
-//				// printing the Changed values 
-//				Row valuesRow = sheet.createRow(i);
-//				i++;
-//				cell = valuesRow.createCell(0);
-//			    cell.setCellValue(c.getCurrency());
-//			    cell.setCellStyle(full);
-//			    cell = valuesRow.createCell(1);
-//			    cell.setCellValue(c.getChangeNeeded());
-//			    cell.setCellStyle(full);
-//			    cell = valuesRow.createCell(2);
-//			    cell.setCellValue(c.getDepositedValue());
-//			    cell.setCellStyle(full);
-//				}
-//				
-//			}
-//		//Comparing with Current balance of requested safe when c1 becomes the last record 
-//			else{
-//			List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
-//			Row userRow = sheet.createRow(i);
-//		      i++;
-//		      cell = userRow.createCell(0);
-//		      cell.setCellValue("Name : ");
-//		      cell.setCellStyle(fullBold);
-//		      cell = userRow.createCell(1);
-//		      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
-//		      cell.setCellStyle(fullBold);
-//		      cell = userRow.createCell(2);
-//		      cell.setCellValue(" ");
-//		      cell.setCellStyle(full);
-//			Row headingsRow = sheet.createRow(i);
-//		      i++;
-//		      cell = headingsRow.createCell(0);
-//		      cell.setCellValue("Denominations");
-//		      cell.setCellStyle(fullBold);
-//		      cell = headingsRow.createCell(1);
-//		      cell.setCellValue("Change Requested");
-//		      cell.setCellStyle(fullBold);
-//		      cell = headingsRow.createCell(2);
-//		      cell.setCellValue("Deposited Value");
-//		      cell.setCellStyle(fullBold);
-//			for(ChangedCurrencyDto c:lastChanges) {
-//				
-//				Row valuesRow = sheet.createRow(i);
-//				i++;
-//				cell = valuesRow.createCell(0);
-//			    cell.setCellValue(c.getCurrency());
-//			    cell.setCellStyle(full);
-//			    cell = valuesRow.createCell(1);
-//			    cell.setCellValue(c.getChangeNeeded());
-//			    cell.setCellStyle(full);
-//			    cell = valuesRow.createCell(2);
-//			    cell.setCellValue(c.getDepositedValue());
-//			    cell.setCellStyle(full);
-//				}
-//			
-//			}
-//			i++;
-//			j++;
-//		}
-//	}
-//		      }
-//		      OutputStream fileOut = new FileOutputStream("D:\\changeRequestReport.xlsx");
-//		      workbook.write(fileOut);
-//	workbook.write(out);
-//	return new ByteArrayInputStream(out.toByteArray());
-//	}
-//}
 	
 	//Exporting Employees Reports to Excel 
 	public  ByteArrayInputStream reportToExcel(Long userId, DateRangedto dateRangedto) throws IOException {

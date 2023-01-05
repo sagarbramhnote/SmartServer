@@ -27,7 +27,5 @@ public interface ChangeRequestRepository extends PagingAndSortingRepository<Chan
 	
 	List<ChangeRequest> findByCreatedBy_IdAndCreated(UserInfo createdBy, LocalDateTime stDate);
 	
-//	List<ChangeRequest> findBycreatedByAndCreatedBetweenAndValetDenominations(UserInfo user,LocalDateTime stDate,LocalDateTime endDate,ChangeRequest changeRequest);
-
 
 }
