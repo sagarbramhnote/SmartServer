@@ -23,9 +23,13 @@ public class KioskResponse {
 	
 	private String hdd;
 	
-	private String memory;
+	private String ramMemory;
 	
 	private String screenSize;
+		
+	private String ipAddress;
+	
+	private String macAddress;
 	
 	private boolean active;
 	
@@ -38,8 +42,9 @@ public class KioskResponse {
 
 
 
+
 	public KioskResponse(Long id, String kioskId, String kioskName, String brandName, String modelName, String cpu,
-			String hdd, String memory, String screenSize, boolean active) {
+			String hdd, String ramMemory, String screenSize, String ipAddress, String macAddress, boolean active) {
 		super();
 		this.id = id;
 		this.kioskId = kioskId;
@@ -48,10 +53,13 @@ public class KioskResponse {
 		this.modelName = modelName;
 		this.cpu = cpu;
 		this.hdd = hdd;
-		this.memory = memory;
+		this.ramMemory = ramMemory;
 		this.screenSize = screenSize;
+		this.ipAddress = ipAddress;
+		this.macAddress = macAddress;
 		this.active = active;
 	}
+
 
 
 
@@ -139,15 +147,17 @@ public class KioskResponse {
 
 
 
-	public String getMemory() {
-		return memory;
+	public String getRamMemory() {
+		return ramMemory;
 	}
 
 
 
-	public void setMemory(String memory) {
-		this.memory = memory;
+
+	public void setRamMemory(String ramMemory) {
+		this.ramMemory = ramMemory;
 	}
+
 
 
 
@@ -159,6 +169,29 @@ public class KioskResponse {
 
 	public void setScreenSize(String screenSize) {
 		this.screenSize = screenSize;
+	}
+
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+
+
+	public String getMacAddress() {
+		return macAddress;
+	}
+
+
+
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 
 

@@ -8,12 +8,11 @@ import com.safesmart.safesmart.model.Role;
 public interface RoleRepository  extends PagingAndSortingRepository<Role, Long>{
 
 	Role findByName(String role);
-
+  
+  Role findByname(String name);
 	
-	Role findByDescription(String role);
+	Role findByDescription(String description);
 
 
-	Role findByname(String name);
-	
 
 }

@@ -43,6 +43,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.safesmart.safesmart.dto.BillResponse;
+import com.safesmart.safesmart.dto.ChangeRequestDto;
 import com.safesmart.safesmart.dto.ChangeValetDenominationsDto;
 import com.safesmart.safesmart.dto.ChangedCurrencyDto;
 import com.safesmart.safesmart.dto.DateRangedto;
@@ -56,6 +57,7 @@ import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.ChangeRequest;
 import com.safesmart.safesmart.model.ChangeValetDenominations;
 import com.safesmart.safesmart.model.Dollar;
 import com.safesmart.safesmart.model.InsertBill;
@@ -63,6 +65,7 @@ import com.safesmart.safesmart.model.SequenceInfo;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.model.ValetDenominations;
+import com.safesmart.safesmart.repository.ChangeRequestRepository;
 import com.safesmart.safesmart.repository.ChangeRquestDenominationsRepository;
 import com.safesmart.safesmart.repository.InsertBillRepository;
 import com.safesmart.safesmart.repository.RoleRepository;
@@ -96,6 +99,9 @@ public class ReportService {
 	
 	@Autowired
 	private ChangeRquestDenominationsRepository changeRequestDenominationsRepository;
+	
+	@Autowired
+	private ChangeRequestRepository changeRequestRepo;
 
 	public ReprintReportDto rePrintReport() {
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
@@ -767,12 +773,12 @@ public class ReportService {
 		}
 }
 	
-	   //Change Request report
-	public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
+	   //Change Request report	
+      public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
 
 		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
-		ValetDenominations vD = valetDenominationsRepository.findByType(safeType);
+		ChangeRequest cR = changeRequestRepo.findByType(safeType);
 		List<Long> userIds = storeInfoResponse.getUserIds();
 		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -853,10 +859,8 @@ public class ReportService {
 			      for(Long userId : userIds) {
 						user = userInfoRepository.findById(userId).get();
 						System.out.println("coming here");
-					// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
-//						List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
-					// This is the list of the transactions done by a particular user in between from date to the current date time
-						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, currentDateTime,vD);
+						
+						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndChangeRequest(user, startDateTime, currentDateTime,cR);
 						List<ChangeValetDenominations> list1 = new ArrayList<ChangeValetDenominations>();
 						for(ChangeValetDenominations cVD : list2) {
 							if(cVD.getCreated().compareTo(endDateTime)<1 ||cVD.getCreated().compareTo(endDateTime)==0 ) {
@@ -943,7 +947,7 @@ public class ReportService {
 				}
 			//Comparing with Current balance of requested safe when c1 becomes the last record 
 				else{
-				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
+				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(cR);
 				Row userRow = sheet.createRow(i);
 			      i++;
 			      cell = userRow.createCell(0);

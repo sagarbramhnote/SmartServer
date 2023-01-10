@@ -27,9 +27,13 @@ public class Kiosk {
 	
 	private String hdd;
 	
-	private String memory;
+	private String ramMemory;
 	
 	private String screenSize;
+	
+	private String ipAddress;
+	
+	private String macAddress;
 	
 	private boolean active;
 	
@@ -136,20 +140,43 @@ public class Kiosk {
 
 
 
-	public String getMemory() {
-		return memory;
+	public String getRamMemory() {
+		return ramMemory;
 	}
 
 
 
-	public void setMemory(String memory) {
-		this.memory = memory;
+	public void setRamMemory(String ramMemory) {
+		this.ramMemory = ramMemory;
 	}
 
 
 
 	public String getScreenSize() {
 		return screenSize;
+	}
+
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+
+
+	public String getMacAddress() {
+		return macAddress;
+	}
+
+
+
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 
 
