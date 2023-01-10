@@ -358,7 +358,7 @@ public class ReportService {
 		     
 		     Row headerRow1 = sheet.createRow(0);		     		
 		     Cell cell1 = headerRow1.createCell(1);
-		     cell1.setCellValue("EODReport");
+		     cell1.setCellValue("EODREPORT");
 		     cell1.setCellStyle(fullBold);
 		     
 		     int i = 1;
@@ -586,7 +586,7 @@ public class ReportService {
 			     
 			     Row headerRow1 = sheet.createRow(0);		     		
 			     Cell cell1 = headerRow1.createCell(1);
-			     cell1.setCellValue("StandBankReport");
+			     cell1.setCellValue("STANDBANKREPORT_"+vD.getType());
 			     cell1.setCellStyle(fullBold);
 			     
 			     Row headerRow = sheet.createRow(1);
@@ -813,7 +813,7 @@ public class ReportService {
 			     
 			     Row headerRow1 = sheet.createRow(0);		     		
 			     Cell cell1 = headerRow1.createCell(1);
-			     cell1.setCellValue("ChangeRequestReport");
+			     cell1.setCellValue("CHANGEREQUESTREPORT_"+cR.getType());
 			     cell1.setCellStyle(fullBold);
 
 			     Row headerRow = sheet.createRow(1);
@@ -911,6 +911,25 @@ public class ReportService {
 			      cell = userRow.createCell(2);
 			      cell.setCellValue(" ");
 			      cell.setCellStyle(full);
+			      
+//			      List<LocalDate> totalDates = new ArrayList<>();
+//			      // Adding in between dates into a List
+//			      while (!sDate.isAfter(eDate)) {
+//			      
+//			    	  totalDates.add(sDate);
+//			          sDate = sDate.plusDays(1);
+//			      }
+//			      for(LocalDate date : totalDates) {
+//			    	  
+//			    
+//			    	   if(!changes.isEmpty()) {
+//			    		   //Row for printing date 
+//			    		   Row dateRow = sheet.createRow(i);
+//				    	   i++;
+//			    	   cell = dateRow.createCell(0);
+//			    	   cell.setCellValue("Date: "+date.format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+//			    	   cell.setCellStyle(fullBold);
+			      
 				Row headingsRow = sheet.createRow(i);
 			      i++;
 			      cell = headingsRow.createCell(0);
@@ -937,8 +956,10 @@ public class ReportService {
 				    cell.setCellValue(c.getDepositedValue());
 				    cell.setCellStyle(full);
 					}
-					
+			    	   
+			      
 				}
+			      
 			//Comparing with Current balance of requested safe when c1 becomes the last record 
 				else{
 				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(cR);
@@ -953,6 +974,8 @@ public class ReportService {
 			      cell = userRow.createCell(2);
 			      cell.setCellValue(" ");
 			      cell.setCellStyle(full);
+	
+			    	   
 				Row headingsRow = sheet.createRow(i);
 			      i++;
 			      cell = headingsRow.createCell(0);
@@ -978,6 +1001,7 @@ public class ReportService {
 				    cell.setCellValue(c.getDepositedValue());
 				    cell.setCellStyle(full);
 					}
+			    	   
 				
 				}
 				i++;
@@ -1034,7 +1058,7 @@ public class ReportService {
 		     
 		     Row headerRow1 = sheet.createRow(0);		     		
 		     Cell cell1 = headerRow1.createCell(1);
-		     cell1.setCellValue("InsertBillReport");
+		     cell1.setCellValue("INSERTBILLREPORT");
 		     cell1.setCellStyle(fullBold);
 			     
 		     Row headerRow = sheet.createRow(1);

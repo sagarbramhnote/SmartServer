@@ -22,6 +22,7 @@ import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.RoleRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
+import com.safesmart.safesmart.util.Base64BasicEncryption;
 
 @Service
 @Transactional
@@ -32,6 +33,9 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private Base64BasicEncryption passwordEncrypt;
 
 	public void add(UserInfoRequest userInfoRequest) {
 
@@ -62,7 +66,7 @@ public class UserService {
 		userInfo.setId(userInfoRequest.getId());
 		userInfo.setRole(role);
 		userInfo.setUsername(userInfoRequest.getUsername());
-		userInfo.setPassword(userInfoRequest.getPassword());
+		userInfo.setPassword(passwordEncrypt.encodePassword(userInfoRequest.getPassword()));
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
 		userInfo.setFirstName(userInfoRequest.getFirstName());
@@ -111,8 +115,10 @@ public class UserService {
 //		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 //			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 //		}
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+		
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
+		
 	}
 	public UserInfoResponse updateUserForm(Long id) {
 		UserInfo userInfo = userInfoRepository.findById(id).get();
