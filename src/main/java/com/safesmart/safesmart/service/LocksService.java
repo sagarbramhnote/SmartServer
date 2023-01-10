@@ -2,6 +2,7 @@ package com.safesmart.safesmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,6 +105,15 @@ public class LocksService {
 			}
 		}
 		return infoResponses;
+	}
+
+	public Locks getLocksInfo(Long locksid) {
+	      Optional<Locks> locks=locksRepository.findById(locksid);
+	      Locks locksInfo=new Locks();
+	      if(locks.isPresent()) {
+	    	  locksInfo=locks.get();
+	      }
+		return locksInfo;
 	}
 	
 }

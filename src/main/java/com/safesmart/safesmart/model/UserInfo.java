@@ -34,6 +34,8 @@ public class UserInfo {
 	private String lastName;
 	private String passLength;
 	
+	//private Long storeInfoId1;
+	
 
 	public String getPassLength() {
 		return passLength;
@@ -205,8 +207,15 @@ public class UserInfo {
 	public String toString() {
 		return "UserInfo [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
 				+ ", create_time=" + create_time + ", active=" + active + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", passLength=" + passLength + ", mobile=" + mobile + ", email=" + email + ", storeInfo="
-				+ storeInfo + ", insertBills=" + insertBills + ", lastLoginTime=" + lastLoginTime + "]";
+				+ lastName + ", passLength=" + passLength + ", mobile=" + mobile + ", email=" + email + ", insertBills=" + insertBills + ", lastLoginTime=" + lastLoginTime + ",storeInfo="+storeInfo+"]";
 	}
+	
+//	public Long getStoreInfoId1() {
+//		return storeInfoId1;
+//	}
+//
+//	public void setStoreInfoId1(Long storeInfoInId1) {
+//		this.storeInfoId1 = storeInfoId1;
+//	}
 
 }

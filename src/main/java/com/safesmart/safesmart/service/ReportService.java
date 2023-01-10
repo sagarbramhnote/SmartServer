@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.management.relation.RoleInfo;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -37,6 +39,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.safesmart.safesmart.dto.BillResponse;
@@ -51,6 +54,7 @@ import com.safesmart.safesmart.dto.InsertBillsReportDto;
 import com.safesmart.safesmart.dto.ManagerReportDto;
 import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
+import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.model.ChangeValetDenominations;
 import com.safesmart.safesmart.model.Dollar;
@@ -61,7 +65,9 @@ import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.model.ValetDenominations;
 import com.safesmart.safesmart.repository.ChangeRquestDenominationsRepository;
 import com.safesmart.safesmart.repository.InsertBillRepository;
+import com.safesmart.safesmart.repository.RoleRepository;
 import com.safesmart.safesmart.repository.SequenceInfoRepository;
+import com.safesmart.safesmart.repository.StoreInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
 import com.safesmart.safesmart.repository.ValetDenominationsRepository;
 import com.safesmart.safesmart.util.DateUtil;
@@ -1576,8 +1582,240 @@ public class ReportService {
 		}
 
 	}
+    //Eod reports for charts
+	public Map<Set<String>, List<Integer>> getEodReportsData(String storeName, boolean toDay) {
+		Map<Set<String>, List<Integer>> userreports=new HashMap();
+		
+		// the path variable boolean toDay indicates if the check box " TODAY "in the EOD reports is true or false 
+				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+				List<Long> userIds = storeInfoResponse.getUserIds();
+			    Set<String> userNames=new HashSet();
+				List<Integer> userTotallAmount =new ArrayList();
+				//int sum = 0;
+                String stTime = storeInfoResponse.getStartTime();
+				String endTimes = storeInfoResponse.getEndTime();
+				LocalTime startTime = LocalTime.parse(stTime);
+				LocalTime endTime = LocalTime.parse(endTimes);
+				LocalTime now = LocalTime.now();
+				LocalDateTime startDateTime = null;
+				LocalDateTime endDateTime = null;
+				LocalDate startDate = null;
+				LocalDate endDate = null;
+				// if check box Today is not checked then endDateTime will be assigned as certain conditions based on current time and Store default 
+				// Open time and Close time 
+				if(!toDay){
+					
+					/* now.compareTo(endTime) returns positive if now is greater than end time 
+					 returns zero if equal 
+					returns negative if now is less than end time */
+					int diff = now.compareTo(endTime); 
+					
+					/*Logic for if report is generated after end time that current date report will be generated if 10:00 AM  is end time and report is generated at 10:01 AM then report will be from yesterday 10:00Am to todat 10 AM
+					if report is generated at 09:59 AM then report will be from day before yesterday 10:00 AM to yesterday 10:00 AM */
+					
+					 endDate = (diff>0)|| (diff==0)?LocalDate.now():LocalDate.now().minusDays(1);
+					
+						endDateTime = endTime.atDate(endDate);
+					}else {
+						 	endDate = LocalDate.now();
+							endDateTime = LocalTime.now().atDate(endDate);
+					}
+					//Checking = difference between start time and end time of a Store
+							long hours = ChronoUnit.HOURS.between(startTime, endTime);
+							long minutes
+					        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
+							long seconds
+				            = ChronoUnit.SECONDS.between(startTime, endTime) % 60;
+						// To determine the start date is before day or same day based on the store start time and end time
+								if(hours<0 || minutes <0 || seconds <0 || (hours ==0 && minutes ==0 && seconds ==0)) {
+								 startDate = endDate.minusDays(1);
+								}else {
+									startDate = endDate;
+								}
+								System.out.println(" Start Date is " + startDate + " End date is " + endDate);
+								startDateTime = startTime.atDate(startDate);
+						
+					System.out.println("-------Assign users ids are ----"+userIds);
+					int grandTotal =0;
+				      int grandCount =0;
+					
+					for(Long userId : userIds) {
+					      List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndDateTimeBetween(userId, startDateTime, endDateTime);
+					      if(!insertBills.isEmpty()) {
+					    	  //System.out.println("-----------------we are in if block -------------------");
+					    	  UserInfo user = userInfoRepository.findById(userId).get();
+					    	  userNames.add(user.getUsername());
+					    	System.out.println("--------------Users informations are----------------"+userNames);
+                            Set<String> distinctDenominations =  new HashSet<String>();
+					    	   for(InsertBill bill : insertBills) {
+				    		   distinctDenominations.add(bill.getAmount());
+				    		   //System.out.println("------we are in for loop ending stage---------");
+					    		   }
+					    	   System.out.println("The "+userNames+"denaminations are"+distinctDenominations);
+//					    	  //i++;
+					    	  int totalCount =0;
+					    	  int sum = 0;
+					    	  //Adding Distinct denominations in to a set like $1,$2,...
+					    	   for(String a : distinctDenominations) {
+ 				    		      int count = 0;
+					    		   int product = 0;
+					    		   //checking number of notes of same denomination present in the current date bill
+					    		   for(InsertBill bill : insertBills) {
+					    		     //System.out.println("--------we are in  find  the cunt sor loop-----------");
+					    			  if(a.equals(bill.getAmount())) {
+					    				  count++;
+					    				  }
+					    			  }
+					    		   System.out.println(count);
+					    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
+					    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;  
+					    		   totalCount+= count;
+					    		   sum+=product;
+					    		  
+					    		   }
+					    	   //grandCount+= totalCount; 
+					    	    
+					    	   //grandTotal +=sum;
+					    	   userTotallAmount.add(sum);
+					    	   //System.out.println(grandTotal);
+					    	   //System.out.println(grandCount);
+					      }
+					      
+					      
+				    	 }
+					
+					userreports.put(userNames, userTotallAmount);
+		
+		return userreports;
+	}
+//  //EOD reports for Charts through Eod object
+//	public List<EODReport>   getEodReportsChartsData(String storeName, boolean toDay) {
+//		List<EODReport> eodReports=new ArrayList<>();
+//		
+//		
+//		for (int i=0;i<3;i++) {
+//			EODReport eod=new EODReport();
+//			eod.setTotalValue(i);
+//			eodReports.add(eod);	
+//		}
+//		
+//		
+//		return eodReports;
+//	}
+	
+	//EOD reports for Charts through Eod object
+		public List<EODReport>   getEodReportsChartsData(String storeName, boolean toDay) {
+			List<EODReport> eodReports=new ArrayList<>();
+			//EODReport eod=new EODReport();
+			   StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+				List<Long> userIds = storeInfoResponse.getUserIds();
+				//Set<String> userNames=new HashSet();
+				//List<Integer> userTotallAmount =new ArrayList();
+				//int sum = 0;
+				String stTime = storeInfoResponse.getStartTime();
+				String endTimes = storeInfoResponse.getEndTime();
+				LocalTime startTime = LocalTime.parse(stTime);
+				LocalTime endTime = LocalTime.parse(endTimes);
+				LocalTime now = LocalTime.now();
+				LocalDateTime startDateTime = null;
+				LocalDateTime endDateTime = null;
+				LocalDate startDate = null;
+				LocalDate endDate = null;
+				// if check box Today is not checked then endDateTime will be assigned as certain conditions based on current time and Store default 
+				// Open time and Close time 
+				if(!toDay){
+					
+					/* now.compareTo(endTime) returns positive if now is greater than end time 
+					 returns zero if equal 
+					returns negative if now is less than end time */
+					int diff = now.compareTo(endTime); 
+					
+					/*Logic for if report is generated after end time that current date report will be generated if 10:00 AM  is end time and report is generated at 10:01 AM then report will be from yesterday 10:00Am to todat 10 AM
+					if report is generated at 09:59 AM then report will be from day before yesterday 10:00 AM to yesterday 10:00 AM */
+					
+					 endDate = (diff>0)|| (diff==0)?LocalDate.now():LocalDate.now().minusDays(1);
+					
+						endDateTime = endTime.atDate(endDate);
+					}else {
+						 	endDate = LocalDate.now();
+							endDateTime = LocalTime.now().atDate(endDate);
+					}
+					//Checking = difference between start time and end time of a Store
+							long hours = ChronoUnit.HOURS.between(startTime, endTime);
+							long minutes
+					        = ChronoUnit.MINUTES.between(startTime, endTime) % 60;
+							long seconds
+				            = ChronoUnit.SECONDS.between(startTime, endTime) % 60;
+						// To determine the start date is before day or same day based on the store start time and end time
+								if(hours<0 || minutes <0 || seconds <0 || (hours ==0 && minutes ==0 && seconds ==0)) {
+								 startDate = endDate.minusDays(1);
+								}else {
+									startDate = endDate;
+								}
+								
+								startDateTime = startTime.atDate(startDate);
+					            System.out.println("----------The Assigin users id are--------------"+userIds);
+					            System.out.println(" The "+storeName+"start Date is " + startDate + "and  End date is " + endDate);
+					            System.out.println("The Assign users are between Start date and End date of "+storeName);
+					for(Long userId : userIds) {
+						EODReport eod=new EODReport();
+					      List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndDateTimeBetween(userId, startDateTime, endDateTime);
+					      if(!insertBills.isEmpty()) {
+					    	  //System.out.println("-----------------we are in if block -------------------");
+					    	  
+					    	  UserInfo user = userInfoRepository.findById(userId).get();
+					    	  //System.out.println("--------------Users informations are----------------"+user);
+					    	  String username=user.getUsername();
+					    	  System.out.println("--------the username is-----"+ username);
+					    	  eod.setUserName(username);
+					    	  Set<String> distinctDenominations =  new HashSet<String>();
+					    	   for(InsertBill bill : insertBills) {
+				    		   distinctDenominations.add(bill.getAmount());
+				    		   //System.out.println("------we are in for loop ending stage---------");
+					    		   }
+					    	   System.out.println("the "+username+"Denaminations are"+distinctDenominations);
+					    	  int totalCount =0;
+					    	  int sum = 0;
+					    	  //Adding Distinct denominations in to a set like $1,$2,...
+					    	   for(String a : distinctDenominations) {
+				    		      int count = 0;
+					    		   int product = 0;
+					    		   //checking number of notes of same denomination present in the current date bill
+					    		   for(InsertBill bill : insertBills) {
+					    		     //System.out.println("--------we are in  find  the count for loop-----------");
+					    			  if(a.equals(bill.getAmount())) {
+					    				  count++;
+					    				  }
+					    			  }
+					    		   System.out.println(count);
+					    		   product = a.equals("$1")?1*count:a.equals("$2")?2*count:a.equals("$5")?5*count:a.equals("$10")?10*count:a.equals("$20")?20*count:
+					    			   a.equals("$50")?50*count:a.equals("$100")?100*count:1*count;  
+					    		   totalCount+= count;
+					    		   sum+=product;
+					    		   System.out.println("The "+username +"TotalAmount is "+sum);
+				    		       eod.setTotalValue(sum);
+						    	   //eod.setTotalCount(totalCount);
+				    		      
+				    		      
+				    		       				    	   }
+					    	   
+					    	   eodReports.add(eod);
+					      }//if black ending
+					    
+					      
+					}//first for loop ending
+					
+			return eodReports;
+		}
 
-}
+	}
+
+
+
+
+
+
+
 
 
 

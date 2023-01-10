@@ -4,6 +4,7 @@ package com.safesmart.safesmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,4 +106,15 @@ public class KioskService {
 		return infoResponses;
 	}
 
+	public Kiosk getKioskInfo(Long kioskid) {
+		Optional<Kiosk> kiosk=kioskRepository.findById(kioskid);
+		Kiosk kioskInfo = new Kiosk();
+		if(kiosk.isPresent()) {
+			kioskInfo=kiosk.get();
+		}
+		
+		return kioskInfo;
+	}
+
+	
 }

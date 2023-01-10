@@ -2,6 +2,9 @@ package com.safesmart.safesmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.print.attribute.standard.PrinterName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,4 +103,16 @@ public class PrinterService {
 		}
 		return infoResponses;
 	}
+
+	public  Printer getPrinterInfo(Long printerid) {;
+		Optional<Printer> printer =printerRepository.findById(printerid);
+	    Printer printerinfo =new Printer();
+	    if(printer.isPresent()) {
+	    	printerinfo=printer.get();
+	    }
+		return printerinfo;
+	}
+
+	
+	
 }

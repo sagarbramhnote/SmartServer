@@ -2,13 +2,16 @@ package com.safesmart.safesmart.service;
 
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bouncycastle.crypto.engines.ISAACEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 import com.safesmart.safesmart.builder.StoreInfoBuilder;
 import com.safesmart.safesmart.common.CommonException;
@@ -37,7 +40,7 @@ import com.safesmart.safesmart.repository.UserInfoRepository;
 public class StoreInfoService {
 
 	@Autowired
-	private StoreInfoRepository storeInfoRepository;
+	private  StoreInfoRepository storeInfoRepository;
 
 	@Autowired
 	private UserInfoRepository userInfoRepository;
@@ -259,6 +262,38 @@ public class StoreInfoService {
 
 		return storeInfoBuilder.toDtoList(storeInfos);
 	}
+
+	public List<Long> getAllStoreIds() {
+		System.out.println("------ we are in getallstoreids method");
+		List<Long> storeidsList=storeInfoRepository.getAllStoreIds();
+		return storeidsList;
+	}
+
+	public List<StoreInfo> findByStoreId(Long id) {
+		
+		    Optional<StoreInfo> assignedStoreInfo=storeInfoRepository.findById(id);
+		    List<StoreInfo> storeInfo=new ArrayList<StoreInfo>();
+		    if(assignedStoreInfo.isPresent()) {
+		    	storeInfo=(List<StoreInfo>) assignedStoreInfo.get();
+		    }
+		    
+		    
+		   
+		
+		
+		return storeInfo;
+	}
+
+	public List<StoreInfoResponse> findByStoresId(Long long1) {
+		 Optional<StoreInfo> storeInfoResponses=storeInfoRepository.findById(long1);
+		 List<StoreInfoResponse> storeInfoResponses2=new ArrayList<StoreInfoResponse>();
+		 if(storeInfoResponses.isPresent()) {
+			 storeInfoResponses2=(List<StoreInfoResponse>) storeInfoResponses.get();
+		 }
+		
+		return storeInfoResponses2;
+	}
+	
 	
 
 }

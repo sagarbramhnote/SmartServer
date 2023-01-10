@@ -37,6 +37,28 @@ public class StoreInfoResponse {
 	private List<Long> printerIds;
 	
 	private List<Long> lockIds;
+
+	private int totalUsers;
+	
+	private int totalEmployess;
+	
+	private int totalManagers;
+	
+	private int totalAdmins;
+	
+	private int totalTruckers;
+	
+	private int totalShiftManagers;
+	
+	private int totalPrinters;
+	
+	private int totalKiosk;
+	
+	private int totalBillVallidator;
+	
+	private int totalLocks;
+	
+
 	
 	public Long getId() {
 		return id;
@@ -119,7 +141,7 @@ public class StoreInfoResponse {
 		this.startTime = startTime;
 	}
 
-	public List<Long> getUserIds() {
+	public  List<Long> getUserIds() {
 		return userIds;
 	}
 
@@ -183,6 +205,86 @@ public class StoreInfoResponse {
 
 	public StoreInfoResponse() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public int getTotalUsers() {
+		return totalUsers;
+	}
+
+	public void setTotalUsers(int totalUsers) {
+		this.totalUsers = totalUsers;
+	}
+
+	public int getTotalEmployess() {
+		return totalEmployess;
+	}
+
+	public void setTotalEmployess(int totalEmployess) {
+		this.totalEmployess = totalEmployess;
+	}
+
+	public int getTotalManagers() {
+		return totalManagers;
+	}
+
+	public void setTotalManagers(int totalManagers) {
+		this.totalManagers = totalManagers;
+	}
+
+	public int getTotalAdmins() {
+		return totalAdmins;
+	}
+
+	public void setTotalAdmins(int totalAdmins) {
+		this.totalAdmins = totalAdmins;
+	}
+
+	public int getTotalTruckers() {
+		return totalTruckers;
+	}
+
+	public void setTotalTruckers(int totalTruckers) {
+		this.totalTruckers = totalTruckers;
+	}
+
+	public int getTotalShiftManagers() {
+		return totalShiftManagers;
+	}
+
+	public void setTotalShiftManagers(int totalShiftManagers) {
+		this.totalShiftManagers = totalShiftManagers;
+	}
+
+	public int getTotalPrinters() {
+		return totalPrinters;
+	}
+
+	public void setTotalPrinters(int totalPrinters) {
+		this.totalPrinters = totalPrinters;
+	}
+
+	public int getTotalKiosk() {
+		return totalKiosk;
+	}
+
+	public void setTotalKiosk(int totalKiosk) {
+		this.totalKiosk = totalKiosk;
+	}
+
+	public int getTotalBillVallidator() {
+		return totalBillVallidator;
+	}
+
+	public void setTotalBillVallidator(int totalBillVallidator) {
+		this.totalBillVallidator = totalBillVallidator;
+	}
+
+	public int getTotalLocks() {
+		return totalLocks;
+	}
+
+	public void setTotalLocks(int totalLocks) {
+		this.totalLocks = totalLocks;
 	}
 
 }

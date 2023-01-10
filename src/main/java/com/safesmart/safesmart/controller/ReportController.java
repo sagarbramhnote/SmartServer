@@ -3,6 +3,9 @@ package com.safesmart.safesmart.controller;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -22,6 +25,8 @@ import com.safesmart.safesmart.dto.InsertBillsReportDto;
 import com.safesmart.safesmart.dto.ManagerReportDto;
 import com.safesmart.safesmart.dto.ReportDto;
 import com.safesmart.safesmart.dto.ReprintReportDto;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.service.ReportService;
 
 @RestController
@@ -140,5 +145,22 @@ public class ReportController {
 		dateRangedto.validateRequest1();
 		return reportService.managerReportData(userId,dateRangedto);
 	}
+	//Eod reports for charts
+	@RequestMapping(value = "/EODReportExportCharts/{storeName}/{toDay}",method = RequestMethod.GET)
+	public Map<Set<String>, List<Integer>> EODReportsCharts(@PathVariable("storeName")String storeName, @PathVariable("toDay") boolean toDay) throws IOException {
+		Map<Set<String>, List<Integer>> reportsdataMap=reportService.getEodReportsData(storeName,toDay);
+	  return  reportsdataMap;
+	}
+	
+
+	//Eod reports for charts through eodtable
+	@RequestMapping(value = "/EODReportChartsCopy/{storeName}/{toDay}",method = RequestMethod.GET)
+	public List<EODReport> endOfDayReportForCharts(@PathVariable("storeName")String storeName, @PathVariable("toDay") boolean toDay) throws IOException {
+					 
+		return reportService.getEodReportsChartsData(storeName,toDay);
+	}
+	
+	
 	
 }
+

@@ -2,9 +2,11 @@ package com.safesmart.safesmart.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.model.StoreInfo;
 @Repository
 public interface StoreInfoRepository extends PagingAndSortingRepository<StoreInfo, Long> {
@@ -22,6 +24,17 @@ public interface StoreInfoRepository extends PagingAndSortingRepository<StoreInf
 	StoreInfo findBySerialNumber(String serialNumber);
 	
 	StoreInfo findByAccountNumber(String accountNumber);
+	
+    @Query("select id from StoreInfo")
+	List<Long> getAllStoreIds();
+
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
