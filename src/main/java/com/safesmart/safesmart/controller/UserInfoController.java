@@ -16,6 +16,7 @@ import com.safesmart.safesmart.dto.RolesDto;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.service.UserService;
+import com.safesmart.safesmart.util.Base64BasicEncryption;
 
 @RestController
 @RequestMapping(value = "/userInfo/")
@@ -24,6 +25,8 @@ public class UserInfoController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private Base64BasicEncryption passwordEncrypt;
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void add(@RequestBody UserInfoRequest userInfoRequest) {

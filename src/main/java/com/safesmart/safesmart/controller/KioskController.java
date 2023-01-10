@@ -52,4 +52,10 @@ public class KioskController {
 		return kioskService.findUnassignedKiosk();
 	}
 	
+	@RequestMapping(value = "/ip", method = RequestMethod.POST)
+	public void ip() {
+		
+		kioskService.ip();
+	}
+	
 }

@@ -2,6 +2,8 @@ package com.safesmart.safesmart.service;
 
 
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +112,31 @@ public class KioskService {
 			}		
 		}
 		return infoResponses;
+	}
+	
+	public void ip() {
+	
+	     InetAddress ip;
+	        try {
+
+	            // get system name
+	            String SystemName
+	                = InetAddress.getLocalHost().getHostName();
+
+	            System.out.println("System Name : "
+	                               + SystemName);
+	         
+	        	
+	            ip = InetAddress.getLocalHost();
+	            System.out.println("System IP address : " + ip.getHostAddress());
+	        }
+
+	      catch (Exception e) {
+
+	            e.printStackTrace();
+
+	        }
+	
 	}
 
 	public Kiosk getKioskInfo(Long kioskid) {
