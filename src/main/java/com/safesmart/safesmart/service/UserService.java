@@ -1,5 +1,6 @@
 package com.safesmart.safesmart.service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +9,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
+import com.safesmart.safesmart.dto.RoleConunt;
 import com.safesmart.safesmart.dto.RoleDto;
 import com.safesmart.safesmart.dto.RolesDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Role;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.RoleRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
@@ -278,4 +282,35 @@ public class UserService {
 //		return infoResponses;
 //	}
 
+	public List<UserInfo> getAllUsers(Long id) {
+		System.out.println("----  we are in getAllUsers() methode in UserService");
+		return userInfoRepository.getAllUsers(id);
+			}
+
+	public UserInfo getUserInfo(Long userids) {
+		         System.out.println("we are in user service");
+               //Optional<UserInfo> userinfo= userInfoRepository.findById(userids).get();
+               UserInfo userinfo=userInfoRepository.findById(userids).get();
+              // System.out.println(userinfo);
+//               UserInfo userInfo2=new UserInfo();
+//               
+//               if(userinfo.isPresent())
+//               {
+//            	   userInfo2=userinfo.get();
+//            	   
+//               }
+		      
+		       
+		return userinfo;
+	}
+
+//	public RoleConunt getAllRolesCount(Long storeid) {
+//		
+//		return userInfoRepository.getAllRolesCount(storeid);
+//	}
+
+	
+
+	
+		
 }

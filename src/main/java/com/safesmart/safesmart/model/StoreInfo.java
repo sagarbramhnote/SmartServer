@@ -47,7 +47,8 @@ public class StoreInfo {
 	private List<Locks> locks;
 	
 	private List<Printer> printer;
-
+	
+	
 
     @JsonIgnore
 	@OneToMany(targetEntity=Locks.class,cascade = CascadeType.ALL, mappedBy="storeInfo")
@@ -192,11 +193,16 @@ public class StoreInfo {
 	}
 
 	
-	@Override
+	
+	
+
+		@Override
 	public String toString() {
 		return "StoreInfo [id=" + id + ", storeName=" + storeName + ", corpStoreNo=" + corpStoreNo + ", serialNumber="
 				+ serialNumber + ", address=" + address + ", bankName=" + bankName + ", accountNumber=" + accountNumber
-				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", users=" + users + " , startTime=" + startTime + ", endTime=" + endTime + "]";
+				+ ", minimumBalance=" + minimumBalance + ", configured=" + configured + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", users=" + users + ", kiosk=" + kiosk + ", billValidator=" + billValidator
+				+ ", locks=" + locks + ", printer=" + printer + ",  ]";
 	}
 
 }

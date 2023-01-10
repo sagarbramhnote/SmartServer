@@ -1,10 +1,15 @@
 package com.safesmart.safesmart.repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import com.safesmart.safesmart.dto.RoleConunt;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 
 @Repository
@@ -23,12 +28,15 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	UserInfo findByEmail(String email);
 	
 	List<UserInfo> findByStoreInfo_Id(Long id);
+
 	
 	List<UserInfo> findByStoreInfo_StoreName(String storeInfo);
 
 	
 	List<UserInfo> findByStoreInfo_StoreNameAndRole_Name(String storeInfo,String role);
 
+
 	
 	
+   
 }

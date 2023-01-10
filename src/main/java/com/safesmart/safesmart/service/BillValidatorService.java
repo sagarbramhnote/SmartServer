@@ -2,6 +2,7 @@ package com.safesmart.safesmart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,15 @@ public class BillValidatorService {
 			}
 		}
 		return infoResponses;
+	}
+
+	public BillValidator getBillValidatorInfo(Long billid) {
+		Optional<BillValidator> billValidator = billValidatorRepository.findById(billid);
+		BillValidator billValidatorInfo = new BillValidator();
+		if(billValidator.isPresent()) {
+			billValidatorInfo=billValidator.get();
+		}
+		return billValidatorInfo;
 	}
 	
 }
