@@ -1785,6 +1785,8 @@ public class ReportService {
 					            System.out.println("----------The Assigin users id are--------------"+userIds);
 					            System.out.println(" The "+storeName+"start Date is " + startDate + "and  End date is " + endDate);
 					            System.out.println("The Assign users are between Start date and End date of "+storeName);
+					 int grandTotal =0;
+				     int grandCount =0;
 					for(Long userId : userIds) {
 						EODReport eod=new EODReport();
 					      List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndDateTimeBetween(userId, startDateTime, endDateTime);
@@ -1823,10 +1825,11 @@ public class ReportService {
 					    		   System.out.println("The "+username +"TotalAmount is "+sum);
 				    		       eod.setTotalValue(sum);
 						    	   //eod.setTotalCount(totalCount);
-				    		      
-				    		      
-				    		       				    	   }
+				    		      }
+					    	   grandTotal+=sum;
+					    	   eod.setGrandTotal(grandTotal);
 					    	   
+					    	   System.out.println("Total inserted bills of "+storeName+"is "+grandTotal);;
 					    	   eodReports.add(eod);
 					      }//if black ending
 					    

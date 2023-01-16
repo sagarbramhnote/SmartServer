@@ -1,6 +1,7 @@
 package com.safesmart.safesmart.service;
 
 
+//import java.lang.WeakPairMap.Pair.Weak;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -277,19 +278,14 @@ public class StoreInfoService {
 		return storeidsList;
 	}
 
-	public List<StoreInfo> findByStoreId(Long id) {
-		
-		    Optional<StoreInfo> assignedStoreInfo=storeInfoRepository.findById(id);
-		    List<StoreInfo> storeInfo=new ArrayList<StoreInfo>();
+	public StoreInfo findByStoreId(Long id) {
+		   System.out.println("We  are in storeInfoService class");
+		   Optional<StoreInfo> assignedStoreInfo=storeInfoRepository.findById(id);
+		   StoreInfo storeInfo=new StoreInfo();
 		    if(assignedStoreInfo.isPresent()) {
-		    	storeInfo=(List<StoreInfo>) assignedStoreInfo.get();
+		    	storeInfo= assignedStoreInfo.get();
 		    }
-		    
-		    
-		   
-		
-		
-		return storeInfo;
+		    return storeInfo;
 	}
 
 	public List<StoreInfoResponse> findByStoresId(Long long1) {

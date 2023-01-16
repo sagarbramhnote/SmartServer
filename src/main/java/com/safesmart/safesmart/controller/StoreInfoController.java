@@ -144,40 +144,52 @@ public class StoreInfoController {
 	
 	//assigned stores
 	@RequestMapping(value = "/assignedstores", method = RequestMethod.GET)
-	public String assignedStores() {
+	public List<String> assignedStores() {
 		List<StoreInfoResponse> storeInfoResponse=storeInfoService.findAll();
 		System.out.println(storeInfoResponse);
 		List<Long> storeidsList=storeInfoService.getAllStoreIds();
 	    System.out.println(storeidsList);
-	    List<Long> assignedStoreIdList=new ArrayList();
+	    Long assignedStoreIdList;
+	    Long unassignedStoreIds;
+	    List<Long> assiginStorelist=new ArrayList();
 	    List<Long> unassignedStoreIdList=new ArrayList();
-	    String assignstorename = null;
+	     List<String> assisgnedStoreNames = new ArrayList();
 	    for (Long id : storeidsList) {
 	    	System.out.println("store id is "+id);
 	          List<UserInfo> userInfos=userService.getAllUsers(id);
 			
-			
-	    	System.out.println(userInfos);
-	    	
-			  if(userInfos != null) {
-				  
-				  assignedStoreIdList=storeidsList;
-				  System.out.println( assignedStoreIdList);
-			  }  
-	    	else {
-	    		 unassignedStoreIdList= storeidsList;
-	    		 System.out.println(unassignedStoreIdList);
+	    	//System.out.println(userInfos);
+	    	//for (UserInfo userInfo : userInfos) {
+				 if(userInfos.size()>0) {
+					  System.out.println("we are in if black");
+					  
+					  assignedStoreIdList=id;
+					  //System.out.println( assignedStoreIdList);
+					  assiginStorelist.add(assignedStoreIdList);
+					  
+				  }
+				 else {
+		    		unassignedStoreIds= id;
+		    		 //System.out.println(unassignedStoreIdList);
+		    		 unassignedStoreIdList.add(unassignedStoreIds);
+		    	 }
+			   System.out.println("Unassignstore ids"+unassignedStoreIdList);
+			  System.out.println("Assign store ids"+assiginStorelist);
 	    	}
-	    	}
-	    for (Long id : assignedStoreIdList) {
-	    	List<StoreInfo> assignedStoreInfo =storeInfoService.findByStoreId(id);
-	    	System.out.println(assignedStoreInfo);
-	    	for (StoreInfo storeNames : assignedStoreInfo) {
-	    		 assignstorename=storeNames.getStoreName();
-				}
-	    	
+	   // }
+		List<StoreInfo> resultStoresInfos = new ArrayList<>();
+	    for (Long id : assiginStorelist) {
+	    	System.out.println("store id is"+id);
+	    
+	    	StoreInfo assignedStoreInfo =storeInfoService.findByStoreId(id);
+	    	resultStoresInfos.add(assignedStoreInfo);
+	    	//System.out.println(assignedStoreInfo);	
 	    }
-	   return assignstorename;
+	    System.out.println("----List of store informations--"+resultStoresInfos.size());
+    	for (StoreInfo storeNames : resultStoresInfos) {
+    		assisgnedStoreNames.add(storeNames.getStoreName());
+    	}
+	   return assisgnedStoreNames;
 	
 		
 	}
