@@ -16,6 +16,7 @@ import com.safesmart.safesmart.dto.RolesDto;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.service.UserService;
+import com.safesmart.safesmart.util.Base64BasicEncryption;
 
 @RestController
 @RequestMapping(value = "/userInfo/")
@@ -24,6 +25,8 @@ public class UserInfoController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private Base64BasicEncryption passwordEncrypt;
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void add(@RequestBody UserInfoRequest userInfoRequest) {
@@ -75,6 +78,16 @@ public class UserInfoController {
 		return userService.findUsersByRole(role);
 	}
 	
+	@RequestMapping(value = "/store/{storeName}", method = RequestMethod.GET)
+	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName) {
+		return userService.findUsersByStore(storeName);
+	}
+	
+//	@RequestMapping(value = "/store/{storeName}/{role}", method = RequestMethod.GET)
+//	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName,@PathVariable("role") String role) {
+//		return userService.findUsersByStore(storeName,role);
+//	}
+	
 	@RequestMapping(value = "/role/{role}/unassignedusers", method = RequestMethod.GET)
 	public List<UserInfoResponse> findunassignedUsersByRole(@PathVariable("role") String role) {
 		return userService.findunassignedUsersByRole(role);
@@ -99,5 +112,6 @@ public class UserInfoController {
 	public void promoteUser(@PathVariable("userId") Long userId, @RequestBody RoleDto roleDto) {
 		userService.promoteUser(userId, roleDto);
 	}
+	
 
 }

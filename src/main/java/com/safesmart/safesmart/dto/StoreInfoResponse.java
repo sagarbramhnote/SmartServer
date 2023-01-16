@@ -1,8 +1,7 @@
 package com.safesmart.safesmart.dto;
 
-import java.util.List;
 
-import com.safesmart.safesmart.model.Printer;
+import java.util.List;
 
 public class StoreInfoResponse {
 	
@@ -203,9 +202,11 @@ public class StoreInfoResponse {
 		this.serialNumber = serialNumber;
 	}
 
+
 	public StoreInfoResponse() {
 		// TODO Auto-generated constructor stub
 	}
+
 
 	public int getTotalUsers() {
 		return totalUsers;

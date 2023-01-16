@@ -26,6 +26,7 @@ import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.RoleRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
+import com.safesmart.safesmart.util.Base64BasicEncryption;
 
 @Service
 @Transactional
@@ -36,6 +37,9 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private Base64BasicEncryption passwordEncrypt;
 
 	public void add(UserInfoRequest userInfoRequest) {
 
@@ -66,7 +70,7 @@ public class UserService {
 		userInfo.setId(userInfoRequest.getId());
 		userInfo.setRole(role);
 		userInfo.setUsername(userInfoRequest.getUsername());
-		userInfo.setPassword(userInfoRequest.getPassword());
+		userInfo.setPassword(passwordEncrypt.encodePassword(userInfoRequest.getPassword()));
 		userInfo.setCreate_time(LocalDate.now());
 		userInfo.setActive(true);
 		userInfo.setFirstName(userInfoRequest.getFirstName());
@@ -108,15 +112,20 @@ public class UserService {
 
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
-		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),infoRequest.getPassword());
+		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),passwordEncrypt.encodePassword(infoRequest.getPassword()));
+		System.out.println(userInfo);
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
 //		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 //			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 //		}
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+		
+		System.out.println("login "+userInfo.getPassword());
+		
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),passwordEncrypt.decodePassword(userInfo.getPassword()),userInfo.getEmail(),
 				userInfo.getRole().getName(), userInfo.isActive());
+		
 	}
 	public UserInfoResponse updateUserForm(Long id) {
 		UserInfo userInfo = userInfoRepository.findById(id).get();
@@ -153,6 +162,8 @@ public class UserService {
 		info.setEmail(userInfoRequest.getEmail());
 		info.setMobile(userInfoRequest.getMobile());
 		userInfoRepository.save(info);
+		
+		
 
 	}
 
@@ -253,9 +264,35 @@ public class UserService {
 		return infoResponses;
 	}
 	
+	// Store to user
 	public List<UserInfo> findByStoreInfo_Id(Long id){
+		System.out.println("findbystoreinfo_id in user table");
 		return userInfoRepository.findByStoreInfo_Id(id);
 	}
+	
+	public List<UserInfoResponse> findUsersByStore(String storeInfo) {
+	List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreName(storeInfo);
+	List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+	for (UserInfo userInfo : users) {
+		if (userInfo.getStoreInfo() !=null) {
+		infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(),userInfo.isActive()));
+	}
+	}
+	return infoResponses;
+ }
+	
+//	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
+//		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
+//		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+//		for (UserInfo userInfo : users) {
+//			if (userInfo.getStoreInfo() !=null) {
+//			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+//					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
+//		}
+//		}
+//		return infoResponses;
+//	}
 
 	public List<UserInfo> getAllUsers(Long id) {
 		System.out.println("----  we are in getAllUsers() methode in UserService");
@@ -291,6 +328,7 @@ public class UserService {
 //		
 //		return userInfoRepository.getAllRolesCount(storeid);
 //	}
+	
 
 	
 
