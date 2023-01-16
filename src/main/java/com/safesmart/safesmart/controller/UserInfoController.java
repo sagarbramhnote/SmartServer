@@ -112,5 +112,6 @@ public class UserInfoController {
 	public void promoteUser(@PathVariable("userId") Long userId, @RequestBody RoleDto roleDto) {
 		userService.promoteUser(userId, roleDto);
 	}
+	
 
 }

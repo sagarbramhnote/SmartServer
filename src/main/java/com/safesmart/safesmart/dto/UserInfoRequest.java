@@ -183,9 +183,9 @@ public class UserInfoRequest {
 		String regex = "[0-9]+";
 		// Compile the ReGex
 		Pattern p = Pattern.compile(regex);
-		if (password.length() != 4 || !p.matcher(password).matches()) {
-			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
-		}
+//		if (password.length() != 4 || !p.matcher(password).matches()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
+//		}
 
 		if (feature.isEmpty()) {
 			System.out.println("feature errror");
