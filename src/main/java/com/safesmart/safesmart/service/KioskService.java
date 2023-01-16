@@ -114,9 +114,10 @@ public class KioskService {
 		return infoResponses;
 	}
 	
-	public void ip() {
+	public String ipss() {
 	
 	     InetAddress ip;
+	     String ipAddress = null;
 	        try {
 
 	            // get system name
@@ -129,6 +130,8 @@ public class KioskService {
 	        	
 	            ip = InetAddress.getLocalHost();
 	            System.out.println("System IP address : " + ip.getHostAddress());
+	            ipAddress=ip.getHostAddress();
+	            
 	        }
 
 	      catch (Exception e) {
@@ -136,6 +139,8 @@ public class KioskService {
 	            e.printStackTrace();
 
 	        }
+	        
+	        return ipAddress;
 	
 	}
 

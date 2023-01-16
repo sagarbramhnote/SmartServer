@@ -112,7 +112,8 @@ public class UserService {
 
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
-		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),infoRequest.getPassword());
+		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),passwordEncrypt.encodePassword(infoRequest.getPassword()));
+		System.out.println(userInfo);
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
@@ -120,7 +121,9 @@ public class UserService {
 //			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 //		}
 		
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),userInfo.getPassword(),
+		System.out.println("login "+userInfo.getPassword());
+		
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),passwordEncrypt.decodePassword(userInfo.getPassword()),userInfo.getEmail(),
 				userInfo.getRole().getName(), userInfo.isActive());
 		
 	}
@@ -159,6 +162,8 @@ public class UserService {
 		info.setEmail(userInfoRequest.getEmail());
 		info.setMobile(userInfoRequest.getMobile());
 		userInfoRepository.save(info);
+		
+		
 
 	}
 
@@ -261,6 +266,7 @@ public class UserService {
 	
 	// Store to user
 	public List<UserInfo> findByStoreInfo_Id(Long id){
+		System.out.println("findbystoreinfo_id in user table");
 		return userInfoRepository.findByStoreInfo_Id(id);
 	}
 	
@@ -314,6 +320,7 @@ public class UserService {
 //		
 //		return userInfoRepository.getAllRolesCount(storeid);
 //	}
+	
 
 	
 
