@@ -120,12 +120,12 @@ public class UserService {
 	}
 	public UserInfoResponse updateUserForm(Long id) {
 		UserInfo userInfo = userInfoRepository.findById(id).get();
-		System.out.println(userInfo);
-		System.out.println(userInfo.getEmail()+ " Here " + userInfo.getFirstName());
+		//System.out.println(userInfo);
+		//System.out.println(userInfo.getEmail()+ " Here " + userInfo.getFirstName());
 		
 		UserInfoResponse info = new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
-		System.out.println(info.getFirstName()+ " " + info.getLastName());
+		//System.out.println(info.getFirstName()+ " " + info.getLastName());
 		return info;
 		
 	}
@@ -259,7 +259,15 @@ public class UserService {
 
 	public List<UserInfo> getAllUsers(Long id) {
 		System.out.println("----  we are in getAllUsers() methode in UserService");
-		return userInfoRepository.getAllUsers(id);
+		StoreInfo storeInfo=new StoreInfo();
+		     storeInfo.setId(id);
+		     System.out.println("the store is "+id);
+		    		List<UserInfo> resultInfos =  userInfoRepository.findByStoreInfo(storeInfo);
+		    		System.out.println("the size of users fethed is: "+resultInfos.size());
+		    		
+		    		return resultInfos;
+		
+		//return userInfoRepository.getAllUsers(id);
 			}
 
 	public UserInfo getUserInfo(Long userids) {

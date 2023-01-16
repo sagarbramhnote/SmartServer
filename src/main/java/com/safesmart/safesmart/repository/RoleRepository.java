@@ -10,7 +10,10 @@ public interface RoleRepository  extends PagingAndSortingRepository<Role, Long>{
 	Role findByName(String role);
 
 	
-	Role findByDescription(String role);
+	Role findByDescription(String description);
+	
+	//Role findByDescription(String role);
+
 
 
 	Role findByname(String name);

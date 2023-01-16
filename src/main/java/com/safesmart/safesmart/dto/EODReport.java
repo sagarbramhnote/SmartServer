@@ -11,6 +11,8 @@ public class EODReport extends ReportDto {
 	private int totalCount;
 	
 	private int totalValue;
+	
+	private int grandTotal;
 
 	public String getTimeStamp() {
 		return timeStamp;
@@ -42,6 +44,14 @@ public class EODReport extends ReportDto {
 
 	public void setTotalValue(int totalValue) {
 		this.totalValue = totalValue;
+	}
+
+	public int getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(int grandTotal) {
+		this.grandTotal = grandTotal;
 	}
 
 	

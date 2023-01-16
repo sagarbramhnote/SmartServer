@@ -1,4 +1,4 @@
-package com.safesmart.safesmart.repository;
+  package com.safesmart.safesmart.repository;
 
 import java.util.List;
 
