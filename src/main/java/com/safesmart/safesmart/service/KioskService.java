@@ -2,6 +2,8 @@ package com.safesmart.safesmart.service;
 
 
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +53,10 @@ public class KioskService {
 		kiosk.setModelName(kioskRequest.getModelName());
 		kiosk.setCpu(kioskRequest.getCpu());
 		kiosk.setHdd(kioskRequest.getHdd());
-		kiosk.setMemory(kioskRequest.getMemory());
+		kiosk.setRamMemory(kioskRequest.getRamMemory());
 		kiosk.setScreenSize(kioskRequest.getScreenSize());
+		kiosk.setIpAddress(kioskRequest.getIpAddress());
+		kiosk.setMacAddress(kioskRequest.getMacAddress());
 		kiosk.setActive(kioskRequest.isActive());
 
 		kioskRepository.save(kiosk);
@@ -66,7 +70,8 @@ public class KioskService {
 
 		for (Kiosk kiosk : kiosks) {
 			kioskResponses.add(new KioskResponse(kiosk.getId(),kiosk.getKioskId(), kiosk.getKioskName(), kiosk.getBrandName(),
-					kiosk.getModelName(), kiosk.getCpu(), kiosk.getHdd(), kiosk.getMemory(), kiosk.getScreenSize(), kiosk.isActive()));
+					kiosk.getModelName(), kiosk.getCpu(), kiosk.getHdd(), kiosk.getRamMemory(), kiosk.getScreenSize(),
+					kiosk.getIpAddress(),kiosk.getMacAddress(),kiosk.isActive()));
 		}
 		return kioskResponses;
 	}
@@ -86,8 +91,10 @@ public class KioskService {
 		kiosk.setModelName(kioskRequest.getModelName());
 		kiosk.setCpu(kioskRequest.getCpu());
 		kiosk.setHdd(kioskRequest.getHdd());
-		kiosk.setMemory(kioskRequest.getMemory());
+		kiosk.setRamMemory(kioskRequest.getRamMemory());
 		kiosk.setScreenSize(kioskRequest.getScreenSize());
+		kiosk.setIpAddress(kioskRequest.getIpAddress());
+		kiosk.setMacAddress(kioskRequest.getMacAddress());
 		kiosk.setActive(kioskRequest.isActive());
 		
 		kioskRepository.save(kiosk);
@@ -100,10 +107,41 @@ public class KioskService {
 		for (Kiosk kiosk : kiosks) {
 			if (kiosk != null && kiosk.getStoreinfok() == null) {
 				infoResponses.add(new KioskResponse(kiosk.getId(),kiosk.getKioskId(), kiosk.getKioskName(), kiosk.getBrandName(),
-						kiosk.getModelName(), kiosk.getCpu(), kiosk.getHdd(), kiosk.getMemory(), kiosk.getScreenSize(), kiosk.isActive()));
+						kiosk.getModelName(), kiosk.getCpu(), kiosk.getHdd(), kiosk.getRamMemory(), kiosk.getScreenSize(),
+						kiosk.getIpAddress(),kiosk.getMacAddress(),kiosk.isActive()));
 			}		
 		}
 		return infoResponses;
+	}
+	
+	public String ipss() {
+	
+	     InetAddress ip;
+	     String ipAddress = null;
+	        try {
+
+	            // get system name
+	            String SystemName
+	                = InetAddress.getLocalHost().getHostName();
+
+	            System.out.println("System Name : "
+	                               + SystemName);
+	         
+	        	
+	            ip = InetAddress.getLocalHost();
+	            System.out.println("System IP address : " + ip.getHostAddress());
+	            ipAddress=ip.getHostAddress();
+	            
+	        }
+
+	      catch (Exception e) {
+
+	            e.printStackTrace();
+
+	        }
+	        
+	        return ipAddress;
+	
 	}
 
 	public Kiosk getKioskInfo(Long kioskid) {

@@ -27,17 +27,22 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	UserInfo findByMobile(String mobile);
 	
 	UserInfo findByEmail(String email);
+
+	List<UserInfo> findByStoreInfo_StoreName(String storeInfo);
+
+	
+	List<UserInfo> findByStoreInfo_StoreNameAndRole_Name(String storeInfo,String role);
+
 	
 	List<UserInfo> findByStoreInfo_Id(Long id);
-    
+	
 	@Query("SELECT u FROM UserInfo  u where storeInfo = :id")
 	List<UserInfo> getAllUsers(Long id);
 	List<UserInfo> findByStoreInfo(StoreInfo storeInfo);
 	
-//    @Query( "SELECT  r.id,r.name,count(*) FROM safemart.user_info uf LEFT JOIN role r ON uf.role_id = r.id where store_info_id=storeid group by role_id")
-//	RoleConunt getAllRolesCount( Long storeid);
-//	
-	
+
+
+
 	
 	
    

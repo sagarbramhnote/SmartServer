@@ -3,6 +3,7 @@ package com.safesmart.safesmart.dto;
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.UserInfoRepository;
 
@@ -18,20 +19,28 @@ public class UserInfoResponse {
 	private String password;
 
 	private String role;
+	
+	private String storeInfo;
+	
+	private String address;
 
 	private boolean active;
 
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String mobile;
+
+	
+
 	@Override
 	public String toString() {
-		return "UserInfoResponse [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
+		return "UserInfoResponse [userInfoRepository=" + userInfoRepository + ", id=" + id + ", username=" + username
+				+ ", password=" + password + ", role=" + role + ", storeInfo=" + storeInfo + ", address=" + address
 				+ ", active=" + active + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", mobile=" + mobile + ", passLenght=" + passLenght + "]";
 	}
 
-	private String mobile;
 	private String passLenght;
 	
 	public String getPassLenght() {
@@ -82,6 +91,29 @@ public class UserInfoResponse {
 		this.role = role;
 		this.active = active;
 	}
+	
+	public UserInfoResponse(Long id, String username, String password, String storeInfo, String address, boolean active) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.storeInfo = storeInfo;
+		this.address = address;
+		this.active = active;
+	}
+
+	
+	public UserInfoResponse(Long id, String username, String password, String storeInfo, String address, String role, boolean active) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.storeInfo = storeInfo;
+		this.address = address;
+		this.role = role;
+		this.active = active;
+	}
+
 	public UserInfoResponse(Long id, String username, String password, String role, boolean active,String firstName,String lastName,String email,String mobile) {
 		super();
 		this.id = id;
@@ -128,6 +160,26 @@ public class UserInfoResponse {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	
+
+	public String getStoreInfo() {
+		return storeInfo;
+	}
+
+	public void setStoreInfo(String storeInfo) {
+		this.storeInfo = storeInfo;
+	}
+	
+	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public boolean isActive() {

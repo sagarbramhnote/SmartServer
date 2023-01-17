@@ -22,6 +22,7 @@ import com.safesmart.safesmart.dto.LocksResponse;
 import com.safesmart.safesmart.dto.StoreInfoRequest;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
+import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.BillValidator;
 import com.safesmart.safesmart.model.Kiosk;
 import com.safesmart.safesmart.model.Locks;
@@ -254,14 +255,21 @@ public class StoreInfoService {
 
 	public List<StoreInfoResponse> findUnassignedStores() {
 		List<StoreInfo> storeInfos = storeInfoRepository.findByConfigured(true);
-
+      
 		return storeInfoBuilder.toDtoList(storeInfos);
 	}
 
 	public List<StoreInfoResponse> findAssignedStores() {
 		List<StoreInfo> storeInfos = storeInfoRepository.findByConfigured(true);
-
-		return storeInfoBuilder.toDtoList(storeInfos);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty() ){
+					
+				}else {
+				infoResponses.add(storeInfoBuilder.toDto(userInfo));
+				}
+			}
+		 return infoResponses;
 	}
 
 	public List<Long> getAllStoreIds() {

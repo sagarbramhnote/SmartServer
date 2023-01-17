@@ -1,7 +1,5 @@
 package com.safesmart.safesmart.dto;
 
-import com.safesmart.safesmart.model.OrderStatus;
-
 public class ChangeRequestDto {
 
 	private Long id;
