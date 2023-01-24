@@ -21,6 +21,8 @@ public class UserInfoRequest {
 
 	private String feature;
 	
+	private String web;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -35,12 +37,14 @@ public class UserInfoRequest {
 		this.passLength = passLength;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "UserInfoRequest [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
-				+ ", active=" + active + ", feature=" + feature + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", mobile=" + mobile + ", passLength=" + passLength + ", loggedUserId="
-				+ loggedUserId + "]";
+				+ ", active=" + active + ", feature=" + feature + ", web=" + web + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", mobile=" + mobile + ", passLength=" + passLength
+				+ ", loggedUserId=" + loggedUserId + "]";
 	}
 
 	public String getFirstName() {
@@ -125,8 +129,17 @@ public class UserInfoRequest {
 	public void setFeature(String feature) {
 		this.feature = feature;
 	}
-
 	
+	
+
+	public String getWeb() {
+		return web;
+	}
+
+	public void setWeb(String web) {
+		this.web = web;
+	}
+
 	public Long getLoggedUserId() {
 		return loggedUserId;
 	}
@@ -191,6 +204,7 @@ public class UserInfoRequest {
 			System.out.println("feature errror");
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
 		}
+
 	}
 
 

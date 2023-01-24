@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
@@ -113,20 +115,29 @@ public class UserService {
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
 		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),passwordEncrypt.encodePassword(infoRequest.getPassword()));
-		System.out.println(userInfo);
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
-//		if (!userInfo.checkfeature(infoRequest.getFeature())) {
-//			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
-//		}
-		
-		System.out.println("login "+userInfo.getPassword());
-		
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),passwordEncrypt.decodePassword(userInfo.getPassword()),userInfo.getEmail(),
+		if (!userInfo.checkfeature(infoRequest.getFeature())) {
+			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
+		}
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive());
-		
 	}
+	
+	public UserInfoResponse doLoginkiosk(UserInfoRequest infoRequest) {
+
+		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(infoRequest.getPassword()));
+		if (userInfo == null) {
+			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+		}
+		if (!userInfo.checkfeature(infoRequest.getFeature())) {
+			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
+		}
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive());
+	}
+	
 	public UserInfoResponse updateUserForm(Long id) {
 		UserInfo userInfo = userInfoRepository.findById(id).get();
 		//System.out.println(userInfo);
@@ -330,8 +341,17 @@ public class UserService {
 //	}
 	
 
-	
+	public void changePassword(@PathVariable("oldPassword") String oldPassword, @PathVariable("newPassword") String newPassword) {
+     
+		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(oldPassword));		
+		if (userInfo == null) {
+			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+		}
+		
+		userInfo.setPassword(passwordEncrypt.encodePassword(newPassword));
 
-	
+		userInfoRepository.save(userInfo);
+		
+	}
 		
 }
