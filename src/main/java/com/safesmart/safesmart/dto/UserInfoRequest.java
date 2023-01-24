@@ -187,10 +187,10 @@ public class UserInfoRequest {
 //			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
 //		}
 
-		if (feature.isEmpty()) {
-			System.out.println("feature errror");
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
-		}
+//		if (feature.isEmpty()) {
+//			System.out.println("feature errror");
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
+//		}
 	}
 
 
