@@ -15,6 +15,7 @@ import com.safesmart.safesmart.repository.RoleRepository;
 import com.safesmart.safesmart.repository.SequenceInfoRepository;
 import com.safesmart.safesmart.repository.StoreInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
+import com.safesmart.safesmart.util.Base64BasicEncryption;
 
 @Component
 public class DatabaseRunner implements CommandLineRunner {
@@ -30,6 +31,9 @@ public class DatabaseRunner implements CommandLineRunner {
 
 	@Autowired
 	private UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	private Base64BasicEncryption passwordEncrypt;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -98,7 +102,7 @@ public class DatabaseRunner implements CommandLineRunner {
 
 			UserInfo userInfo = new UserInfo();
 			userInfo.setUsername("Admin");
-			userInfo.setPassword("1234");
+			userInfo.setPassword(passwordEncrypt.encodePassword("1234"));
 			userInfo.setRole(roleRepository.findByName("ADMIN"));
 			userInfoRepository.save(userInfo);
 
