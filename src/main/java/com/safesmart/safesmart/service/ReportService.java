@@ -774,11 +774,11 @@ public class ReportService {
 }
 	
 	   //Change Request report	
-      public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
+      public  ByteArrayInputStream changeRequestReportExport(String storeName,String orderStatus, DateRangedto dateRangedto) throws IOException {
 
 		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
-		ChangeRequest cR = changeRequestRepo.findByType(safeType);
+		ChangeRequest cR = changeRequestRepo.findByOrderStatus(orderStatus);
 		List<Long> userIds = storeInfoResponse.getUserIds();
 		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
