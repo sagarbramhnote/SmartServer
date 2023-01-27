@@ -204,6 +204,7 @@ public class UserInfoRequest {
 			System.out.println("feature errror");
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
 		}
+		
 
 	}
 

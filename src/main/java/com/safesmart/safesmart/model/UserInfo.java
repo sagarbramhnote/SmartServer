@@ -184,6 +184,14 @@ public class UserInfo {
 
 		return this.role.getFeatures().contains(feature);
 	}
+	
+	public boolean checkWebModule(String feature) {
+		if (this.role.getWebModule().contains("All")) {
+			return true;
+		}
+
+		return this.role.getWebModule().contains(feature);
+	}
 
 	@ManyToOne
 	public StoreInfo getStoreInfo() {

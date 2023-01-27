@@ -118,7 +118,7 @@ public class UserService {
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
-		if (!userInfo.checkfeature(infoRequest.getFeature())) {
+		if (!userInfo.checkWebModule(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
