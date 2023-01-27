@@ -36,6 +36,7 @@ public class RoleBuilder {
 		Role role = new Role(); 
 		role.setId(roleDto.getId());
 		role.setFeatures(roleDto.getFeatures());
+		role.setWebModule(roleDto.getWebModule());
 		role.setName(roleDto.getName());
 		role.setDescription(roleDto.getDescription());
 		System.out.println(roleDto.getDescription());
@@ -48,6 +49,7 @@ public class RoleBuilder {
 		Role role = new Role();
 		role.setId(roleDto.getId());
 		role.setFeatures(roleDto.getFeatures());
+		role.setWebModule(roleDto.getWebModule());
 		role.setName(roleDto.getName());
 		role.setDescription(roleDto.getDescription());
 
