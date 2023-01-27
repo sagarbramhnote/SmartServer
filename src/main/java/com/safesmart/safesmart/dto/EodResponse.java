@@ -9,6 +9,10 @@ public class EodResponse {
 	
 	private StoreInfoResponse storeInfoResponse;
 	
+	private int stateBankBalance;
+	
+	private int changeRequestBalance;
+	
 	
 
 	public int getTotalEodBillsAmount() {
@@ -33,6 +37,22 @@ public class EodResponse {
 
 	public void setStoreInfoResponse(StoreInfoResponse storeInfoResponse) {
 		this.storeInfoResponse = storeInfoResponse;
+	}
+
+	public int getStateBankBalance() {
+		return stateBankBalance;
+	}
+
+	public void setStateBankBalance(int stateBankBalance) {
+		this.stateBankBalance = stateBankBalance;
+	}
+
+	public int getChangeRequestBalance() {
+		return changeRequestBalance;
+	}
+
+	public void setChangeRequestBalance(int changeRequestBalance) {
+		this.changeRequestBalance = changeRequestBalance;
 	}
 
 	
