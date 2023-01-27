@@ -56,16 +56,16 @@ public class UserService {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Password");
 		}
 		//user mobile
-		UserInfo usermobile = userInfoRepository.findByMobile(userInfoRequest.getMobile());
-		if (usermobile != null) {
-			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "mobile");
-		}
- 
-		//user email
-		UserInfo infoMail = userInfoRepository.findByEmail(userInfoRequest.getEmail());
-		if (infoMail != null) {
-			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "email");
-		}
+//		UserInfo usermobile = userInfoRepository.findByMobile(userInfoRequest.getMobile());
+//		if (usermobile != null) {
+//			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "mobile");
+//		}
+// 
+//		//user email
+//		UserInfo infoMail = userInfoRepository.findByEmail(userInfoRequest.getEmail());
+//		if (infoMail != null) {
+//			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "email");
+//		}
 		
 		
 		userInfo = new UserInfo();
@@ -122,7 +122,7 @@ public class UserService {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive());
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
 	}
 	
 	public UserInfoResponse doLoginkiosk(UserInfoRequest infoRequest) {
@@ -134,8 +134,8 @@ public class UserService {
 		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive());
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
 	}
 	
 	public UserInfoResponse updateUserForm(Long id) {
