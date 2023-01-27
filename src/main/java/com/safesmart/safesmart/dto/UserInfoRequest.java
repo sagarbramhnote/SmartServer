@@ -149,16 +149,16 @@ public class UserInfoRequest {
 	}
 
 	public void validateRequiredAttributes() {
-		if (firstName.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "fisrtname");
-		}		
-		if (lastName.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "lastname");
-		}
-		if (mobile.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "mobile");
-		}
-		 
+//		if (firstName.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "fisrtname");
+//		}		
+//		if (lastName.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "lastname");
+//		}
+//		if (mobile.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "mobile");
+//		}
+//		 
 	
 		if (username.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Username");
@@ -169,23 +169,23 @@ public class UserInfoRequest {
 		if (role.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Role");
 		}
-		if(!email.contains(".com"))
-		{
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Email");
-		}
+//		if(!email.contains(".com"))
+//		{
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Email");
+//		}
 		String regex = "[0-9]+";
 		Pattern p = Pattern.compile(regex);
-		if(passLength.equals("six")) {
-			System.out.println("in pin error");
-			if (password.length() != 6 || !p.matcher(password).matches()) {
-				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_SIX_PIN);
-			}	
-		}
-		else {
-		if (password.length() != 4 || !p.matcher(password).matches()) {
-			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
-		}
-		}
+//		if(passLength.equals("six")) {
+//			System.out.println("in pin error");
+//			if (password.length() != 6 || !p.matcher(password).matches()) {
+//				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_SIX_PIN);
+//			}	
+//		}
+//		else {
+//		if (password.length() != 4 || !p.matcher(password).matches()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
+//		}
+//		}
 
 	}
 

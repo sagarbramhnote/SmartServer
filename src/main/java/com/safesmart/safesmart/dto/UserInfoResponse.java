@@ -126,6 +126,7 @@ public class UserInfoResponse {
 		this.email = email;
 		this.mobile = mobile;
 	}
+
 	public UserInfoResponse () {
 	}
 	
