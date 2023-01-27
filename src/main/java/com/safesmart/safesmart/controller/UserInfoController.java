@@ -48,11 +48,18 @@ public class UserInfoController {
 		System.out.println("coming into updateuserform");
 		
 		return userService.updateUserForm(userId);
-		
-		
-		
+			
 	}
 
+	@RequestMapping(value = "/loginKiosk", method = RequestMethod.POST)
+	public UserInfoResponse doLoginKiosk(@RequestBody UserInfoRequest infoRequest) {
+		System.out.println("coming here 2");
+		infoRequest.validateLoginRequired();
+		System.out.println("coming here 2");
+		return userService.doLoginkiosk(infoRequest);
+	}
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public UserInfoResponse doLogin(@RequestBody UserInfoRequest infoRequest) {
 		System.out.println("coming here 2");
@@ -111,6 +118,14 @@ public class UserInfoController {
 	@RequestMapping(value = "/promoteUser/{userId}", method = RequestMethod.POST)
 	public void promoteUser(@PathVariable("userId") Long userId, @RequestBody RoleDto roleDto) {
 		userService.promoteUser(userId, roleDto);
+	}
+	
+	//change password
+	@RequestMapping(value = "/changePassword/{oldPassword}/{newPassword}", method = RequestMethod.POST)
+	public void changePassword(@PathVariable("oldPassword") String oldPassword, @PathVariable("newPassword") String newPassword) {
+	
+		System.out.println("coming here 4");
+		userService.changePassword(oldPassword,newPassword);
 	}
 	
 
