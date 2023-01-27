@@ -68,7 +68,19 @@ public class DashBoardController {
 		StoreInfoResponse storeInfoResponse=dashBoardService.getAllStoreInfo(storeName);
 		dashinfo.setStoreInfoResponse(storeInfoResponse);
 		
+		//Total StandBank Balance
+		int totalStateBankBalance=dashBoardService.getTotalStateBankBalance(storeName,toDay);
+		dashinfo.setStateBankBalance(totalStateBankBalance);
+		
+		//ChangeRequest Balance
+		int changeRequestBalance=dashBoardService.getChageRequestBalance(storeName);
+		System.out.println(changeRequestBalance);
+		dashinfo.setChangeRequestBalance(changeRequestBalance);
+		
 		return dashinfo;
+		
+		
+		
 	}
 
 
