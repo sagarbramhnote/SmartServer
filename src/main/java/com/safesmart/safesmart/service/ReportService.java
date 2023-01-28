@@ -102,9 +102,13 @@ public class ReportService {
 	
 	@Autowired
 	private ChangeRequestRepository changeRequestRepo;
+	
+	@Autowired
+	private  StoreInfoRepository storeInfoRepository;
 
-	public ReprintReportDto rePrintReport() {
-		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
+	public ReprintReportDto rePrintReport(String storeName) {
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+		System.out.println("rePrintReportStore "+storeName);
 		ReprintReportDto reportDto = new ReprintReportDto();
 		reportDto.setReportName("Reprint Receipt");
 		reportDto.setStoreInfoResponse(storeInfoResponse);
@@ -155,10 +159,11 @@ public class ReportService {
 		return reportDto;
 	}
 
-	public ReportDto testPrintReport() {
+	public ReportDto testPrintReport(String storeName) {
 		ReportDto reportDto = new ReportDto();
 		reportDto.setReportName("Test Print Receipt");
-		reportDto.setStoreInfoResponse(storeInfoService.getStoreInfoService());
+		reportDto.setStoreInfoResponse(storeInfoService.getStoreInfoService(storeName));
+		System.out.println("testPrinterStore "+storeName);
 		return reportDto;
 	}
 
@@ -1241,7 +1246,9 @@ public class ReportService {
 
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Employee Report");
-		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
+		
+
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService("sam");
 		employeeReport.setStoreInfoResponse(storeInfoResponse);
 		employeeReport.setTimeStamp(LocalDateTime.now().toString());
 

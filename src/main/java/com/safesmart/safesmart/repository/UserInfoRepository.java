@@ -40,6 +40,7 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	List<UserInfo> getAllUsers(Long id);
 	List<UserInfo> findByStoreInfo(StoreInfo storeInfo);
 	
+	
 
 
 
