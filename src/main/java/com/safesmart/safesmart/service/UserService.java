@@ -122,7 +122,8 @@ public class UserService {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
 	}
 	
 	public UserInfoResponse doLoginkiosk(UserInfoRequest infoRequest) {
@@ -135,7 +136,9 @@ public class UserService {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
+	
 	}
 	
 	public UserInfoResponse updateUserForm(Long id) {
@@ -144,7 +147,8 @@ public class UserService {
 		//System.out.println(userInfo.getEmail()+ " Here " + userInfo.getFirstName());
 		
 		UserInfoResponse info = new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
 		//System.out.println(info.getFirstName()+ " " + info.getLastName());
 		return info;
 		

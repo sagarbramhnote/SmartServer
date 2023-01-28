@@ -63,7 +63,7 @@ public class StoreInfoService {
 	private StoreInfoBuilder storeInfoBuilder;
 
 	public StoreInfoResponse getStoreInfoService() {
-		StoreInfo storeInfo = storeInfoRepository.findByStoreName("TEST");
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName("");
 		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
 				storeInfo.getSerialNumber());
 	}

@@ -42,14 +42,14 @@ public class ReportController {
 		return reportService.endOfDayReport(userId);
 	}
 
-	@RequestMapping(value = "/testPrintReport",method = RequestMethod.GET)
-	public ReportDto testPrintReport() {
-		return reportService.testPrintReport();
+	@RequestMapping(value = "/testPrintReport/{storeName}",method = RequestMethod.GET)
+	public ReportDto testPrintReport(@PathVariable("storeName") String storeName) {
+		return reportService.testPrintReport(storeName);
 	}
 
-	@RequestMapping(value = "/rePrintReceipt", method = RequestMethod.GET)
-	public ReprintReportDto rePrintReport() {
-		return reportService.rePrintReport();
+	@RequestMapping(value = "/rePrintReceipt/{storeName}", method = RequestMethod.GET)
+	public ReprintReportDto rePrintReport(@PathVariable("storeName") String storeName) {
+		return reportService.rePrintReport(storeName);
 	}
 
 	@RequestMapping(value = "/insertBillsReport/{transactionNumber}", method = RequestMethod.GET)
