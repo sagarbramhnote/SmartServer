@@ -1247,8 +1247,17 @@ public class ReportService {
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Employee Report");
 		
+		// for storeName
+		StoreInfo storeInfo = new StoreInfo();
+		Optional<UserInfo> optional = userInfoRepository.findById(userId);
+		if (optional.isPresent()) {
 
-		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService("sam");
+			UserInfo dbUserInfo= optional.get();
+		storeInfo =	dbUserInfo.getStoreInfo();
+		}
+		String storeName = storeInfo.getStoreName();
+		System.out.println(storeName);		
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 		employeeReport.setStoreInfoResponse(storeInfoResponse);
 		employeeReport.setTimeStamp(LocalDateTime.now().toString());
 
@@ -1369,78 +1378,83 @@ public class ReportService {
 
 	public EmployeeReportDto managerReportData(Long userId, DateRangedto dateRangedto) {
 
-		String stDate1 = DateUtil.convertToStringDateFormat(dateRangedto.getStartDate().substring(0, 10));
-		stDate1 = stDate1 + " " + dateRangedto.getStartTime();
-
-		String enDate1 = DateUtil.convertToStringDateFormat(dateRangedto.getEndDate().substring(0, 10));
-		enDate1 = enDate1 + " " + dateRangedto.getEndTime();
-
-		LocalDateTime stDate = LocalDateTime.parse(stDate1, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-		LocalDateTime endDate = LocalDateTime.parse(enDate1, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate endDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		if (stDate.isAfter(endDate)) {
 			throw new RuntimeException("Start Date should be less than the End Date");
 		}
 
-		List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndDateTimeBetween(userId, stDate, endDate);
+		List<InsertBill> insertBills = insertBillRepository.findByUser_IdAndCreatedOnBetween(userId, stDate, endDate);
 		Map<LocalDate, List<InsertBill>> userByBills = insertBills.stream()
 				.collect(Collectors.groupingBy(InsertBill::getCreatedOn));
 
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Manager Report");
-		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
-		employeeReport.setStoreInfoResponse(storeInfoResponse);
-		employeeReport.setTimeStamp(LocalDateTime.now().toString());
 
-		List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
-		for (Map.Entry<LocalDate, List<InsertBill>> entry : userByBills.entrySet()) {
-			EmployeeReportResponse er = new EmployeeReportResponse();
-			Map<String, InsertBillResponse> map = new HashMap<String, InsertBillResponse>();
-			for (InsertBill bill : entry.getValue()) {
+		// for storeName
+				StoreInfo storeInfo = new StoreInfo();
+				Optional<UserInfo> optional = userInfoRepository.findById(userId);
+				if (optional.isPresent()) {
 
-				if (map.get(bill.getAmount()) != null) {
-					InsertBillResponse insertBill = map.get(bill.getAmount());
-					int count = insertBill.getCount() + 1;
-					insertBill.setCount(count);
-					map.put(bill.getAmount(), insertBill);
-				} else {
-					InsertBillResponse billResponse = new InsertBillResponse();
-					billResponse.setAmount(bill.getAmount());
-					billResponse.setCount(1);
-					map.put(bill.getAmount(), billResponse);
-
+					UserInfo dbUserInfo= optional.get();
+				storeInfo =	dbUserInfo.getStoreInfo();
 				}
+				String storeName = storeInfo.getStoreName();
+				System.out.println(storeName);		
+				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+				employeeReport.setStoreInfoResponse(storeInfoResponse);
+				employeeReport.setTimeStamp(LocalDateTime.now().toString());
 
-			}
-			Collection<BillResponse> result = new ArrayList<BillResponse>();
-			int count = 0;
-			int sum = 0;
-			for (Dollar dollar : Dollar.values()) {
-				if (map.get(dollar.getDollar()) != null) {
-					InsertBillResponse billResponse = map.get(dollar.getDollar());
+				List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
+				for (Map.Entry<LocalDate, List<InsertBill>> entry : userByBills.entrySet()) {
+					EmployeeReportResponse er = new EmployeeReportResponse();
+					Map<String, InsertBillResponse> map = new HashMap<String, InsertBillResponse>();
+					for (InsertBill bill : entry.getValue()) {
+
+						if (map.get(bill.getAmount()) != null) {
+							InsertBillResponse insertBill = map.get(bill.getAmount());
+							int count = insertBill.getCount() + 1;
+							insertBill.setCount(count);
+							map.put(bill.getAmount(), insertBill);
+						} else {
+							InsertBillResponse billResponse = new InsertBillResponse();
+							billResponse.setAmount(bill.getAmount());
+							billResponse.setCount(1);
+							map.put(bill.getAmount(), billResponse);
+
+						}
+
+					}
+					Collection<BillResponse> result = new ArrayList<BillResponse>();
+					int count = 0;
+					int sum = 0;
+					for (Dollar dollar : Dollar.values()) {
+						if (map.get(dollar.getDollar()) != null) {
+							InsertBillResponse billResponse = map.get(dollar.getDollar());
+							BillResponse response = new BillResponse();
+							response.setCurrency(dollar.getDollar());
+							response.setValue(billResponse.calculateSum(dollar.getValue()));
+							response.setCount(billResponse.getCount());
+							count = count + billResponse.getCount();
+							sum = sum + response.getValue();
+							result.add(response);
+						}
+
+					}
 					BillResponse response = new BillResponse();
-					response.setCurrency(dollar.getDollar());
-					response.setValue(billResponse.calculateSum(dollar.getValue()));
-					response.setCount(billResponse.getCount());
-					count = count + billResponse.getCount();
-					sum = sum + response.getValue();
+					response.setCurrency("All");
+					response.setCount(count);
+					response.setValue(sum);
 					result.add(response);
+					er.setData(result);
+					er.setName(entry.getKey().toString());
+					employeeReportResponses.add(er);
 				}
 
+				employeeReport.setData(employeeReportResponses);
+
+				return employeeReport;
 			}
-			BillResponse response = new BillResponse();
-			response.setCurrency("All");
-			response.setCount(count);
-			response.setValue(sum);
-			result.add(response);
-			er.setData(result);
-			er.setName(entry.getKey().toString());
-			employeeReportResponses.add(er);
-		}
-
-		employeeReport.setData(employeeReportResponses);
-
-		return employeeReport;
-	}
 
 	// EOD Report with Employee Data for Owner
 	public void endOfDayReport1() {
