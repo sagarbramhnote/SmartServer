@@ -1,5 +1,6 @@
 package com.safesmart.safesmart.configuration;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class DatabaseRunner implements CommandLineRunner {
 			adminRole.setName("ADMIN");
 			adminRole.setDescription("Administrator");
 			adminRole.setFeatures(all);
+			adminRole.setWebModule(all);
 
 			List<String> insertBills = new ArrayList<String>();
 			insertBills.add("InsertBills");
@@ -60,6 +62,7 @@ public class DatabaseRunner implements CommandLineRunner {
 			manager.setName("MANAGER");
 			manager.setDescription("manager");
 			manager.setFeatures(all);
+			manager.setWebModule(all);
 
 			Role shiftmanager = new Role();
 			shiftmanager.setName("SHIFTMANAGER");
@@ -95,18 +98,23 @@ public class DatabaseRunner implements CommandLineRunner {
 			sequenceInfo.setValue(1);
 			sequenceInfoRepository.save(sequenceInfo);
 
-//			StoreInfo storeInfo = new StoreInfo();
-//			storeInfo.setSerialNumber("UT0");
-//			storeInfo.setCorpStoreNo("ABC");
-//			storeInfo.setStoreName("XYZ");
+			StoreInfo storeInfo = new StoreInfo();
+			storeInfo.setSerialNumber("UT0");
+			storeInfo.setCorpStoreNo("ABC");
+			storeInfo.setStoreName("XYZ");
+			storeInfo.setStartTime(LocalTime.now());
+			storeInfo.setEndTime(LocalTime.NOON);
+
+			storeInfoRepository.save(storeInfo);
 
 			UserInfo userInfo = new UserInfo();
 			userInfo.setUsername("Admin");
 			userInfo.setPassword(passwordEncrypt.encodePassword("1234"));
 			userInfo.setRole(roleRepository.findByName("ADMIN"));
+			userInfo.setStoreInfo(storeInfoRepository.findByStoreName("XYZ"));
 			userInfoRepository.save(userInfo);
 
-		//	storeInfoRepository.save(storeInfo);
+			
 
 		}
 	}
