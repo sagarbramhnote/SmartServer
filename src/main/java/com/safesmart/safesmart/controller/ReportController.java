@@ -142,7 +142,7 @@ public class ReportController {
 	
 	@RequestMapping(value = "/managerReport/{userId}",method = RequestMethod.POST)
 	public EmployeeReportDto managerReportData(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
-		dateRangedto.validateRequest1();
+		dateRangedto.validateRequest();
 		return reportService.managerReportData(userId,dateRangedto);
 	}
 	//Eod reports for charts
