@@ -138,6 +138,7 @@ public class UserService {
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
 				userInfo.getStoreInfo().getStoreName());
+		
 	
 	}
 	
@@ -297,17 +298,17 @@ public class UserService {
 	return infoResponses;
  }
 	
-//	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
-//		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
-//		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
-//		for (UserInfo userInfo : users) {
-//			if (userInfo.getStoreInfo() !=null) {
-//			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-//					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
-//		}
-//		}
-//		return infoResponses;
-//	}
+	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
+		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
+		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+		for (UserInfo userInfo : users) {
+			if (userInfo.getStoreInfo() !=null) {
+			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
+		}
+		}
+		return infoResponses;
+	}
 
 	public List<UserInfo> getAllUsers(Long id) {
 		System.out.println("----  we are in getAllUsers() methode in UserService");
