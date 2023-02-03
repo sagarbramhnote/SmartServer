@@ -43,7 +43,7 @@ public class StoreInfoBuilder {
 		storeInfoResponse.setAddress(storeInfo.getAddress());
 		storeInfoResponse.setBankName(storeInfo.getBankName());
 		storeInfoResponse.setConfigured(storeInfo.isConfigured());
-		storeInfo.setStatus(storeInfo.isStatus());
+		storeInfoResponse.setStatus(storeInfo.isStatus());
 		storeInfoResponse.setCorpStoreNo(storeInfo.getCorpStoreNo());
 		storeInfoResponse.setId(storeInfo.getId());
 		storeInfoResponse.setMinimumBalance(storeInfo.getMinimumBalance());
