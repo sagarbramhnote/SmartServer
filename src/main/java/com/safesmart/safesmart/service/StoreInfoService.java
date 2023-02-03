@@ -272,6 +272,28 @@ public class StoreInfoService {
 			}
 		 return infoResponses;
 	}
+	
+    public List<StoreInfoResponse> findAssignedStores1() {
+		
+    	List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+    	 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty() ){
+					
+				}else {
+				infoResponses.add(storeInfoBuilder.toDto(userInfo));
+				}
+			}
+		 return infoResponses;
+//    	return storeInfoBuilder.toDtoList(storeInfos);
+	}
+     public List<StoreInfoResponse> findAssignedStoresUnassignedUsers() {
+    	 List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+    	 return storeInfoBuilder.toDtoList(storeInfos);
+		
+	}
+
+	
 
 	public List<Long> getAllStoreIds() {
 		System.out.println("------ we are in getallstoreids method");
@@ -298,6 +320,9 @@ public class StoreInfoService {
 		
 		return storeInfoResponses2;
 	}
+
+	
+	
 	
 	
 
