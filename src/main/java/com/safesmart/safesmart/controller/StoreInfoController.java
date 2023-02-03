@@ -130,6 +130,19 @@ public class StoreInfoController {
 	public List<StoreInfoResponse> findAssignedStores() {
 		return storeInfoService.findAssignedStores();
 	}
+	//get all assign stores based on status field
+	@RequestMapping(value = "/all/assignedStores", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStores1() {
+		return storeInfoService.findAssignedStores1();
+	}
+	
+	//get all storesnames without assign the users
+	@RequestMapping(value = "/all/assignedStoresunassignusers", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStoresUnassignedUsers() {
+		return storeInfoService.findAssignedStoresUnassignedUsers();
+	}
+	
+	
 	
 	//Find Store to User
 	@RequestMapping(value = "/all/assigneduser/{id}", method = RequestMethod.GET)

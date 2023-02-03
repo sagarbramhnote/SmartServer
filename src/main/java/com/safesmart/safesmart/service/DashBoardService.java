@@ -296,8 +296,8 @@ public class DashBoardService {
 			   try {
 			ValetDenominations valetDenominations=valetDenominationsRepository.findByCreatedByAndType( user, "MAINSAFE");
 			list.add(valetDenominations);
-			Long idLong=valetDenominations.getCreatedBy().getId();
-			 System.out.println("--------StandBank of MainSafe Information---------"+idLong );
+			Long mainsafelist=valetDenominations.getCreatedBy().getId();
+			 System.out.println("--------StandBank of MainSafe Information---------"+mainsafelist );
 			 
 			 for (ValetDenominations valetDenominations2 : list) {
 				 
