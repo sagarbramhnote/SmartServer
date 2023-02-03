@@ -700,29 +700,50 @@ public class ReportService {
 				Row headingsRow = sheet.createRow(i);
 			      i++;
 			      cell = headingsRow.createCell(0);
-			      cell.setCellValue("Denominations");
+			      cell.setCellValue("Main safe");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(1);
 			      cell.setCellValue("Change Needed");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(2);
-			      cell.setCellValue("Deposited Value");
+			      cell.setCellValue("Main Safe");
 			      cell.setCellStyle(fullBold);
 			      
-				for(ChangedCurrencyDto c:changes) {
-					// printing the Changed values 
-					Row valuesRow = sheet.createRow(i);
-					i++;
-					cell = valuesRow.createCell(0);
-				    cell.setCellValue(c.getCurrency());
-				    cell.setCellStyle(full);
-				    cell = valuesRow.createCell(1);
-				    cell.setCellValue(c.getChangeNeeded());
-				    cell.setCellStyle(full);
-				    cell = valuesRow.createCell(2);
-				    cell.setCellValue(c.getDepositedValue());
-				    cell.setCellStyle(full);
-					}
+			  	Row headingsRow1 = sheet.createRow(i);
+			      i++;
+			      cell = headingsRow1.createCell(0);
+			      cell.setCellValue("");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow1.createCell(1);
+			      cell.setCellValue("");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow1.createCell(2);
+			      cell.setCellValue("In");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow1.createCell(3);
+			      cell.setCellValue("Out");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow1.createCell(4);
+			      cell.setCellValue("");
+			      cell.setCellStyle(fullBold);
+			      cell = headingsRow1.createCell(5);
+			      cell.setCellValue("");
+			      cell.setCellStyle(fullBold);
+			      
+//				for(ChangedCurrencyDto c:changes) {
+//					// printing the Changed values 
+//					Row valuesRow = sheet.createRow(i);
+//					i++;
+//					cell = valuesRow.createCell(0);
+//				    cell.setCellValue(c.getCurrency());
+//				    cell.setCellStyle(full);
+//				    cell = valuesRow.createCell(1);
+//				    cell.setCellValue(c.getChangeNeeded());
+//				    cell.setCellStyle(full);
+//				    cell = valuesRow.createCell(2);
+//				    cell.setCellValue(c.getDepositedValue());
+//				    cell.setCellStyle(full);
+//					}
 					
 				}
 			//Comparing with Current balance of requested safe when c1 becomes the last record 

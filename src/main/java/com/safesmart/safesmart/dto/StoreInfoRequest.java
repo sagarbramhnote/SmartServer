@@ -26,6 +26,9 @@ public class StoreInfoRequest {
 	private String startTime;
 	
 	private String endTime;
+	
+	private boolean status;
+
 
 	public Long getId() {
 		return id;
@@ -113,6 +116,14 @@ public class StoreInfoRequest {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	

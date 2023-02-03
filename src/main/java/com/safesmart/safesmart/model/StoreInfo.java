@@ -34,6 +34,9 @@ public class StoreInfo {
 	
 	private boolean configured;
 	
+	private boolean status;
+
+	
 	private LocalTime startTime;
 	
 	private LocalTime endTime;
@@ -195,6 +198,14 @@ public class StoreInfo {
 	
 	
 	
+
+		public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 		@Override
 	public String toString() {

@@ -26,6 +26,7 @@ public class StoreInfoBuilder {
 		storeInfo.setAddress(storeInfoRequest.getAddress());
 		storeInfo.setBankName(storeInfoRequest.getBankName());
 		storeInfo.setConfigured(storeInfoRequest.isConfigured());
+		storeInfo.setStatus(storeInfoRequest.isStatus());
 		storeInfo.setCorpStoreNo(storeInfoRequest.getCorpStoreNo());
 		storeInfo.setMinimumBalance(storeInfoRequest.getMinimumBalance());
 		storeInfo.setSerialNumber(storeInfoRequest.getSerialNumber());
@@ -42,6 +43,7 @@ public class StoreInfoBuilder {
 		storeInfoResponse.setAddress(storeInfo.getAddress());
 		storeInfoResponse.setBankName(storeInfo.getBankName());
 		storeInfoResponse.setConfigured(storeInfo.isConfigured());
+		storeInfo.setStatus(storeInfo.isStatus());
 		storeInfoResponse.setCorpStoreNo(storeInfo.getCorpStoreNo());
 		storeInfoResponse.setId(storeInfo.getId());
 		storeInfoResponse.setMinimumBalance(storeInfo.getMinimumBalance());
