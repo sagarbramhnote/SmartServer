@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 import javax.management.relation.RoleInfo;
 
+import org.apache.poi.ss.util.CellRangeAddress;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -36,6 +38,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -568,7 +571,6 @@ public class ReportService {
 		LocalDateTime endDateTime = time2.atDate(eDate);
 		UserInfo user;
 		
-			String[] columns = {"Store Name", "Store corp No", "Serial No"}; 
 			try(
 			     Workbook workbook = new XSSFWorkbook();
 			     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -595,29 +597,43 @@ public class ReportService {
 			     leftRight.setBorderLeft(bS);
 
 			     
-			     Row headerRow1 = sheet.createRow(0);		     		
-			     Cell cell1 = headerRow1.createCell(1);
+			     Row headerRow1 = sheet.createRow(0);	
+			     sheet.addMergedRegion(new CellRangeAddress(0,0,0,5));
+			     Cell cell1 = headerRow1.createCell(0);
 			     cell1.setCellValue("STANDBANKREPORT_"+vD.getType());
 			     cell1.setCellStyle(fullBold);
 			     
 			     Row headerRow = sheet.createRow(1);
-			     for (int col=0; col<columns.length; col++) {
-			    	 Cell cell = headerRow.createCell(col);
-			    	 cell.setCellValue(columns[col]);
-			    	 cell.setCellStyle(fullBold);
-			     	}
+			     Cell cellstore = headerRow.createCell(0);
+		          sheet.addMergedRegion(new CellRangeAddress(1,1,0,1));
+		          cellstore.setCellValue("Store Name");
+		          cellstore.setCellStyle(fullBold);
+			      
+		          Cell cellstore2 = headerRow.createCell(2);
+		          sheet.addMergedRegion(new CellRangeAddress(1,1,2,3));
+		          cellstore2.setCellValue("Store corp No");
+		          cellstore2.setCellStyle(fullBold);
+			      
+			      Cell cellstore4 = headerRow.createCell(4);
+		          sheet.addMergedRegion(new CellRangeAddress(1,1,4,5));
+		          cellstore4.setCellValue("Serial No");
+		          cellstore4.setCellStyle(fullBold);
+			      
 			     //Row for printing Store details 
 			      Row detailsRow = sheet.createRow(2);
-			    		String serialNo = storeInfoResponse.getSerialNumber();
 			    		Cell cell = detailsRow.createCell(0);
+			            sheet.addMergedRegion(new CellRangeAddress(2,2,0,1));
 			    		cell.setCellValue(storeName);
 			    		cell.setCellStyle(full);
 
-			    		 cell = detailsRow.createCell(1);
+			    		 cell = detailsRow.createCell(2);
+				         sheet.addMergedRegion(new CellRangeAddress(2,2,2,3));
 			    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
 			    		 cell.setCellStyle(full);
 			    		 
-			    		 cell = detailsRow.createCell(2);
+			    		 cell = detailsRow.createCell(4);
+				         sheet.addMergedRegion(new CellRangeAddress(2,2,4,5));
+				         String serialNo = storeInfoResponse.getSerialNumber();
 			    		 cell.setCellValue(serialNo);
 			    		 cell.setCellStyle(full);
 			    		 
@@ -625,12 +641,17 @@ public class ReportService {
 			      Row datesRow = sheet.createRow(3);
 			      
 			      cell = datesRow.createCell(0);
+		          sheet.addMergedRegion(new CellRangeAddress(3,3,0,1));
 			      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 			      cell.setCellStyle(full);
-			      cell = datesRow.createCell(1);
+			      
+			      cell = datesRow.createCell(2);
+		          sheet.addMergedRegion(new CellRangeAddress(3,3,2,3));
 			      cell.setCellValue(" ");
 			      cell.setCellStyle(full);
-			      cell = datesRow.createCell(2);
+			      
+			      cell = datesRow.createCell(4);
+		          sheet.addMergedRegion(new CellRangeAddress(3,3,4,5));
 			      cell.setCellValue("To Date :" + eDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 			      cell.setCellStyle(full);
 			      int i =4;
@@ -689,25 +710,25 @@ public class ReportService {
 				Row userRow = sheet.createRow(i);
 			      i++;
 			      cell = userRow.createCell(0);
-			      cell.setCellValue("Name : ");
+		          sheet.addMergedRegion(new CellRangeAddress(4,4,0,5));
+			      cell.setCellValue("Name : "+user.getFirstName()+" " + user.getLastName());
 			      cell.setCellStyle(fullBold);
-			      cell = userRow.createCell(1);
-			      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
-			      cell.setCellStyle(fullBold);
-			      cell = userRow.createCell(2);
-			      cell.setCellValue(" ");
-			      cell.setCellStyle(full);
+
 				Row headingsRow = sheet.createRow(i);
 			      i++;
 			      cell = headingsRow.createCell(0);
+		          sheet.addMergedRegion(new CellRangeAddress(5,5,0,1));
 			      cell.setCellValue("Main safe");
 			      cell.setCellStyle(fullBold);
-			      cell = headingsRow.createCell(1);
+			      cell = headingsRow.createCell(2);
+		          sheet.addMergedRegion(new CellRangeAddress(5,5,2,3));
 			      cell.setCellValue("Change Needed");
 			      cell.setCellStyle(fullBold);
-			      cell = headingsRow.createCell(2);
+			      cell = headingsRow.createCell(4);
+		          sheet.addMergedRegion(new CellRangeAddress(5,5,4,5));
 			      cell.setCellValue("Main Safe");
 			      cell.setCellStyle(fullBold);
+			      
 			      
 			  	Row headingsRow1 = sheet.createRow(i);
 			      i++;
@@ -730,8 +751,49 @@ public class ReportService {
 			      cell.setCellValue("");
 			      cell.setCellStyle(fullBold);
 			      
-//				for(ChangedCurrencyDto c:changes) {
-//					// printing the Changed values 
+				for(ChangedCurrencyDto c:changes) {
+					// printing the Changed values 
+					Row valuesRow = sheet.createRow(i);
+					i++;
+					cell = valuesRow.createCell(0);
+				    cell.setCellValue(c.getCurrency());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(2);
+				    cell.setCellValue(c.getChangeNeeded());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(4);
+				    cell.setCellValue(c.getDepositedValue());
+				    cell.setCellStyle(full);
+					}
+					
+				}
+			//Comparing with Current balance of requested safe when c1 becomes the last record 
+//				else{
+//				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
+//				Row userRow = sheet.createRow(i);
+//			      i++;
+//			      cell = userRow.createCell(0);
+//			      cell.setCellValue("Name : ");
+//			      cell.setCellStyle(fullBold);
+//			      cell = userRow.createCell(1);
+//			      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
+//			      cell.setCellStyle(fullBold);
+//			      cell = userRow.createCell(2);
+//			      cell.setCellValue(" ");
+//			      cell.setCellStyle(full);
+//				Row headingsRow = sheet.createRow(i);
+//			      i++;
+//			      cell = headingsRow.createCell(0);
+//			      cell.setCellValue("Denominations");
+//			      cell.setCellStyle(fullBold);
+//			      cell = headingsRow.createCell(1);
+//			      cell.setCellValue("Change Needed");
+//			      cell.setCellStyle(fullBold);
+//			      cell = headingsRow.createCell(2);
+//			      cell.setCellValue("Deposited Value");
+//			      cell.setCellStyle(fullBold);
+//				for(ChangedCurrencyDto c:lastChanges) {
+//					
 //					Row valuesRow = sheet.createRow(i);
 //					i++;
 //					cell = valuesRow.createCell(0);
@@ -744,49 +806,8 @@ public class ReportService {
 //				    cell.setCellValue(c.getDepositedValue());
 //				    cell.setCellStyle(full);
 //					}
-					
-				}
-			//Comparing with Current balance of requested safe when c1 becomes the last record 
-				else{
-				List<ChangedCurrencyDto> lastChanges = c1.compareCurrentBal(vD);
-				Row userRow = sheet.createRow(i);
-			      i++;
-			      cell = userRow.createCell(0);
-			      cell.setCellValue("Name : ");
-			      cell.setCellStyle(fullBold);
-			      cell = userRow.createCell(1);
-			      cell.setCellValue(user.getFirstName()+" " + user.getLastName());
-			      cell.setCellStyle(fullBold);
-			      cell = userRow.createCell(2);
-			      cell.setCellValue(" ");
-			      cell.setCellStyle(full);
-				Row headingsRow = sheet.createRow(i);
-			      i++;
-			      cell = headingsRow.createCell(0);
-			      cell.setCellValue("Denominations");
-			      cell.setCellStyle(fullBold);
-			      cell = headingsRow.createCell(1);
-			      cell.setCellValue("Change Needed");
-			      cell.setCellStyle(fullBold);
-			      cell = headingsRow.createCell(2);
-			      cell.setCellValue("Deposited Value");
-			      cell.setCellStyle(fullBold);
-				for(ChangedCurrencyDto c:lastChanges) {
-					
-					Row valuesRow = sheet.createRow(i);
-					i++;
-					cell = valuesRow.createCell(0);
-				    cell.setCellValue(c.getCurrency());
-				    cell.setCellStyle(full);
-				    cell = valuesRow.createCell(1);
-				    cell.setCellValue(c.getChangeNeeded());
-				    cell.setCellStyle(full);
-				    cell = valuesRow.createCell(2);
-				    cell.setCellValue(c.getDepositedValue());
-				    cell.setCellStyle(full);
-					}
-				
-				}
+//				
+//				}
 				i++;
 				j++;
 			}
