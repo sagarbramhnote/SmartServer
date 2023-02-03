@@ -154,7 +154,8 @@ public class StoreInfoService {
 		storeInfo.setAccountNumber(infoRequest.getAccountNumber());
 		storeInfo.setMinimumBalance(infoRequest.getMinimumBalance());
 		storeInfo.setStoreName(infoRequest.getStoreName());
-		storeInfo.setConfigured(infoRequest.isConfigured());
+		storeInfo.setStatus(infoRequest.isStatus());
+
 
 		
 		storeInfoRepository.save(storeInfo);

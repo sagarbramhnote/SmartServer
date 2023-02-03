@@ -57,6 +57,9 @@ public class StoreInfoResponse {
 	
 	private int totalLocks;
 	
+	private boolean status;
+
+	
 
 	
 	public Long getId() {
@@ -161,6 +164,14 @@ public class StoreInfoResponse {
 	}
 	
 	
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 	public List<Long> getBillValidatorIds() {
 		return billValidatorIds;
