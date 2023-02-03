@@ -103,7 +103,8 @@ public class UserService {
 
 		for (UserInfo userInfo : users) {
 			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-					userInfo.getRole().getName(), userInfo.isActive()));
+					userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+					userInfo.getStoreInfo().getStoreName()));
 		}
 		return infoResponses;
 	}
