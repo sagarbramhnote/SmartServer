@@ -231,6 +231,16 @@ public class UserService {
 		}
 		return infoResponses;
 	}
+	
+	public List<UserInfoResponse> findUserbyRolesss(RolesDto rolesDto,String storeInfo) {
+		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_NameIn(storeInfo,rolesDto.getRoles());
+		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+		for (UserInfo userInfo : users) {
+			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+					userInfo.getRole().getName(), userInfo.isActive()));
+		}
+		return infoResponses;
+	}
 
 	public List<RoleDto> findAllRoles() {
 		// TODO Auto-generated method stub
