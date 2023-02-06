@@ -105,6 +105,11 @@ public class UserInfoController {
 	public List<UserInfoResponse> findUserbyRoles(@RequestBody RolesDto rolesDto) {
 		return userService.findUserbyRoles(rolesDto);
 	}
+	
+	@RequestMapping(value = "/users/roles/{storeName}", method = RequestMethod.POST)
+	public List<UserInfoResponse> findUserbyRoles(@RequestBody RolesDto rolesDto,@PathVariable("storeName") String storeName) {
+		return userService.findUserbyRolesss(rolesDto,storeName);
+	}
 
 	@RequestMapping(value = "/unassigned/users/roles", method = RequestMethod.POST)
 	public List<UserInfoResponse> findUnassignedUserbyRoles(@RequestBody RolesDto rolesDto) {
