@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import javax.management.relation.RoleInfo;
 
 import org.apache.poi.ss.util.CellRangeAddress;
-
+import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -34,9 +34,11 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -575,7 +577,7 @@ public class ReportService {
 			     Workbook workbook = new XSSFWorkbook();
 			     ByteArrayOutputStream out = new ByteArrayOutputStream();
 			     ){
-				Sheet sheet = workbook.createSheet("report");
+				Sheet sheet = workbook.createSheet("merge");
 			     Font headerFont = workbook.createFont();
 			     headerFont.setBold(true);
 			     
@@ -588,17 +590,26 @@ public class ReportService {
 			     fullBold.setBorderBottom(bS);
 			     fullBold.setBorderRight(bS);
 			     fullBold.setFont(headerFont);
+			     fullBold.setAlignment(HorizontalAlignment.CENTER);
+			     fullBold.setVerticalAlignment(VerticalAlignment.CENTER);
 			     CellStyle full = workbook.createCellStyle();
 			     full.setBorderBottom(bS);
 			     full.setBorderLeft(bS);
 			     full.setBorderRight(bS);
 			     full.setBorderTop(bS);
+			     full.setAlignment(HorizontalAlignment.CENTER);
+			     full.setVerticalAlignment(VerticalAlignment.CENTER);
 			     CellStyle leftRight = workbook.createCellStyle();
 			     leftRight.setBorderLeft(bS);
 
 			     
 			     Row headerRow1 = sheet.createRow(0);	
 			     sheet.addMergedRegion(new CellRangeAddress(0,0,0,5));
+			     CellRangeAddress region = new CellRangeAddress(0, 0, 0, 5);
+			     RegionUtil.setBorderTop(BorderStyle.THIN, region, sheet);
+			     RegionUtil.setBorderBottom(BorderStyle.THIN, region, sheet);
+			     RegionUtil.setBorderLeft(BorderStyle.THIN, region, sheet);
+			     RegionUtil.setBorderRight(BorderStyle.THIN, region, sheet);
 			     Cell cell1 = headerRow1.createCell(0);
 			     cell1.setCellValue("STANDBANKREPORT_"+vD.getType());
 			     cell1.setCellStyle(fullBold);
@@ -606,16 +617,31 @@ public class ReportService {
 			     Row headerRow = sheet.createRow(1);
 			     Cell cellstore = headerRow.createCell(0);
 		          sheet.addMergedRegion(new CellRangeAddress(1,1,0,1));
+				     CellRangeAddress region1 = new CellRangeAddress(1,1,0,1);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region1, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region1, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region1, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region1, sheet);
 		          cellstore.setCellValue("Store Name");
 		          cellstore.setCellStyle(fullBold);
 			      
 		          Cell cellstore2 = headerRow.createCell(2);
 		          sheet.addMergedRegion(new CellRangeAddress(1,1,2,3));
+		          CellRangeAddress region2 = new CellRangeAddress(1,1,2,3);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region2, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region2, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region2, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region2, sheet);
 		          cellstore2.setCellValue("Store corp No");
 		          cellstore2.setCellStyle(fullBold);
 			      
 			      Cell cellstore4 = headerRow.createCell(4);
 		          sheet.addMergedRegion(new CellRangeAddress(1,1,4,5));
+		          CellRangeAddress region3 = new CellRangeAddress(1,1,4,5);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region3, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region3, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region3, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region3, sheet);
 		          cellstore4.setCellValue("Serial No");
 		          cellstore4.setCellStyle(fullBold);
 			      
@@ -623,16 +649,31 @@ public class ReportService {
 			      Row detailsRow = sheet.createRow(2);
 			    		Cell cell = detailsRow.createCell(0);
 			            sheet.addMergedRegion(new CellRangeAddress(2,2,0,1));
+			            CellRangeAddress region4 = new CellRangeAddress(2,2,0,1);
+					     RegionUtil.setBorderTop(BorderStyle.THIN, region4, sheet);
+					     RegionUtil.setBorderBottom(BorderStyle.THIN, region4, sheet);
+					     RegionUtil.setBorderLeft(BorderStyle.THIN, region4, sheet);
+					     RegionUtil.setBorderRight(BorderStyle.THIN, region4, sheet);
 			    		cell.setCellValue(storeName);
 			    		cell.setCellStyle(full);
 
 			    		 cell = detailsRow.createCell(2);
 				         sheet.addMergedRegion(new CellRangeAddress(2,2,2,3));
+				         CellRangeAddress region5 = new CellRangeAddress(2,2,2,3);
+					     RegionUtil.setBorderTop(BorderStyle.THIN, region5, sheet);
+					     RegionUtil.setBorderBottom(BorderStyle.THIN, region5, sheet);
+					     RegionUtil.setBorderLeft(BorderStyle.THIN, region5, sheet);
+					     RegionUtil.setBorderRight(BorderStyle.THIN, region5, sheet);
 			    		 cell.setCellValue(storeInfoResponse.getCorpStoreNo());
 			    		 cell.setCellStyle(full);
 			    		 
 			    		 cell = detailsRow.createCell(4);
 				         sheet.addMergedRegion(new CellRangeAddress(2,2,4,5));
+				         CellRangeAddress region6 = new CellRangeAddress(2,2,4,5);
+					     RegionUtil.setBorderTop(BorderStyle.THIN, region6, sheet);
+					     RegionUtil.setBorderBottom(BorderStyle.THIN, region6, sheet);
+					     RegionUtil.setBorderLeft(BorderStyle.THIN, region6, sheet);
+					     RegionUtil.setBorderRight(BorderStyle.THIN, region6, sheet);
 				         String serialNo = storeInfoResponse.getSerialNumber();
 			    		 cell.setCellValue(serialNo);
 			    		 cell.setCellStyle(full);
@@ -642,16 +683,31 @@ public class ReportService {
 			      
 			      cell = datesRow.createCell(0);
 		          sheet.addMergedRegion(new CellRangeAddress(3,3,0,1));
+		          CellRangeAddress region7 = new CellRangeAddress(3,3,0,1);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region7, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region7, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region7, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region7, sheet);
 			      cell.setCellValue("From Date :" + sDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 			      cell.setCellStyle(full);
 			      
 			      cell = datesRow.createCell(2);
 		          sheet.addMergedRegion(new CellRangeAddress(3,3,2,3));
+		          CellRangeAddress region8 = new CellRangeAddress(3,3,2,3);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region8, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region8, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region8, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region8, sheet);
 			      cell.setCellValue(" ");
 			      cell.setCellStyle(full);
 			      
 			      cell = datesRow.createCell(4);
 		          sheet.addMergedRegion(new CellRangeAddress(3,3,4,5));
+		          CellRangeAddress region9 = new CellRangeAddress(3,3,4,5);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region9, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region9, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region9, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region9, sheet);
 			      cell.setCellValue("To Date :" + eDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 			      cell.setCellStyle(full);
 			      int i =4;
@@ -711,6 +767,11 @@ public class ReportService {
 			      i++;
 			      cell = userRow.createCell(0);
 		          sheet.addMergedRegion(new CellRangeAddress(4,4,0,5));
+		          CellRangeAddress region10 = new CellRangeAddress(4,4,0,5);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region10, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region10, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region10, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region10, sheet);
 			      cell.setCellValue("Name : "+user.getFirstName()+" " + user.getLastName());
 			      cell.setCellStyle(fullBold);
 
@@ -718,14 +779,29 @@ public class ReportService {
 			      i++;
 			      cell = headingsRow.createCell(0);
 		          sheet.addMergedRegion(new CellRangeAddress(5,5,0,1));
+		          CellRangeAddress region11 = new CellRangeAddress(5,5,0,1);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region11, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region11, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region11, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region11, sheet);
 			      cell.setCellValue("Main safe");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(2);
 		          sheet.addMergedRegion(new CellRangeAddress(5,5,2,3));
+		          CellRangeAddress region12 = new CellRangeAddress(5,5,2,3);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region12, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region12, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region12, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region12, sheet);
 			      cell.setCellValue("Change Needed");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(4);
 		          sheet.addMergedRegion(new CellRangeAddress(5,5,4,5));
+		          CellRangeAddress region13 = new CellRangeAddress(5,5,4,5);
+				     RegionUtil.setBorderTop(BorderStyle.THIN, region13, sheet);
+				     RegionUtil.setBorderBottom(BorderStyle.THIN, region13, sheet);
+				     RegionUtil.setBorderLeft(BorderStyle.THIN, region13, sheet);
+				     RegionUtil.setBorderRight(BorderStyle.THIN, region13, sheet);
 			      cell.setCellValue("Main Safe");
 			      cell.setCellStyle(fullBold);
 			      
@@ -758,11 +834,20 @@ public class ReportService {
 					cell = valuesRow.createCell(0);
 				    cell.setCellValue(c.getCurrency());
 				    cell.setCellStyle(full);
+					cell = valuesRow.createCell(1);
+				    cell.setCellValue(c.getCurrencytotal());
+				    cell.setCellStyle(full);
 				    cell = valuesRow.createCell(2);
 				    cell.setCellValue(c.getChangeNeeded());
 				    cell.setCellStyle(full);
-				    cell = valuesRow.createCell(4);
+				    cell = valuesRow.createCell(3);
 				    cell.setCellValue(c.getDepositedValue());
+				    cell.setCellStyle(full);
+					cell = valuesRow.createCell(4);
+				    cell.setCellValue(c.getCurrency());
+				    cell.setCellStyle(full);
+				    cell = valuesRow.createCell(5);
+				    cell.setCellValue(c.getNewcurrencytotal());
 				    cell.setCellStyle(full);
 					}
 					
