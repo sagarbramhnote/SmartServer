@@ -52,10 +52,10 @@ public class ReportController {
 		return reportService.rePrintReport(storeName);
 	}
 
-	@RequestMapping(value = "/insertBillsReport/{transactionNumber}", method = RequestMethod.GET)
-	public InsertBillsReportDto insertBillsReport(@PathVariable("transactionNumber") String transactionNumber) {
+	@RequestMapping(value = "/insertBillsReport/{transactionNumber}/{storeName}", method = RequestMethod.GET)
+	public InsertBillsReportDto insertBillsReport(@PathVariable("transactionNumber") String transactionNumber,@PathVariable("storeName") String storeName) {
 		
-		return reportService.insertBillsReport(transactionNumber);
+		return reportService.insertBillsReport(transactionNumber,storeName);
 	}
 
 	@RequestMapping(value = "/managerReport", method = RequestMethod.POST)

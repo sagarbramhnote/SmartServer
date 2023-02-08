@@ -172,9 +172,10 @@ public class ReportService {
 		return reportDto;
 	}
 
-	public InsertBillsReportDto insertBillsReport(String transactionNumber) {
+	public InsertBillsReportDto insertBillsReport(String transactionNumber,String storeName) {
 
-		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService();
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+		System.out.println("storeName"+storeInfoResponse);
 		InsertBillsReportDto reportDto = new InsertBillsReportDto();
 		reportDto.setStoreInfoResponse(storeInfoResponse);
 		reportDto.setReportName("Insert Bills Receipt");
@@ -766,42 +767,42 @@ public class ReportService {
 				Row userRow = sheet.createRow(i);
 			      i++;
 			      cell = userRow.createCell(0);
-		          sheet.addMergedRegion(new CellRangeAddress(4,4,0,5));
-		          CellRangeAddress region10 = new CellRangeAddress(4,4,0,5);
-				     RegionUtil.setBorderTop(BorderStyle.THIN, region10, sheet);
-				     RegionUtil.setBorderBottom(BorderStyle.THIN, region10, sheet);
-				     RegionUtil.setBorderLeft(BorderStyle.THIN, region10, sheet);
-				     RegionUtil.setBorderRight(BorderStyle.THIN, region10, sheet);
+//		          sheet.addMergedRegion(new CellRangeAddress(4,4,0,5));
+//		          CellRangeAddress region10 = new CellRangeAddress(4,4,0,5);
+//				     RegionUtil.setBorderTop(BorderStyle.THIN, region10, sheet);
+//				     RegionUtil.setBorderBottom(BorderStyle.THIN, region10, sheet);
+//				     RegionUtil.setBorderLeft(BorderStyle.THIN, region10, sheet);
+//				     RegionUtil.setBorderRight(BorderStyle.THIN, region10, sheet);
 			      cell.setCellValue("Name : "+user.getFirstName()+" " + user.getLastName());
 			      cell.setCellStyle(fullBold);
 
 				Row headingsRow = sheet.createRow(i);
 			      i++;
 			      cell = headingsRow.createCell(0);
-		          sheet.addMergedRegion(new CellRangeAddress(5,5,0,1));
-		          CellRangeAddress region11 = new CellRangeAddress(5,5,0,1);
-				     RegionUtil.setBorderTop(BorderStyle.THIN, region11, sheet);
-				     RegionUtil.setBorderBottom(BorderStyle.THIN, region11, sheet);
-				     RegionUtil.setBorderLeft(BorderStyle.THIN, region11, sheet);
-				     RegionUtil.setBorderRight(BorderStyle.THIN, region11, sheet);
+//		          sheet.addMergedRegion(new CellRangeAddress(5,5,0,1));
+//		          CellRangeAddress region11 = new CellRangeAddress(5,5,0,1);
+//				     RegionUtil.setBorderTop(BorderStyle.THIN, region11, sheet);
+//				     RegionUtil.setBorderBottom(BorderStyle.THIN, region11, sheet);
+//				     RegionUtil.setBorderLeft(BorderStyle.THIN, region11, sheet);
+//				     RegionUtil.setBorderRight(BorderStyle.THIN, region11, sheet);
 			      cell.setCellValue("Main safe");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(2);
-		          sheet.addMergedRegion(new CellRangeAddress(5,5,2,3));
-		          CellRangeAddress region12 = new CellRangeAddress(5,5,2,3);
-				     RegionUtil.setBorderTop(BorderStyle.THIN, region12, sheet);
-				     RegionUtil.setBorderBottom(BorderStyle.THIN, region12, sheet);
-				     RegionUtil.setBorderLeft(BorderStyle.THIN, region12, sheet);
-				     RegionUtil.setBorderRight(BorderStyle.THIN, region12, sheet);
+//		          sheet.addMergedRegion(new CellRangeAddress(5,5,2,3));
+//		          CellRangeAddress region12 = new CellRangeAddress(5,5,2,3);
+//				     RegionUtil.setBorderTop(BorderStyle.THIN, region12, sheet);
+//				     RegionUtil.setBorderBottom(BorderStyle.THIN, region12, sheet);
+//				     RegionUtil.setBorderLeft(BorderStyle.THIN, region12, sheet);
+//				     RegionUtil.setBorderRight(BorderStyle.THIN, region12, sheet);
 			      cell.setCellValue("Change Needed");
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(4);
-		          sheet.addMergedRegion(new CellRangeAddress(5,5,4,5));
-		          CellRangeAddress region13 = new CellRangeAddress(5,5,4,5);
-				     RegionUtil.setBorderTop(BorderStyle.THIN, region13, sheet);
-				     RegionUtil.setBorderBottom(BorderStyle.THIN, region13, sheet);
-				     RegionUtil.setBorderLeft(BorderStyle.THIN, region13, sheet);
-				     RegionUtil.setBorderRight(BorderStyle.THIN, region13, sheet);
+//		          sheet.addMergedRegion(new CellRangeAddress(5,5,4,5));
+//		          CellRangeAddress region13 = new CellRangeAddress(5,5,4,5);
+//				     RegionUtil.setBorderTop(BorderStyle.THIN, region13, sheet);
+//				     RegionUtil.setBorderBottom(BorderStyle.THIN, region13, sheet);
+//				     RegionUtil.setBorderLeft(BorderStyle.THIN, region13, sheet);
+//				     RegionUtil.setBorderRight(BorderStyle.THIN, region13, sheet);
 			      cell.setCellValue("Main Safe");
 			      cell.setCellStyle(fullBold);
 			      
@@ -838,10 +839,10 @@ public class ReportService {
 				    cell.setCellValue(c.getCurrencytotal());
 				    cell.setCellStyle(full);
 				    cell = valuesRow.createCell(2);
-				    cell.setCellValue(c.getChangeNeeded());
+				    cell.setCellValue(c.getDepositedValue());
 				    cell.setCellStyle(full);
 				    cell = valuesRow.createCell(3);
-				    cell.setCellValue(c.getDepositedValue());
+				    cell.setCellValue(c.getChangeNeeded());
 				    cell.setCellStyle(full);
 					cell = valuesRow.createCell(4);
 				    cell.setCellValue(c.getCurrency());
@@ -869,13 +870,22 @@ public class ReportService {
 //				Row headingsRow = sheet.createRow(i);
 //			      i++;
 //			      cell = headingsRow.createCell(0);
-//			      cell.setCellValue("Denominations");
+//			      cell.setCellValue("");
 //			      cell.setCellStyle(fullBold);
 //			      cell = headingsRow.createCell(1);
-//			      cell.setCellValue("Change Needed");
+//			      cell.setCellValue("");
 //			      cell.setCellStyle(fullBold);
 //			      cell = headingsRow.createCell(2);
-//			      cell.setCellValue("Deposited Value");
+//			      cell.setCellValue("In");
+//			      cell.setCellStyle(fullBold);
+//			      cell = headingsRow.createCell(3);
+//			      cell.setCellValue("Out");
+//			      cell.setCellStyle(fullBold);
+//			      cell = headingsRow.createCell(4);
+//			      cell.setCellValue("");
+//			      cell.setCellStyle(fullBold);
+//			      cell = headingsRow.createCell(5);
+//			      cell.setCellValue("");
 //			      cell.setCellStyle(fullBold);
 //				for(ChangedCurrencyDto c:lastChanges) {
 //					
@@ -884,11 +894,20 @@ public class ReportService {
 //					cell = valuesRow.createCell(0);
 //				    cell.setCellValue(c.getCurrency());
 //				    cell.setCellStyle(full);
-//				    cell = valuesRow.createCell(1);
-//				    cell.setCellValue(c.getChangeNeeded());
+//					cell = valuesRow.createCell(1);
+//				    cell.setCellValue(c.getCurrencytotal());
 //				    cell.setCellStyle(full);
 //				    cell = valuesRow.createCell(2);
 //				    cell.setCellValue(c.getDepositedValue());
+//				    cell.setCellStyle(full);
+//				    cell = valuesRow.createCell(3);
+//				    cell.setCellValue(c.getChangeNeeded());
+//				    cell.setCellStyle(full);
+//					cell = valuesRow.createCell(4);
+//				    cell.setCellValue(c.getCurrency());
+//				    cell.setCellStyle(full);
+//				    cell = valuesRow.createCell(5);
+//				    cell.setCellValue(c.getNewcurrencytotal());
 //				    cell.setCellStyle(full);
 //					}
 //				
