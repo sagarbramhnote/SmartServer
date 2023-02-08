@@ -104,6 +104,7 @@ public class DatabaseRunner implements CommandLineRunner {
 			storeInfo.setStoreName("XYZ");
 			storeInfo.setStartTime(LocalTime.now());
 			storeInfo.setEndTime(LocalTime.NOON);
+			storeInfo.setStatus(true);
 
 			storeInfoRepository.save(storeInfo);
 

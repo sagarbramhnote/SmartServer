@@ -133,7 +133,7 @@ public class ChangeValetDenominationsDto {
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("Dimes","$"+c.getOld_dimes(),"0","0","$"+(c.getOld_dimes()+Integer.valueOf(diff*-1))));
+			list.add(new ChangedCurrencyDto("Dimes","$"+c.getOld_dimes(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_dimes()+Integer.valueOf(diff*-1))));
 			currencytotal+=c.getOld_dimes();
 			newcurrencytotal+=c.getOld_dimes();
 

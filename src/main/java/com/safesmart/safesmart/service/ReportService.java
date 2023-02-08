@@ -579,6 +579,7 @@ public class ReportService {
 			     ByteArrayOutputStream out = new ByteArrayOutputStream();
 			     ){
 				Sheet sheet = workbook.createSheet("merge");
+				sheet.createFreezePane(4,4);
 			     Font headerFont = workbook.createFont();
 			     headerFont.setBold(true);
 			     
@@ -785,7 +786,7 @@ public class ReportService {
 //				     RegionUtil.setBorderBottom(BorderStyle.THIN, region11, sheet);
 //				     RegionUtil.setBorderLeft(BorderStyle.THIN, region11, sheet);
 //				     RegionUtil.setBorderRight(BorderStyle.THIN, region11, sheet);
-			      cell.setCellValue("Main safe");
+			      cell.setCellValue(vD.getType());
 			      cell.setCellStyle(fullBold);
 			      cell = headingsRow.createCell(2);
 //		          sheet.addMergedRegion(new CellRangeAddress(5,5,2,3));
@@ -803,7 +804,7 @@ public class ReportService {
 //				     RegionUtil.setBorderBottom(BorderStyle.THIN, region13, sheet);
 //				     RegionUtil.setBorderLeft(BorderStyle.THIN, region13, sheet);
 //				     RegionUtil.setBorderRight(BorderStyle.THIN, region13, sheet);
-			      cell.setCellValue("Main Safe");
+			      cell.setCellValue(vD.getType());
 			      cell.setCellStyle(fullBold);
 			      
 			      
