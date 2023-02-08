@@ -4,8 +4,8 @@ public class ChangedCurrencyDto {
 	
 	private String currency;
 	private String currencytotal;
-	private String changeNeeded;
 	private String depositedValue;
+	private String changeNeeded;
 	private String newcurrencytotal;
 	public String getCurrency() {
 		return currency;
@@ -42,19 +42,19 @@ public class ChangedCurrencyDto {
 	public void setNewcurrencytotal(String newcurrencytotal) {
 		this.newcurrencytotal = newcurrencytotal;
 	}
-	public ChangedCurrencyDto(String currency, String currencytotal, String changeNeeded, String depositedValue,
+	public ChangedCurrencyDto(String currency, String currencytotal, String depositedValue, String changeNeeded,
 			String newcurrencytotal) {
 		super();
 		this.currency = currency;
 		this.currencytotal = currencytotal;
-		this.changeNeeded = changeNeeded;
 		this.depositedValue = depositedValue;
+		this.changeNeeded = changeNeeded;
 		this.newcurrencytotal = newcurrencytotal;
 	}
 	@Override
 	public String toString() {
-		return "ChangedCurrencyDto [currency=" + currency + ", currencytotal=" + currencytotal + ", changeNeeded="
-				+ changeNeeded + ", depositedValue=" + depositedValue + ", newcurrencytotal=" + newcurrencytotal + "]";
+		return "ChangedCurrencyDto [currency=" + currency + ", currencytotal=" + currencytotal + ", depositedValue="
+				+ depositedValue + ", changeNeeded=" + changeNeeded + ", newcurrencytotal=" + newcurrencytotal + "]";
 	}
 
 
