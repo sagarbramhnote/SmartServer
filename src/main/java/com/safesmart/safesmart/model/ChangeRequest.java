@@ -160,6 +160,7 @@ public class ChangeRequest implements Serializable {
 		this.type = type;
 	}
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.MERGE)
 	public UserInfo getCreatedBy() {
 		return createdBy;

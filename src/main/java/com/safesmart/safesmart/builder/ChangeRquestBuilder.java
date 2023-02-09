@@ -27,13 +27,13 @@ public class ChangeRquestBuilder {
 		changeValetDenominations.setNew_dimes(changeValetDenominationsDto.getNew_dimes());
 		changeValetDenominations.setNew_nickels(changeValetDenominationsDto.getNew_nickels());
 		changeValetDenominations.setNew_quarters(changeValetDenominationsDto.getNew_quarters());
+		
 		changeValetDenominations.setOld_cents(changeValetDenominationsDto.getOld_cents());
-
 		changeValetDenominations.setOld_den_1$(changeValetDenominationsDto.getOld_den_1$());
 		changeValetDenominations.setOld_den_10$(changeValetDenominationsDto.getOld_den_10$());
 		changeValetDenominations.setOld_den_100$(changeValetDenominationsDto.getOld_den_100$());
 		changeValetDenominations.setOld_den_20$(changeValetDenominationsDto.getOld_den_20$());
-		changeValetDenominations.setOld_den_5$(changeValetDenominationsDto.getNew_den_5$());
+		changeValetDenominations.setOld_den_5$(changeValetDenominationsDto.getOld_den_5$());
 		changeValetDenominations.setOld_den_50$(changeValetDenominationsDto.getOld_den_50$());
 
 		changeValetDenominations.setOld_dimes(changeValetDenominationsDto.getOld_dimes());
@@ -69,17 +69,16 @@ public class ChangeRquestBuilder {
 		changeValetDenominationsDto.setNew_den_50$(changeValetDenominations.getNew_den_50$());
 		changeValetDenominationsDto.setNew_dimes(changeValetDenominations.getNew_dimes());
 		changeValetDenominationsDto.setNew_nickels(changeValetDenominations.getNew_nickels());
-
 		changeValetDenominationsDto.setNew_quarters(changeValetDenominations.getNew_quarters());
+		
 		changeValetDenominationsDto.setOld_cents(changeValetDenominations.getOld_cents());
-
 		changeValetDenominationsDto.setOld_den_1$(changeValetDenominations.getOld_den_1$());
 		changeValetDenominationsDto.setOld_den_10$(changeValetDenominations.getOld_den_10$());
 		changeValetDenominationsDto.setOld_den_100$(changeValetDenominations.getOld_den_100$());
 
 		changeValetDenominationsDto.setOld_den_20$(changeValetDenominations.getOld_den_20$());
 		changeValetDenominationsDto.setOld_den_5$(changeValetDenominations.getOld_den_5$());
-		changeValetDenominationsDto.setOld_den_50$(changeValetDenominations.getNew_den_50$());
+		changeValetDenominationsDto.setOld_den_50$(changeValetDenominations.getOld_den_50$());
 
 		changeValetDenominationsDto.setOld_dimes(changeValetDenominations.getOld_dimes());
 		changeValetDenominationsDto.setOld_nickels(changeValetDenominations.getOld_nickels());
