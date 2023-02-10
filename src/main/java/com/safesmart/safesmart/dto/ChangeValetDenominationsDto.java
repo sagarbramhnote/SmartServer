@@ -99,141 +99,141 @@ public class ChangeValetDenominationsDto {
 		
 		int diff = this.old_cents-c.old_cents;
 		if((diff)>0) {
-			list.add(new ChangedCurrencyDto("Pennies","$"+c.getOld_cents(),"0","$"+Integer.toString(diff),"$"+(c.getOld_cents()-Integer.valueOf(diff))));
+			list.add(new ChangedCurrencyDto("Pennies","$"+old_cents,"$"+0,"$"+Integer.toString(diff),"$"+(old_cents-Integer.valueOf(diff))));
 			changeNeeded+=diff;
-			currencytotal+=c.getOld_cents();
-			newcurrencytotal+=c.getOld_cents();
+			currencytotal+=old_cents;
+			newcurrencytotal+=old_cents;
 		}
 		if((diff)<=0) {
 			depositedValue+=diff*-1;
-			list.add(new ChangedCurrencyDto("Pennies","$"+c.getOld_cents(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_cents()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_cents();
-			newcurrencytotal+=c.getOld_cents();
+			list.add(new ChangedCurrencyDto("Pennies","$"+old_cents,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_cents+Integer.valueOf(diff*-1))));
+			currencytotal+=old_cents;
+			newcurrencytotal+=old_cents;
 		}
 		diff = this.old_nickels-c.old_nickels;
 		if((diff)>0) {
-			list.add(new ChangedCurrencyDto("Nickels","$"+c.getOld_nickels(),"0","$"+Integer.toString(diff),"$"+(c.getOld_nickels()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_nickels();
-			newcurrencytotal+=c.getOld_nickels();
+			list.add(new ChangedCurrencyDto("Nickels","$"+old_nickels,"$"+0,"$"+Integer.toString(diff),"$"+(old_nickels-Integer.valueOf(diff))));
+			currencytotal+=old_nickels;
+			newcurrencytotal+=old_nickels;
 			changeNeeded+=diff;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("Nickels","$"+c.getOld_nickels(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_nickels()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_nickels();
-			newcurrencytotal+=c.getOld_nickels();
+			list.add(new ChangedCurrencyDto("Nickels","$"+old_nickels,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_nickels+Integer.valueOf(diff*-1))));
+			currencytotal+=old_nickels;
+			newcurrencytotal+=old_nickels;
 
 		}
 		diff= this.old_dimes-c.old_dimes;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("Dimes","$"+c.getOld_dimes(),"0","$"+Integer.toString(diff),"$"+(c.getOld_dimes()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_dimes();
-			newcurrencytotal+=c.getOld_dimes();
+			list.add(new ChangedCurrencyDto("Dimes","$"+old_dimes,"$"+0,"$"+Integer.toString(diff),"$"+(old_dimes-Integer.valueOf(diff))));
+			currencytotal+=old_dimes;
+			newcurrencytotal+=old_dimes;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("Dimes","$"+c.getOld_dimes(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_dimes()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_dimes();
-			newcurrencytotal+=c.getOld_dimes();
+			list.add(new ChangedCurrencyDto("Dimes","$"+old_dimes,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_dimes+Integer.valueOf(diff*-1))));
+			currencytotal+=old_dimes;
+			newcurrencytotal+=old_dimes;
 
 		}
 		diff = this.old_quarters -c.old_quarters;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("Quarters","$"+c.getOld_quarters(),"0","$"+Integer.toString(diff),"$"+(c.getOld_quarters()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_quarters();
-			newcurrencytotal+=c.getOld_quarters();
+			list.add(new ChangedCurrencyDto("Quarters","$"+old_quarters,"$"+0,"$"+Integer.toString(diff),"$"+(old_quarters-Integer.valueOf(diff))));
+			currencytotal+=old_quarters;
+			newcurrencytotal+=old_quarters;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("Quarters","$"+c.getOld_quarters(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_quarters()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_quarters();
-			newcurrencytotal+=c.getOld_quarters();
+			list.add(new ChangedCurrencyDto("Quarters","$"+old_quarters,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_quarters+Integer.valueOf(diff*-1))));
+			currencytotal+=old_quarters;
+			newcurrencytotal+=old_quarters;
 
 		}
 		diff = this.old_den_1$-c.old_den_1$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$1","$"+c.getOld_den_1$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_1$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_1$();
-			newcurrencytotal+=c.getOld_den_1$();
+			list.add(new ChangedCurrencyDto("$1","$"+old_den_1$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_1$-Integer.valueOf(diff))));
+			currencytotal+=old_den_1$;
+			newcurrencytotal+=old_den_1$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$1","$"+c.getOld_den_1$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_1$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_1$();
-			newcurrencytotal+=c.getOld_den_1$();
+			list.add(new ChangedCurrencyDto("$1","$"+old_den_1$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_1$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_1$;
+			newcurrencytotal+=old_den_1$;
 
 		}
 		diff = this.old_den_5$-c.old_den_5$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$5","$"+c.getOld_den_5$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_5$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_5$();
-			newcurrencytotal+=c.getOld_den_5$();
+			list.add(new ChangedCurrencyDto("$5","$"+old_den_5$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_5$-Integer.valueOf(diff))));
+			currencytotal+=old_den_5$;
+			newcurrencytotal+=old_den_5$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$5","$"+c.getOld_den_5$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_5$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_5$();
-			newcurrencytotal+=c.getOld_den_5$();
+			list.add(new ChangedCurrencyDto("$5","$"+old_den_5$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_5$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_5$;
+			newcurrencytotal+=old_den_5$;
 
 		}
 		diff = this.old_den_10$-c.old_den_10$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$10","$"+c.getOld_den_10$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_10$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_10$();
-			newcurrencytotal+=c.getOld_den_10$();
+			list.add(new ChangedCurrencyDto("$10","$"+old_den_10$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_10$-Integer.valueOf(diff))));
+			currencytotal+=old_den_10$;
+			newcurrencytotal+=old_den_10$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$10","$"+c.getOld_den_10$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_10$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_10$();
-			newcurrencytotal+=c.getOld_den_10$();
+			list.add(new ChangedCurrencyDto("$10","$"+old_den_10$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_10$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_10$;
+			newcurrencytotal+=old_den_10$;
 
 		}
 		diff = this.old_den_20$-c.old_den_20$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$20","$"+c.getOld_den_20$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_20$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_20$();
-			newcurrencytotal+=c.getOld_den_20$();
+			list.add(new ChangedCurrencyDto("$20","$"+old_den_20$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_20$-Integer.valueOf(diff))));
+			currencytotal+=old_den_20$;
+			newcurrencytotal+=old_den_20$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$20","$"+c.getOld_den_20$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_20$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_20$();
-			newcurrencytotal+=c.getOld_den_20$();
+			list.add(new ChangedCurrencyDto("$20","$"+old_den_20$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_20$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_20$;
+			newcurrencytotal+=old_den_20$;
 
 		}
 		diff = this.old_den_50$-c.old_den_50$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$50","$"+c.getOld_den_50$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_50$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_50$();
-			newcurrencytotal+=c.getOld_den_50$();
+			list.add(new ChangedCurrencyDto("$50","$"+old_den_50$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_50$-Integer.valueOf(diff))));
+			currencytotal+=old_den_50$;
+			newcurrencytotal+=old_den_50$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$50","$"+c.getOld_den_50$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_50$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_50$();
-			newcurrencytotal+=c.getOld_den_50$();
+			list.add(new ChangedCurrencyDto("$50","$"+old_den_50$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_50$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_50$;
+			newcurrencytotal+=old_den_50$;
 
 		}
 		diff = this.old_den_100$-c.old_den_100$;
 		if((diff)>0) {
 			changeNeeded+=diff;
-			list.add(new ChangedCurrencyDto("$100","$"+c.getOld_den_100$(),"0","$"+Integer.toString(diff),"$"+(c.getOld_den_100$()-Integer.valueOf(diff))));
-			currencytotal+=c.getOld_den_100$();
-			newcurrencytotal+=c.getOld_den_100$();
+			list.add(new ChangedCurrencyDto("$100","$"+old_den_100$,"$"+0,"$"+Integer.toString(diff),"$"+(old_den_100$-Integer.valueOf(diff))));
+			currencytotal+=old_den_100$;
+			newcurrencytotal+=old_den_100$;
 		}
 		if((diff)<=0) {
 			depositedValue+=(diff*-1);
-			list.add(new ChangedCurrencyDto("$100","$"+c.getOld_den_100$(),"$"+Integer.toString(diff*-1),"0","$"+(c.getOld_den_100$()+Integer.valueOf(diff*-1))));
-			currencytotal+=c.getOld_den_100$();
-			newcurrencytotal+=c.getOld_den_100$();
+			list.add(new ChangedCurrencyDto("$100","$"+old_den_100$,"$"+Integer.toString(diff*-1),"$"+0,"$"+(old_den_100$+Integer.valueOf(diff*-1))));
+			currencytotal+=old_den_100$;
+			newcurrencytotal+=old_den_100$;
 
 		}
 		
