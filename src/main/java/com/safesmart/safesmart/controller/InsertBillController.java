@@ -24,7 +24,7 @@ public class InsertBillController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void add(@RequestBody InsertBillRequest insertBillRequest) {
-	   // insertBillRequest.dollerValidation();
+	    insertBillRequest.dollerValidation();
 		insertbillService.add(insertBillRequest);
 	}
 
