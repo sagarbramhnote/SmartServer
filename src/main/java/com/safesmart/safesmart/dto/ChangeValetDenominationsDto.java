@@ -3,8 +3,6 @@ package com.safesmart.safesmart.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Cell;
-
 import com.safesmart.safesmart.model.ChangeRequest;
 import com.safesmart.safesmart.model.ValetDenominations;
 
@@ -343,110 +341,6 @@ public class ChangeValetDenominationsDto {
 //			
 			return list;
 		}
-	
-		// change request
-          public List<ChangedCurrencyDto> compareCurrentBal(ChangeRequest c){
-			
-			List<ChangedCurrencyDto> list = new ArrayList<ChangedCurrencyDto>();
-			int changeNeeded = 0;
-			int depositedValue = 0;
-			
-//			int diff = this.old_cents-c.getCents();
-//			if((diff)>0) {
-//				list.add(new ChangedCurrencyDto("Pennies","$"+Integer.toString(diff),"0"));
-//				changeNeeded+=diff;
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("Pennies","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_nickels-c.getNickels();
-//			if((diff)>0) {
-//				list.add(new ChangedCurrencyDto("Nickels","$"+Integer.toString(diff),"0"));
-//				changeNeeded+=diff;
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("Nickels","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff= this.old_dimes-c.getDimes();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("Dimes","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("Dimes","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_quarters -c.getQuarters();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("Quarters","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("Quarters","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_den_1$-c.getDen_1$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$1","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$1","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_den_5$-c.getDen_5$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$5","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) { 
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$5","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_den_10$-c.getDen_10$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$10","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$10","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_den_20$-c.getDen_20$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$20","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$20","0","$"+Integer.toString(diff*-1)));
-//			}
-//			diff = this.old_den_50$-c.getDen_50$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$50","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				changeNeeded+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$50","$"+Integer.toString(diff*-1),"0"));
-//			}
-//			diff = this.old_den_100$-c.getDen_100$();
-//			if((diff)>0) {
-//				changeNeeded+=diff;
-//				list.add(new ChangedCurrencyDto("$100","$"+Integer.toString(diff),"0"));
-//			}
-//			if((diff)<0) {
-//				depositedValue+=(diff*-1);
-//				list.add(new ChangedCurrencyDto("$100","0","$"+Integer.toString(diff*-1)));
-//			}
-//			
-//			list.add(new ChangedCurrencyDto("ALL" ,"$"+Integer.toString(changeNeeded),"$"+Integer.toString(depositedValue)));
-//			
-			return list;
-		}
-
 
 	public String getUpdatedTime() {
 		return updatedTime;
