@@ -99,15 +99,15 @@ public class ReportController {
 		}
 		
 	//	 Exporting  change request reports to excel 
-		@RequestMapping(value = "/changeRequestReportExport/{storeName}/{orderStatus}/{stDate}/{endDate}",method = RequestMethod.GET)
-		public ResponseEntity<InputStreamResource> changeRequestReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("stDate") String  stDate,@PathVariable("endDate")String endDate,@PathVariable("orderStatus") String orderStatus) throws IOException {
+		@RequestMapping(value = "/changeRequestReportExport/{storeName}/{safeType}/{stDate}/{endDate}",method = RequestMethod.GET)
+		public ResponseEntity<InputStreamResource> changeRequestReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("stDate") String  stDate,@PathVariable("endDate")String endDate,@PathVariable("safeType") String safeType) throws IOException {
 			DateRangedto dateRangedto = new DateRangedto() ;
 			System.out.println("sDate is " + stDate);
 			System.out.println("end Date is " +endDate);
 			dateRangedto.setStartDate(stDate);
 			dateRangedto.setEndDate(endDate);
 			dateRangedto.validateRequest();
-			ByteArrayInputStream in = reportService.changeRequestReportExport(storeName,orderStatus,dateRangedto);
+			ByteArrayInputStream in = reportService.changeRequestReportExport(storeName,safeType,dateRangedto);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Disposition", "attachment; filename-report.xlsx");
 			 return ResponseEntity
