@@ -579,8 +579,8 @@ public class ReportService {
 			     Workbook workbook = new XSSFWorkbook();
 			     ByteArrayOutputStream out = new ByteArrayOutputStream();
 			     ){
-				Sheet sheet = workbook.createSheet("merge");
-				sheet.createFreezePane(4,4);
+				Sheet sheet = workbook.createSheet("report");
+				sheet.createFreezePane(6,4);
 			     Font headerFont = workbook.createFont();
 			     headerFont.setBold(true);
 			     
@@ -927,11 +927,11 @@ public class ReportService {
 }
 	
 	   //Change Request report	
-      public  ByteArrayInputStream changeRequestReportExport(String storeName,String safeType, DateRangedto dateRangedto) throws IOException {
+      public  ByteArrayInputStream changeRequestReportExport(String storeName,String order_status, DateRangedto dateRangedto) throws IOException {
 
 		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
-		ChangeRequest cR = changeRequestRepo.findByType(safeType);
+		ChangeRequest cR = changeRequestRepo.findByOrderStatus(order_status);
 		List<Long> userIds = storeInfoResponse.getUserIds();
 		LocalDate sDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate eDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -947,7 +947,7 @@ public class ReportService {
 			     Workbook workbook = new XSSFWorkbook();
 			     ByteArrayOutputStream out = new ByteArrayOutputStream();
 			     ){
-				Sheet sheet = workbook.createSheet("merge");
+				Sheet sheet = workbook.createSheet("report");
 				sheet.createFreezePane(4,4);
 			     Font headerFont = workbook.createFont();
 			     headerFont.setBold(true);
