@@ -83,6 +83,30 @@ public class DatabaseRunner implements CommandLineRunner {
 			truckFeatures.add("OTPScreen");
 			truckFeatures.add("Valut");
 			truck.setFeatures(truckFeatures);
+			
+			Role owner = new Role();
+			owner.setName("OWNER");
+			owner.setDescription("owner");
+			owner.setFeatures(all);
+			owner.setWebModule(all);
+			
+			Role store_admin = new Role();
+			store_admin.setName("STORE_ADMIN");
+			store_admin.setDescription("store_admin");
+			store_admin.setFeatures(all);
+			store_admin.setWebModule(all);
+			
+			Role super_admin = new Role();
+			super_admin.setName("SUPER_ADMIN");
+			super_admin.setDescription("super_admin");
+			super_admin.setFeatures(all);
+			super_admin.setWebModule(all);
+			
+			Role director_of_operation = new Role();
+			director_of_operation.setName("DIRECTOR_OF_OPERATION");
+			director_of_operation.setDescription("director_of_operation");
+			director_of_operation.setFeatures(all);
+			director_of_operation.setWebModule(all);
 
 			roles = new ArrayList<Role>();
 			roles.add(adminRole);
@@ -90,6 +114,11 @@ public class DatabaseRunner implements CommandLineRunner {
 			roles.add(manager);
 			roles.add(shiftmanager);
 			roles.add(truck);
+			roles.add(owner);
+			roles.add(store_admin);
+			roles.add(super_admin);
+			roles.add(director_of_operation);
+
 			roleRepository.saveAll(roles);
 
 			SequenceInfo sequenceInfo = new SequenceInfo();
