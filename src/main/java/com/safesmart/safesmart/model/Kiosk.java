@@ -15,6 +15,7 @@ public class Kiosk {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String kioskId;
 	
 	private String kioskName;
@@ -34,6 +35,8 @@ public class Kiosk {
 	private String ipAddress;
 	
 	private String macAddress;
+	
+	private String port;
 	
 	private boolean active;
 	
@@ -183,6 +186,18 @@ public class Kiosk {
 
 	public void setScreenSize(String screenSize) {
 		this.screenSize = screenSize;
+	}
+
+
+
+	public String getPort() {
+		return port;
+	}
+
+
+
+	public void setPort(String port) {
+		this.port = port;
 	}
 
 
