@@ -211,6 +211,14 @@ public class Kiosk {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+
+
+	public void add(Long id2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 
