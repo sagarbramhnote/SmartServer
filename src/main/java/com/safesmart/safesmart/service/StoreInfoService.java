@@ -255,7 +255,7 @@ public class StoreInfoService {
 
 
 	public List<StoreInfoResponse> findUnassignedStores() {
-		List<StoreInfo> storeInfos = storeInfoRepository.findByConfigured(true);
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
       
 		return storeInfoBuilder.toDtoList(storeInfos);
 	}

@@ -1,5 +1,7 @@
 package com.safesmart.safesmart.controller;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
 import com.safesmart.safesmart.dto.PrinterResponse;
+import com.safesmart.safesmart.dto.StoreInfoRequest;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.service.KioskService;
 
 @RestController
@@ -55,6 +60,17 @@ public class KioskController {
 	@RequestMapping(value = "/ip", method = RequestMethod.GET)
 	public String ipss() {		
 		return kioskService.ipss();
+	}
+	
+	@RequestMapping(value = "/{storeName}", method = RequestMethod.GET)
+	public StoreInfoResponse updateStoreInfo(@PathVariable("storeName") String storeName) {
+		return kioskService.kioskInfo(storeName);
+
+	}
+	
+	@RequestMapping(value = "/macInfo", method = RequestMethod.GET)
+	public List<KioskResponse> KioskInfosys() throws SocketException, UnknownHostException {
+		return kioskService.KioskInfosys();
 	}
 	
 }
