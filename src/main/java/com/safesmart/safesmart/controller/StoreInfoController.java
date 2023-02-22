@@ -85,6 +85,11 @@ public class StoreInfoController {
 	public StoreInfoResponse findByStoreName(@PathVariable("storeName") String storeName) {
 		return storeInfoService.findByStoreName(storeName);
 	}
+	
+	@RequestMapping(value = "/forkiosk/{storeName}", method = RequestMethod.GET)
+	public StoreInfoResponse findByStoreNamee(@PathVariable("storeName") String storeName) {
+		return storeInfoService.findByStoreNamee(storeName);
+	}
 
 	@RequestMapping(value = "/{storeId}", method = RequestMethod.PUT)
 	public void updateStoreInfo(@PathVariable("storeId") Long storeId, @RequestBody StoreInfoRequest infoRequest) {
@@ -124,6 +129,16 @@ public class StoreInfoController {
 	@RequestMapping(value = "/all/unassigned", method = RequestMethod.GET)
 	public List<StoreInfoResponse> findUnassignedStores() {
 		return storeInfoService.findUnassignedStores();
+	}
+	
+	@RequestMapping(value = "/all/unassignedusers", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findUnassignedStoresforUser() {
+		return storeInfoService.findUnassignedStoresforUser();
+	}
+	
+	@RequestMapping(value = "/all/unassignedKBPL", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findUnassignedStoresforKBPL() {
+		return storeInfoService.findUnassignedStoresforKBPL();
 	}
 	
 	@RequestMapping(value = "/all/assigned", method = RequestMethod.GET)

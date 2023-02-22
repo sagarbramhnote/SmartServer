@@ -11,7 +11,10 @@ public enum CommonExceptionMessage {
 	PERMISSION_NOTEXISTS(5,"You dont have permission to access this screen."),
 	NOTFOUND(6,"%1$ not found."),
 	VALIDATE_SIX_PIN(7, "Please enter only 6 digit PIN"),
-	INCORRECT_UserNameAndPassword(8,"UserName and Password is incorrect.");
+	INCORRECT_UserNameAndPassword(8,"UserName and Password is incorrect."),
+	ALREADY_ASSIGN(9,"Already Assign.");
+
+	
 
 
 	private int code;

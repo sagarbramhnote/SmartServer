@@ -73,4 +73,11 @@ public class KioskController {
 		return kioskService.KioskInfosys();
 	}
 	
+	@RequestMapping(value = "/assign/store/{storeId}/kiosk/{kioskId}", method = RequestMethod.GET)
+	public void assignStoretokiosk(@PathVariable(value = "storeId") Long storeId,
+			@PathVariable(value = "kioskId") Long kioskId) {
+
+		kioskService.assignStoretokiosk(storeId, kioskId);
+	}
+	
 }
