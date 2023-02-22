@@ -215,6 +215,28 @@ public class KioskService {
     		return infoResponses;
 		
 	}
+	
+	
+	public void assignStoretokiosk(Long storeId, Long kioskId) {
+		
+		StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
+
+		Optional<Kiosk> optional = kioskRepository.findById(kioskId);
+		
+		if (optional.isPresent()) {
+			Kiosk dbUser = optional.get();
+			if (storeInfo.getKiosk().isEmpty()) {
+				dbUser.setStoreinfok(storeInfo);
+			} else {
+				throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
+			}
+			
+			kioskRepository.save(dbUser);
+		   }	
+			else {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
+		}
+	}
 
 	
 }

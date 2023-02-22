@@ -110,7 +110,7 @@ public class StoreInfoService {
 
 		return storeInfoBuilder.toDtoList(storeInfos);
 	}
-
+	
 	public StoreInfoResponse findByStoreName(String storeName) {
 
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
@@ -120,23 +120,16 @@ public class StoreInfoService {
          }
 		return storeInfoBuilder.toDto(storeInfo);
 	}
-	
-//	public StoreInfoResponse findByStoreName(String storeName) {
-//
-//		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
-//
-//		if (storeInfo == null) {
-//			
-//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
-//		
-//		}
-//		if(storeInfo.getUsers() !=null) {
-//
-//		return storeInfoBuilder.toDto(storeInfo);
-//	}
-//		return storeInfoBuilder.toDto(storeInfo);
-//	}
-	
+
+	public StoreInfoResponse findByStoreNamee(String storeName) {
+
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
+		if (storeInfo == null) {
+			
+			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
+         }
+		return storeInfoBuilder.toDto(storeInfo);
+	}
 
 	public void updateStoreInfo(StoreInfoRequest infoRequest) {
 
@@ -258,6 +251,35 @@ public class StoreInfoService {
 		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
       
 		return storeInfoBuilder.toDtoList(storeInfos);
+	}
+	
+	public List<StoreInfoResponse> findUnassignedStoresforUser() {
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty()){
+					
+					infoResponses.add(storeInfoBuilder.toDto(userInfo));
+
+				}
+		 }
+		 return infoResponses;
+				
+	}
+	
+	public List<StoreInfoResponse> findUnassignedStoresforKBPL() {
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getKiosk().isEmpty() && userInfo.getBillValidator().isEmpty() && userInfo.getPrinter().isEmpty()
+						&& userInfo.getKiosk().isEmpty()){
+					
+					infoResponses.add(storeInfoBuilder.toDto(userInfo));
+
+				}
+		 }
+		 return infoResponses;
+				
 	}
 
 	public List<StoreInfoResponse> findAssignedStores() {
