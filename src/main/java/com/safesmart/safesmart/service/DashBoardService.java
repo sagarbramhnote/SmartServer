@@ -16,12 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.safesmart.safesmart.dto.EODReport;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.model.BillValidator;
+import com.safesmart.safesmart.model.ChangeRequest;
 import com.safesmart.safesmart.model.InsertBill;
 import com.safesmart.safesmart.model.Kiosk;
 import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Printer;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.model.ValetDenominations;
+import com.safesmart.safesmart.repository.ChangeRequestRepository;
 import com.safesmart.safesmart.repository.ChangeRquestDenominationsRepository;
 import com.safesmart.safesmart.repository.InsertBillRepository;
 import com.safesmart.safesmart.repository.SequenceInfoRepository;
@@ -68,6 +71,9 @@ public class DashBoardService {
 	
 	@Autowired
 	private BillValidatorService billValidatorService;
+	
+	@Autowired
+	private ChangeRequestRepository changeRequestRepo;
 
 	public List<EODReport> getEodReports(String storeName, boolean toDay) {
 		List<EODReport> eodReports=new ArrayList<>();
@@ -274,7 +280,93 @@ public class DashBoardService {
 	
 	}
 
-
+	public int getTotalStateBankBalance(String storeName, boolean toDay) {
+		StoreInfoResponse storeInfoResponse=storeInfoService.getStoreInfoService(storeName);
+		   List<Long> userIds = storeInfoResponse.getUserIds();
+		   System.out.println("----The userids are----"+userIds);
+		   UserInfo user;
+		   List<ValetDenominations> list = new ArrayList<>();
+		   List<ValetDenominations> shiftManagerList=new ArrayList<>();
+		   int mainSafeBalance = 0;
+		   int shiftMangerBalnce = 0;
+		   int standBankBalance;
+		   for (Long userid : userIds) {
+			   user = userInfoRepository.findById(userid).get();
+			   //MainSafe balance
+			   try {
+			ValetDenominations valetDenominations=valetDenominationsRepository.findByCreatedByAndType( user, "MAINSAFE");
+			list.add(valetDenominations);
+			Long mainsafelist=valetDenominations.getCreatedBy().getId();
+			 System.out.println("--------StandBank of MainSafe Information---------"+mainsafelist );
+			 
+			 for (ValetDenominations valetDenominations2 : list) {
+				 
+				 mainSafeBalance=valetDenominations2.getDen_1$()+valetDenominations2.getDen_10$()+valetDenominations2.getDen_5$()+valetDenominations2.getDen_20$()+
+						valetDenominations2.getDen_50$()+valetDenominations2.getDen_100$()+valetDenominations2.getDimes()+
+						valetDenominations2.getNickels()+valetDenominations2.getQuarters()+valetDenominations2.getCents();
+					System.out.println("  MainSafe Total balance  ="+mainSafeBalance);
+			}
+			   }catch (Exception e) {
+				System.out.println("their is no records"+e);
+			}
+			
+			 
+		   
+			 //Shiftmanager balance
+			   try {
+			 ValetDenominations shiftManagervaletDenominations=valetDenominationsRepository.findByCreatedByAndType( user, "SHIFTMANAGER");
+			 shiftManagerList.add(shiftManagervaletDenominations);
+           Long shiftManagersIds=shiftManagervaletDenominations.getCreatedBy().getId();
+           System.out.println("--------StandBank of ShiftManger Information---------"+shiftManagersIds );
+          // if(shiftManagervaletDenominations!=null) {
+          
+           for (ValetDenominations valetDenominations2 : shiftManagerList) {
+				 
+         	  shiftMangerBalnce=valetDenominations2.getDen_1$()+valetDenominations2.getDen_10$()+valetDenominations2.getDen_5$()+valetDenominations2.getDen_20$()+
+						valetDenominations2.getDen_50$()+valetDenominations2.getDen_100$()+valetDenominations2.getDimes()+
+						valetDenominations2.getNickels()+valetDenominations2.getQuarters()+valetDenominations2.getCents();
+					System.out.println("----ShiftManager Total Balance--- ="+shiftMangerBalnce);
+			}
+			   }catch (Exception e) {
+				System.out.println("their is no record"+e);
+			}
+			 
+		}
+		   standBankBalance=mainSafeBalance+shiftMangerBalnce;
+			return standBankBalance;
+		}
+//ChangeRequest Balance service methode for dashboard
+	public int getChageRequestBalance(String storeName) {
+		StoreInfoResponse storeInfoResponse=storeInfoService.getStoreInfoService(storeName);
+		   List<Long> userIds = storeInfoResponse.getUserIds();
+//		   Date date = new Date();
+//		    String strDateFormat = "hh:mm:ss a";
+//		    DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+//		    String formattedDate= dateFormat.format(date);
+//		    System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate);
+		    int changeRequestBalance=0;
+		    UserInfo user;
+		    for (Long userid : userIds) {
+		    	try {
+         	user = userInfoRepository.findById(userid).get();
+         	 ChangeRequest changeRequest=changeRequestRepo.findBycreatedByAndOrderStatus(user,"Ordered");
+         	 changeRequestBalance=changeRequest.getCents()+changeRequest.getDen_1$()+changeRequest.getDen_10$()+changeRequest.getDen_5$()+
+         			 changeRequest.getDen_20$()+changeRequest.getDen_50$()+changeRequest.getDen_100$()+changeRequest.getNickels()+
+         			 changeRequest.getQuarters();
+         	 //System.out.println("ChangeRequest details"+changeRequest);
+			}catch (Exception e) {
+				System.out.println("Their is no recors"+e);
+			}
+	
+		    }
+		  
+		return changeRequestBalance;
+	}
 		
 	
 }
+
+
+		
+	
+

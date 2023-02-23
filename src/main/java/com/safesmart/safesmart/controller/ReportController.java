@@ -42,20 +42,20 @@ public class ReportController {
 		return reportService.endOfDayReport(userId);
 	}
 
-	@RequestMapping(value = "/testPrintReport",method = RequestMethod.GET)
-	public ReportDto testPrintReport() {
-		return reportService.testPrintReport();
+	@RequestMapping(value = "/testPrintReport/{storeName}",method = RequestMethod.GET)
+	public ReportDto testPrintReport(@PathVariable("storeName") String storeName) {
+		return reportService.testPrintReport(storeName);
 	}
 
-	@RequestMapping(value = "/rePrintReceipt", method = RequestMethod.GET)
-	public ReprintReportDto rePrintReport() {
-		return reportService.rePrintReport();
+	@RequestMapping(value = "/rePrintReceipt/{storeName}", method = RequestMethod.GET)
+	public ReprintReportDto rePrintReport(@PathVariable("storeName") String storeName) {
+		return reportService.rePrintReport(storeName);
 	}
 
-	@RequestMapping(value = "/insertBillsReport/{transactionNumber}", method = RequestMethod.GET)
-	public InsertBillsReportDto insertBillsReport(@PathVariable("transactionNumber") String transactionNumber) {
+	@RequestMapping(value = "/insertBillsReport/{transactionNumber}/{storeName}", method = RequestMethod.GET)
+	public InsertBillsReportDto insertBillsReport(@PathVariable("transactionNumber") String transactionNumber,@PathVariable("storeName") String storeName) {
 		
-		return reportService.insertBillsReport(transactionNumber);
+		return reportService.insertBillsReport(transactionNumber,storeName);
 	}
 
 	@RequestMapping(value = "/managerReport", method = RequestMethod.POST)
@@ -99,15 +99,15 @@ public class ReportController {
 		}
 		
 	//	 Exporting  change request reports to excel 
-		@RequestMapping(value = "/changeRequestReportExport/{storeName}/{safeType}/{stDate}/{endDate}",method = RequestMethod.GET)
-		public ResponseEntity<InputStreamResource> changeRequestReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("stDate") String  stDate,@PathVariable("endDate")String endDate,@PathVariable("safeType") String safeType) throws IOException {
+		@RequestMapping(value = "/changeRequestReportExport/{storeName}/{order_status}/{stDate}/{endDate}",method = RequestMethod.GET)
+		public ResponseEntity<InputStreamResource> changeRequestReportDataExport(@PathVariable("storeName")String storeName, @PathVariable("stDate") String  stDate,@PathVariable("endDate")String endDate,@PathVariable("order_status") String order_status) throws IOException {
 			DateRangedto dateRangedto = new DateRangedto() ;
 			System.out.println("sDate is " + stDate);
 			System.out.println("end Date is " +endDate);
 			dateRangedto.setStartDate(stDate);
 			dateRangedto.setEndDate(endDate);
 			dateRangedto.validateRequest();
-			ByteArrayInputStream in = reportService.changeRequestReportExport(storeName,safeType,dateRangedto);
+			ByteArrayInputStream in = reportService.changeRequestReportExport(storeName,order_status,dateRangedto);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Disposition", "attachment; filename-report.xlsx");
 			 return ResponseEntity
@@ -142,7 +142,7 @@ public class ReportController {
 	
 	@RequestMapping(value = "/managerReport/{userId}",method = RequestMethod.POST)
 	public EmployeeReportDto managerReportData(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
-		dateRangedto.validateRequest1();
+		dateRangedto.validateRequest();
 		return reportService.managerReportData(userId,dateRangedto);
 	}
 	//Eod reports for charts

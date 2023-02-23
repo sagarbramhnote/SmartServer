@@ -85,6 +85,11 @@ public class StoreInfoController {
 	public StoreInfoResponse findByStoreName(@PathVariable("storeName") String storeName) {
 		return storeInfoService.findByStoreName(storeName);
 	}
+	
+	@RequestMapping(value = "/forkiosk/{storeName}", method = RequestMethod.GET)
+	public StoreInfoResponse findByStoreNamee(@PathVariable("storeName") String storeName) {
+		return storeInfoService.findByStoreNamee(storeName);
+	}
 
 	@RequestMapping(value = "/{storeId}", method = RequestMethod.PUT)
 	public void updateStoreInfo(@PathVariable("storeId") Long storeId, @RequestBody StoreInfoRequest infoRequest) {
@@ -126,10 +131,33 @@ public class StoreInfoController {
 		return storeInfoService.findUnassignedStores();
 	}
 	
+	@RequestMapping(value = "/all/unassignedusers", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findUnassignedStoresforUser() {
+		return storeInfoService.findUnassignedStoresforUser();
+	}
+	
+	@RequestMapping(value = "/all/unassignedKBPL", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findUnassignedStoresforKBPL() {
+		return storeInfoService.findUnassignedStoresforKBPL();
+	}
+	
 	@RequestMapping(value = "/all/assigned", method = RequestMethod.GET)
 	public List<StoreInfoResponse> findAssignedStores() {
 		return storeInfoService.findAssignedStores();
 	}
+	//get all assign stores based on status field
+	@RequestMapping(value = "/all/assignedStores", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStores1() {
+		return storeInfoService.findAssignedStores1();
+	}
+	
+	//get all storesnames without assign the users
+	@RequestMapping(value = "/all/assignedStoresunassignusers", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStoresUnassignedUsers() {
+		return storeInfoService.findAssignedStoresUnassignedUsers();
+	}
+	
+	
 	
 	//Find Store to User
 	@RequestMapping(value = "/all/assigneduser/{id}", method = RequestMethod.GET)

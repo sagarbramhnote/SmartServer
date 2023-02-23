@@ -114,7 +114,7 @@ public class UserInfoResponse {
 		this.active = active;
 	}
 
-	public UserInfoResponse(Long id, String username, String password, String role, boolean active,String firstName,String lastName,String email,String mobile) {
+	public UserInfoResponse(Long id, String username, String password, String role, boolean active,String firstName,String lastName,String email,String mobile,String storeInfo) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -125,7 +125,9 @@ public class UserInfoResponse {
 		this.lastName = lastName;
 		this.email = email;
 		this.mobile = mobile;
+		this.storeInfo= storeInfo;
 	}
+
 	public UserInfoResponse () {
 	}
 	

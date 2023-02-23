@@ -15,6 +15,7 @@ public class Kiosk {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String kioskId;
 	
 	private String kioskName;
@@ -34,6 +35,8 @@ public class Kiosk {
 	private String ipAddress;
 	
 	private String macAddress;
+	
+	private String port;
 	
 	private boolean active;
 	
@@ -187,6 +190,18 @@ public class Kiosk {
 
 
 
+	public String getPort() {
+		return port;
+	}
+
+
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+
+
 	public boolean isActive() {
 		return active;
 	}
@@ -196,6 +211,14 @@ public class Kiosk {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+
+
+	public void add(Long id2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 

@@ -63,6 +63,15 @@ public class KioskResponse {
 
 
 
+	public KioskResponse(Long id, String brandName) {
+		super();
+		this.id = id;
+		this.brandName = brandName;
+	}
+
+
+
+
 	public Long getId() {
 		return id;
 	}

@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
@@ -54,16 +56,16 @@ public class UserService {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Password");
 		}
 		//user mobile
-		UserInfo usermobile = userInfoRepository.findByMobile(userInfoRequest.getMobile());
-		if (usermobile != null) {
-			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "mobile");
-		}
- 
-		//user email
-		UserInfo infoMail = userInfoRepository.findByEmail(userInfoRequest.getEmail());
-		if (infoMail != null) {
-			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "email");
-		}
+//		UserInfo usermobile = userInfoRepository.findByMobile(userInfoRequest.getMobile());
+//		if (usermobile != null) {
+//			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "mobile");
+//		}
+// 
+//		//user email
+//		UserInfo infoMail = userInfoRepository.findByEmail(userInfoRequest.getEmail());
+//		if (infoMail != null) {
+//			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "email");
+//		}
 		
 		
 		userInfo = new UserInfo();
@@ -100,9 +102,12 @@ public class UserService {
 		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
 
 		for (UserInfo userInfo : users) {
+			if (userInfo.getStoreInfo() !=null) {
 			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-					userInfo.getRole().getName(), userInfo.isActive()));
+					userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+					userInfo.getStoreInfo().getStoreName()));
 		}
+	}
 		return infoResponses;
 	}
 
@@ -113,27 +118,41 @@ public class UserService {
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
 
 		UserInfo userInfo = userInfoRepository.findByUsernameAndPassword(infoRequest.getUsername(),passwordEncrypt.encodePassword(infoRequest.getPassword()));
-		System.out.println(userInfo);
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_UserNameAndPassword);
 		}
-//		if (!userInfo.checkfeature(infoRequest.getFeature())) {
-//			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
-//		}
-		
-		System.out.println("login "+userInfo.getPassword());
-		
-		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(),passwordEncrypt.decodePassword(userInfo.getPassword()),userInfo.getEmail(),
-				userInfo.getRole().getName(), userInfo.isActive());
-		
+		if (!userInfo.checkWebModule(infoRequest.getFeature())) {
+			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
+		}
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
 	}
+	
+	public UserInfoResponse doLoginkiosk(UserInfoRequest infoRequest) {
+
+		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(infoRequest.getPassword()));
+		if (userInfo == null) {
+			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+		}
+		if (!userInfo.checkfeature(infoRequest.getFeature())) {
+			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
+		}
+		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
+		
+	
+	}
+	
 	public UserInfoResponse updateUserForm(Long id) {
 		UserInfo userInfo = userInfoRepository.findById(id).get();
 		//System.out.println(userInfo);
 		//System.out.println(userInfo.getEmail()+ " Here " + userInfo.getFirstName());
 		
 		UserInfoResponse info = new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile());
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
+				userInfo.getStoreInfo().getStoreName());
 		//System.out.println(info.getFirstName()+ " " + info.getLastName());
 		return info;
 		
@@ -214,6 +233,16 @@ public class UserService {
 		}
 		return infoResponses;
 	}
+	
+	public List<UserInfoResponse> findUserbyRolesss(RolesDto rolesDto,String storeInfo) {
+		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_NameIn(storeInfo,rolesDto.getRoles());
+		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+		for (UserInfo userInfo : users) {
+			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+					userInfo.getRole().getName(), userInfo.isActive()));
+		}
+		return infoResponses;
+	}
 
 	public List<RoleDto> findAllRoles() {
 		// TODO Auto-generated method stub
@@ -282,17 +311,17 @@ public class UserService {
 	return infoResponses;
  }
 	
-//	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
-//		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
-//		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
-//		for (UserInfo userInfo : users) {
-//			if (userInfo.getStoreInfo() !=null) {
-//			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
-//					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
-//		}
-//		}
-//		return infoResponses;
-//	}
+	public List<UserInfoResponse> findUsersByStore(String storeInfo,String role) {
+		List<UserInfo> users = userInfoRepository.findByStoreInfo_StoreNameAndRole_Name(storeInfo,role);
+		List<UserInfoResponse> infoResponses = new ArrayList<UserInfoResponse>();
+		for (UserInfo userInfo : users) {
+			if (userInfo.getStoreInfo() !=null) {
+			infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+					userInfo.getStoreInfo().getStoreName(),userInfo.getStoreInfo().getAddress(),userInfo.getRole().getName(), userInfo.isActive()));
+		}
+		}
+		return infoResponses;
+	}
 
 	public List<UserInfo> getAllUsers(Long id) {
 		System.out.println("----  we are in getAllUsers() methode in UserService");
@@ -330,8 +359,17 @@ public class UserService {
 //	}
 	
 
-	
+	public void changePassword(@PathVariable("oldPassword") String oldPassword, @PathVariable("newPassword") String newPassword) {
+     
+		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(oldPassword));		
+		if (userInfo == null) {
+			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+		}
+		
+		userInfo.setPassword(passwordEncrypt.encodePassword(newPassword));
 
-	
+		userInfoRepository.save(userInfo);
+		
+	}
 		
 }

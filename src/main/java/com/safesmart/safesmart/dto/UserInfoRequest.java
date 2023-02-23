@@ -21,6 +21,8 @@ public class UserInfoRequest {
 
 	private String feature;
 	
+	private String web;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -35,12 +37,14 @@ public class UserInfoRequest {
 		this.passLength = passLength;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "UserInfoRequest [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role
-				+ ", active=" + active + ", feature=" + feature + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", mobile=" + mobile + ", passLength=" + passLength + ", loggedUserId="
-				+ loggedUserId + "]";
+				+ ", active=" + active + ", feature=" + feature + ", web=" + web + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", mobile=" + mobile + ", passLength=" + passLength
+				+ ", loggedUserId=" + loggedUserId + "]";
 	}
 
 	public String getFirstName() {
@@ -125,8 +129,17 @@ public class UserInfoRequest {
 	public void setFeature(String feature) {
 		this.feature = feature;
 	}
-
 	
+	
+
+	public String getWeb() {
+		return web;
+	}
+
+	public void setWeb(String web) {
+		this.web = web;
+	}
+
 	public Long getLoggedUserId() {
 		return loggedUserId;
 	}
@@ -136,16 +149,16 @@ public class UserInfoRequest {
 	}
 
 	public void validateRequiredAttributes() {
-		if (firstName.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "fisrtname");
-		}		
-		if (lastName.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "lastname");
-		}
-		if (mobile.isEmpty()) {
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "mobile");
-		}
-		 
+//		if (firstName.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "fisrtname");
+//		}		
+//		if (lastName.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "lastname");
+//		}
+//		if (mobile.isEmpty()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "mobile");
+//		}
+//		 
 	
 		if (username.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Username");
@@ -156,23 +169,23 @@ public class UserInfoRequest {
 		if (role.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Role");
 		}
-		if(!email.contains(".com"))
-		{
-			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Email");
-		}
+//		if(!email.contains(".com"))
+//		{
+//			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Email");
+//		}
 		String regex = "[0-9]+";
 		Pattern p = Pattern.compile(regex);
-		if(passLength.equals("six")) {
-			System.out.println("in pin error");
-			if (password.length() != 6 || !p.matcher(password).matches()) {
-				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_SIX_PIN);
-			}	
-		}
-		else {
-		if (password.length() != 4 || !p.matcher(password).matches()) {
-			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
-		}
-		}
+//		if(passLength.equals("six")) {
+//			System.out.println("in pin error");
+//			if (password.length() != 6 || !p.matcher(password).matches()) {
+//				throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_SIX_PIN);
+//			}	
+//		}
+//		else {
+//		if (password.length() != 4 || !p.matcher(password).matches()) {
+//			throw CommonException.CreateException(CommonExceptionMessage.VALIDATE_PIN);
+//		}
+//		}
 
 	}
 
@@ -191,9 +204,12 @@ public class UserInfoRequest {
 			System.out.println("feature errror");
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Feautre");
 		}
+		
+
 	}
-
-
+	
+	
 	
 	
 }
+	

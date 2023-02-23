@@ -24,6 +24,11 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	List<UserInfo> findByRole_Name(String role);
 
 	List<UserInfo> findByRole_NameIn(List<String> roles);
+	List<UserInfo> findByRole_NameAndStoreInfo(String roleNme,StoreInfo storeId);
+	
+	List<UserInfo> findByStoreInfo_StoreNameAndRole_NameIn(String storeInfo,List<String> roles);
+	
+	
 	UserInfo findByMobile(String mobile);
 	
 	UserInfo findByEmail(String email);
@@ -39,6 +44,7 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	@Query("SELECT u FROM UserInfo  u where storeInfo = :id")
 	List<UserInfo> getAllUsers(Long id);
 	List<UserInfo> findByStoreInfo(StoreInfo storeInfo);
+	
 	
 
 

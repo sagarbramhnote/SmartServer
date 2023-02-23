@@ -48,11 +48,18 @@ public class UserInfoController {
 		System.out.println("coming into updateuserform");
 		
 		return userService.updateUserForm(userId);
-		
-		
-		
+			
 	}
 
+	@RequestMapping(value = "/loginKiosk", method = RequestMethod.POST)
+	public UserInfoResponse doLoginKiosk(@RequestBody UserInfoRequest infoRequest) {
+		System.out.println("coming here 2");
+		infoRequest.validateLoginRequired();
+		System.out.println("coming here 2");
+		return userService.doLoginkiosk(infoRequest);
+	}
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public UserInfoResponse doLogin(@RequestBody UserInfoRequest infoRequest) {
 		System.out.println("coming here 2");
@@ -83,10 +90,11 @@ public class UserInfoController {
 		return userService.findUsersByStore(storeName);
 	}
 	
-//	@RequestMapping(value = "/store/{storeName}/{role}", method = RequestMethod.GET)
-//	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName,@PathVariable("role") String role) {
-//		return userService.findUsersByStore(storeName,role);
-//	}
+	@RequestMapping(value = "/store/{storeName}/{role}", method = RequestMethod.GET)
+	public List<UserInfoResponse> findUsersByStore(@PathVariable("storeName") String storeName,@PathVariable("role") String role) {
+		System.out.println("storeemployee");
+		return userService.findUsersByStore(storeName,role);
+	}
 	
 	@RequestMapping(value = "/role/{role}/unassignedusers", method = RequestMethod.GET)
 	public List<UserInfoResponse> findunassignedUsersByRole(@PathVariable("role") String role) {
@@ -96,6 +104,11 @@ public class UserInfoController {
 	@RequestMapping(value = "/users/roles", method = RequestMethod.POST)
 	public List<UserInfoResponse> findUserbyRoles(@RequestBody RolesDto rolesDto) {
 		return userService.findUserbyRoles(rolesDto);
+	}
+	
+	@RequestMapping(value = "/users/roles/{storeName}", method = RequestMethod.POST)
+	public List<UserInfoResponse> findUserbyRoles(@RequestBody RolesDto rolesDto,@PathVariable("storeName") String storeName) {
+		return userService.findUserbyRolesss(rolesDto,storeName);
 	}
 
 	@RequestMapping(value = "/unassigned/users/roles", method = RequestMethod.POST)
@@ -111,6 +124,14 @@ public class UserInfoController {
 	@RequestMapping(value = "/promoteUser/{userId}", method = RequestMethod.POST)
 	public void promoteUser(@PathVariable("userId") Long userId, @RequestBody RoleDto roleDto) {
 		userService.promoteUser(userId, roleDto);
+	}
+	
+	//change password
+	@RequestMapping(value = "/changePassword/{oldPassword}/{newPassword}", method = RequestMethod.POST)
+	public void changePassword(@PathVariable("oldPassword") String oldPassword, @PathVariable("newPassword") String newPassword) {
+	
+		System.out.println("coming here 4");
+		userService.changePassword(oldPassword,newPassword);
 	}
 	
 

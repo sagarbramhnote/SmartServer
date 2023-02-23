@@ -13,7 +13,11 @@ public interface StoreInfoRepository extends PagingAndSortingRepository<StoreInf
 
 	StoreInfo findByStoreName(String string);
 	
+	StoreInfo findByStoreName(Long long1);
+	
 	List<StoreInfo> findByConfigured(boolean configured);
+	
+	List<StoreInfo> findByStatus(boolean status);
 	
 	
 	StoreInfo findByStoreNameAndConfigured(String string, boolean configured);
@@ -27,6 +31,8 @@ public interface StoreInfoRepository extends PagingAndSortingRepository<StoreInf
 	
     @Query("select id from StoreInfo")
 	List<Long> getAllStoreIds();
+    
+    List<StoreInfo> findByUsers(Long id);
 
 	
 	

@@ -4,6 +4,8 @@ package com.safesmart.safesmart.service;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,18 +14,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.safesmart.safesmart.builder.StoreInfoBuilder;
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
 import com.safesmart.safesmart.dto.KioskRequest;
 import com.safesmart.safesmart.dto.KioskResponse;
 import com.safesmart.safesmart.dto.LocksResponse;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
 import com.safesmart.safesmart.model.Kiosk;
 import com.safesmart.safesmart.model.Locks;
 import com.safesmart.safesmart.model.Role;
+import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.repository.KioskRepository;
+import com.safesmart.safesmart.repository.StoreInfoRepository;
 
 @Service
 @Transactional
@@ -31,6 +37,13 @@ public class KioskService {
 	
 	@Autowired
 	private KioskRepository kioskRepository;
+	
+	@Autowired
+	private  StoreInfoRepository storeInfoRepository;
+	
+	@Autowired
+	private StoreInfoBuilder storeInfoBuilder;
+
 	
 	public void add(KioskRequest kioskRequest) {
 
@@ -152,6 +165,77 @@ public class KioskService {
 		}
 		
 		return kioskInfo;
+	}
+
+	public StoreInfoResponse kioskInfo(String storeName) {
+		
+
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
+		
+		StoreInfoResponse storeInfoResponse = new StoreInfoResponse();
+
+		
+		List<Long> kIds = new ArrayList<Long>();
+		for (Kiosk kiosk : storeInfo.getKiosk()) {
+			kIds.add(kiosk.getId());
+		}
+		storeInfoResponse.setKioskIds(kIds);
+		return storeInfoResponse;
+	}
+
+	public List<KioskResponse> KioskInfosys() throws SocketException, UnknownHostException {
+	
+		InetAddress ip;
+      
+        
+            ip = InetAddress.getLocalHost();
+
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+
+            byte[] mac = network.getHardwareAddress();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+  		
+            System.out.println("dfghdf.."+sb.toString());
+    		
+    		List<Kiosk> k=kioskRepository.findByMacAddress(sb.toString());  		
+
+    		List<KioskResponse> infoResponses = new ArrayList<KioskResponse>();
+    		
+    		for (Kiosk kiosk : k) {
+   			
+    			infoResponses.add(new KioskResponse(kiosk.getId(),kiosk.getKioskId(),kiosk.getKioskName(),kiosk.getBrandName(),kiosk.getModelName(),
+    					kiosk.getCpu(),kiosk.getHdd(),kiosk.getRamMemory(),kiosk.getScreenSize(),kiosk.getIpAddress(),
+    					kiosk.getMacAddress(),kiosk.isActive()));
+    		}
+
+    		return infoResponses;
+		
+	}
+	
+	
+	public void assignStoretokiosk(Long storeId, Long kioskId) {
+		
+		StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
+
+		Optional<Kiosk> optional = kioskRepository.findById(kioskId);
+		
+		if (optional.isPresent()) {
+			Kiosk dbUser = optional.get();
+			if (storeInfo.getKiosk().isEmpty()) {
+				dbUser.setStoreinfok(storeInfo);
+			} else {
+				throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
+			}
+			
+			kioskRepository.save(dbUser);
+		   }	
+			else {
+			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
+		}
 	}
 
 	

@@ -63,7 +63,7 @@ public class StoreInfoService {
 	private StoreInfoBuilder storeInfoBuilder;
 
 	public StoreInfoResponse getStoreInfoService() {
-		StoreInfo storeInfo = storeInfoRepository.findByStoreName("TEST");
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName("");
 		return new StoreInfoResponse(storeInfo.getId(), storeInfo.getStoreName(), storeInfo.getCorpStoreNo(),
 				storeInfo.getSerialNumber());
 	}
@@ -110,7 +110,7 @@ public class StoreInfoService {
 
 		return storeInfoBuilder.toDtoList(storeInfos);
 	}
-
+	
 	public StoreInfoResponse findByStoreName(String storeName) {
 
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
@@ -120,23 +120,16 @@ public class StoreInfoService {
          }
 		return storeInfoBuilder.toDto(storeInfo);
 	}
-	
-//	public StoreInfoResponse findByStoreName(String storeName) {
-//
-//		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
-//
-//		if (storeInfo == null) {
-//			
-//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
-//		
-//		}
-//		if(storeInfo.getUsers() !=null) {
-//
-//		return storeInfoBuilder.toDto(storeInfo);
-//	}
-//		return storeInfoBuilder.toDto(storeInfo);
-//	}
-	
+
+	public StoreInfoResponse findByStoreNamee(String storeName) {
+
+		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
+		if (storeInfo == null) {
+			
+			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
+         }
+		return storeInfoBuilder.toDto(storeInfo);
+	}
 
 	public void updateStoreInfo(StoreInfoRequest infoRequest) {
 
@@ -154,7 +147,8 @@ public class StoreInfoService {
 		storeInfo.setAccountNumber(infoRequest.getAccountNumber());
 		storeInfo.setMinimumBalance(infoRequest.getMinimumBalance());
 		storeInfo.setStoreName(infoRequest.getStoreName());
-		storeInfo.setConfigured(infoRequest.isConfigured());
+		storeInfo.setStatus(infoRequest.isStatus());
+
 
 		
 		storeInfoRepository.save(storeInfo);
@@ -254,9 +248,38 @@ public class StoreInfoService {
 
 
 	public List<StoreInfoResponse> findUnassignedStores() {
-		List<StoreInfo> storeInfos = storeInfoRepository.findByConfigured(true);
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
       
 		return storeInfoBuilder.toDtoList(storeInfos);
+	}
+	
+	public List<StoreInfoResponse> findUnassignedStoresforUser() {
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty()){
+					
+					infoResponses.add(storeInfoBuilder.toDto(userInfo));
+
+				}
+		 }
+		 return infoResponses;
+				
+	}
+	
+	public List<StoreInfoResponse> findUnassignedStoresforKBPL() {
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getKiosk().isEmpty() && userInfo.getBillValidator().isEmpty() && userInfo.getPrinter().isEmpty()
+						&& userInfo.getKiosk().isEmpty()){
+					
+					infoResponses.add(storeInfoBuilder.toDto(userInfo));
+
+				}
+		 }
+		 return infoResponses;
+				
 	}
 
 	public List<StoreInfoResponse> findAssignedStores() {
@@ -271,6 +294,28 @@ public class StoreInfoService {
 			}
 		 return infoResponses;
 	}
+	
+    public List<StoreInfoResponse> findAssignedStores1() {
+		
+    	List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+    	 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty() ){
+					
+				}else {
+				infoResponses.add(storeInfoBuilder.toDto(userInfo));
+				}
+			}
+		 return infoResponses;
+//    	return storeInfoBuilder.toDtoList(storeInfos);
+	}
+     public List<StoreInfoResponse> findAssignedStoresUnassignedUsers() {
+    	 List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+    	 return storeInfoBuilder.toDtoList(storeInfos);
+		
+	}
+
+	
 
 	public List<Long> getAllStoreIds() {
 		System.out.println("------ we are in getallstoreids method");
@@ -297,6 +342,9 @@ public class StoreInfoService {
 		
 		return storeInfoResponses2;
 	}
+
+	
+	
 	
 	
 
