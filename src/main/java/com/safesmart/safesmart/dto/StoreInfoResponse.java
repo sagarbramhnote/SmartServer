@@ -58,6 +58,15 @@ public class StoreInfoResponse {
 	private int totalLocks;
 	
 	private boolean status;
+	
+    private String kioskName;
+	
+	private String billvallidatorName;
+	
+	private String printerName;
+	
+	private String lockName;
+
 
 	
 
@@ -297,6 +306,38 @@ public class StoreInfoResponse {
 
 	public void setTotalLocks(int totalLocks) {
 		this.totalLocks = totalLocks;
+	}
+
+	public String getKioskName() {
+		return kioskName;
+	}
+
+	public void setKioskName(String kioskName) {
+		this.kioskName = kioskName;
+	}
+
+	public String getBillvallidatorName() {
+		return billvallidatorName;
+	}
+
+	public void setBillvallidatorName(String billvallidatorName) {
+		this.billvallidatorName = billvallidatorName;
+	}
+
+	public String getPrinterName() {
+		return printerName;
+	}
+
+	public void setPrinterName(String printerName) {
+		this.printerName = printerName;
+	}
+
+	public String getLockName() {
+		return lockName;
+	}
+
+	public void setLockName(String lockName) {
+		this.lockName = lockName;
 	}
 
 }

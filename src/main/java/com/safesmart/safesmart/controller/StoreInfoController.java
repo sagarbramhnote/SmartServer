@@ -30,6 +30,10 @@ import com.safesmart.safesmart.model.Printer;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.repository.BillValidatorRepository;
+import com.safesmart.safesmart.repository.KioskRepository;
+import com.safesmart.safesmart.repository.LocksRepository;
+import com.safesmart.safesmart.repository.PrinterRepository;
 import com.safesmart.safesmart.repository.StoreInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
 import com.safesmart.safesmart.service.BillValidatorService;
@@ -56,6 +60,19 @@ public class StoreInfoController {
 	
 	@Autowired
 	private KioskService kioskService;
+	
+	@Autowired
+	private KioskRepository kioskRepository;
+	
+	@Autowired
+	private BillValidatorRepository billValidatorRepository;
+	
+	@Autowired
+	private PrinterRepository printerRepository;
+	
+	@Autowired
+	private LocksRepository locksRepository;
+
 	
 	@Autowired
 	private BillValidatorService billValidatorService;
@@ -150,6 +167,79 @@ public class StoreInfoController {
 	public List<StoreInfoResponse> findAssignedStores1() {
 		return storeInfoService.findAssignedStores1();
 	}
+	
+	//get all storeinformation with assign names of kiosks etc
+		@RequestMapping(value="/kiosknames",method=RequestMethod.GET)
+		public List<StoreInfoResponse> findNames() {
+			List<StoreInfoResponse> storeInfoResponses=new ArrayList<>();
+			
+			List<StoreInfoResponse> storeinfo=storeInfoService.findAssignedStores1();
+			String kioskname = "";
+			String billvalidatorname="";
+			String printername="";
+			String lockname="";
+			 for (StoreInfoResponse storeInfoResponse : storeinfo) {
+				
+				//System.out.println("-----kiosk ids are-------"+storeInfoResponse.getKioskIds());
+				//get the kiosk information
+			List<Long> kioskids	=storeInfoResponse.getKioskIds();
+			for (Long id : kioskids) {
+				//System.out.println(kioskids);
+				Kiosk kiosk = new Kiosk();
+			Optional<Kiosk> kioskinfo =	kioskRepository.findById(id);
+			if(kioskinfo.isPresent()){
+				kiosk=kioskinfo.get();
+			}
+			kioskname=kiosk.getKioskName();
+			storeInfoResponse.setKioskName(kioskname);
+			}
+			
+			//get billvalidator information
+					List<Long> billvalidatorids = storeInfoResponse.getBillValidatorIds();
+					for (Long id1 : billvalidatorids) {
+						BillValidator billinfo = new BillValidator();
+						Optional<BillValidator> bill = billValidatorRepository.findById(id1);
+						if(bill.isPresent()) {
+							billinfo = bill.get();
+						}
+						billvalidatorname=billinfo.getBillAcceptorName();
+						storeInfoResponse.setBillvallidatorName(billvalidatorname);
+					}
+					
+			//get printer information 
+					List<Long> printerids = storeInfoResponse.getPrinterIds();
+					for(Long id2 :printerids ) {
+						Printer printer=new Printer();	
+					Optional<Printer>	printerinfo =printerRepository.findById(id2);
+					if(printerinfo.isPresent()) {
+						printer=printerinfo.get();
+					}
+					printername=printer.getPrinterName();
+					storeInfoResponse.setPrinterName(printername);
+						
+						}
+			//get Lock information
+					List<Long> lockids=storeInfoResponse.getLockIds();
+					for (Long id3 : lockids) {
+						Locks lock =new Locks();
+					Optional<Locks> lockinfo=locksRepository.findById(id3);
+					if(lockinfo.isPresent()) {
+						lock=lockinfo.get();
+						}
+					lockname=lock.getDigitalLockName();
+					storeInfoResponse.setLockName(lockname);
+			 }
+	                		
+			
+			
+			storeInfoResponses.add(storeInfoResponse);
+			
+			 }
+			
+			 
+	     return  storeInfoResponses;
+		}
+
 	
 	//get all storesnames without assign the users
 	@RequestMapping(value = "/all/assignedStoresunassignusers", method = RequestMethod.GET)
