@@ -59,6 +59,8 @@ public class StoreInfoResponse {
 	
 	private boolean status;
 	
+    private String userrName;
+	
     private String kioskName;
 	
 	private String billvallidatorName;
@@ -338,6 +340,14 @@ public class StoreInfoResponse {
 
 	public void setLockName(String lockName) {
 		this.lockName = lockName;
+	}
+
+	public String getUserrName() {
+		return userrName;
+	}
+
+	public void setUserrName(String userrName) {
+		this.userrName = userrName;
 	}
 
 }

@@ -121,16 +121,6 @@ public class StoreInfoService {
 		return storeInfoBuilder.toDto(storeInfo);
 	}
 
-	public StoreInfoResponse findByStoreNamee(String storeName) {
-
-		StoreInfo storeInfo = storeInfoRepository.findByStoreName(storeName);
-		if (storeInfo == null) {
-			
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, storeName);
-         }
-		return storeInfoBuilder.toDto(storeInfo);
-	}
-
 	public void updateStoreInfo(StoreInfoRequest infoRequest) {
 
 		StoreInfo storeInfo = storeInfoRepository.findByStoreName(infoRequest.getStoreName());
@@ -295,12 +285,26 @@ public class StoreInfoService {
 		 return infoResponses;
 	}
 	
-    public List<StoreInfoResponse> findAssignedStores1() {
+	public List<StoreInfoResponse> findAssignedStoresforreport() {
+		List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
+		 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
+		 for (StoreInfo userInfo : storeInfos) {
+				if (userInfo.getUsers().isEmpty() ){
+					
+				}else {
+				infoResponses.add(storeInfoBuilder.toDto(userInfo));
+				}
+			}
+		 return infoResponses;
+	}
+	
+    public List<StoreInfoResponse> findAssignedStoresKBPL() {
 		
     	List<StoreInfo> storeInfos = storeInfoRepository.findByStatus(true);
     	 List<StoreInfoResponse> infoResponses=new ArrayList<StoreInfoResponse>();
 		 for (StoreInfo userInfo : storeInfos) {
-				if (userInfo.getUsers().isEmpty() ){
+				if (userInfo.getKiosk().isEmpty() && userInfo.getBillValidator().isEmpty() && userInfo.getPrinter().isEmpty()
+						&& userInfo.getLocks().isEmpty()){
 					
 				}else {
 				infoResponses.add(storeInfoBuilder.toDto(userInfo));

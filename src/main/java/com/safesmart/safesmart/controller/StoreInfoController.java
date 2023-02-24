@@ -79,6 +79,9 @@ public class StoreInfoController {
 	
 	@Autowired
 	private LocksService locksService;
+	
+	@Autowired
+	private UserInfoRepository userInfoRepository;
 
 	//private Object ;
 	
@@ -101,11 +104,6 @@ public class StoreInfoController {
 	@RequestMapping(value = "/{storeName}", method = RequestMethod.GET)
 	public StoreInfoResponse findByStoreName(@PathVariable("storeName") String storeName) {
 		return storeInfoService.findByStoreName(storeName);
-	}
-	
-	@RequestMapping(value = "/forkiosk/{storeName}", method = RequestMethod.GET)
-	public StoreInfoResponse findByStoreNamee(@PathVariable("storeName") String storeName) {
-		return storeInfoService.findByStoreNamee(storeName);
 	}
 
 	@RequestMapping(value = "/{storeId}", method = RequestMethod.PUT)
@@ -162,10 +160,16 @@ public class StoreInfoController {
 	public List<StoreInfoResponse> findAssignedStores() {
 		return storeInfoService.findAssignedStores();
 	}
+	
+	@RequestMapping(value = "/all/assignedstoresforreport", method = RequestMethod.GET)
+	public List<StoreInfoResponse> findAssignedStoresforreport() {
+		return storeInfoService.findAssignedStoresforreport();
+	}
+	
 	//get all assign stores based on status field
 	@RequestMapping(value = "/all/assignedStores", method = RequestMethod.GET)
-	public List<StoreInfoResponse> findAssignedStores1() {
-		return storeInfoService.findAssignedStores1();
+	public List<StoreInfoResponse> findAssignedStoresKBPL() {
+		return storeInfoService.findAssignedStoresKBPL();
 	}
 	
 	//get all storeinformation with assign names of kiosks etc
@@ -173,7 +177,7 @@ public class StoreInfoController {
 		public List<StoreInfoResponse> findNames() {
 			List<StoreInfoResponse> storeInfoResponses=new ArrayList<>();
 			
-			List<StoreInfoResponse> storeinfo=storeInfoService.findAssignedStores1();
+			List<StoreInfoResponse> storeinfo=storeInfoService.findAssignedStoresKBPL();
 			String kioskname = "";
 			String billvalidatorname="";
 			String printername="";
@@ -240,7 +244,37 @@ public class StoreInfoController {
 	     return  storeInfoResponses;
 		}
 
-	
+		//get all storeinformation with assign store names for user etc
+				@RequestMapping(value="/usernames",method=RequestMethod.GET)
+				public List<StoreInfoResponse> findUserNames() {
+					List<StoreInfoResponse> storeInfoResponses=new ArrayList<>();
+					
+					List<StoreInfoResponse> storeinfo=storeInfoService.findAssignedStoresforreport();
+					String username = "";
+					 for (StoreInfoResponse storeInfoResponse : storeinfo) {
+						
+					List<Long> userIds	=storeInfoResponse.getUserIds();
+					for (Long id : userIds) {
+						UserInfo user = new UserInfo();
+					Optional<UserInfo> userkinfo =	userInfoRepository.findById(id);
+					if(userkinfo.isPresent()){
+						user=userkinfo.get();
+					}
+					username=user.getUsername();
+					storeInfoResponse.setUserrName(username);
+					}
+			                		
+					
+					
+					storeInfoResponses.add(storeInfoResponse);
+					
+					 }
+									 
+			     return  storeInfoResponses;
+		}
+
+		
+		
 	//get all storesnames without assign the users
 	@RequestMapping(value = "/all/assignedStoresunassignusers", method = RequestMethod.GET)
 	public List<StoreInfoResponse> findAssignedStoresUnassignedUsers() {

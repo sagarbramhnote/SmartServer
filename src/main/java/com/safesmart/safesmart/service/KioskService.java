@@ -226,7 +226,11 @@ public class KioskService {
 		if (optional.isPresent()) {
 			Kiosk dbUser = optional.get();
 			if (storeInfo.getKiosk().isEmpty()) {
+				if(dbUser.getStoreinfok()==null){
 				dbUser.setStoreinfok(storeInfo);
+				}else {
+					throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
+				}
 			} else {
 				throw CommonException.CreateException(CommonExceptionMessage.ALREADY_ASSIGN);
 			}
