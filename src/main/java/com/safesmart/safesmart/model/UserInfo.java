@@ -70,6 +70,9 @@ public class UserInfo {
 	private String email;
 
 	private StoreInfo storeInfo;
+	
+	
+	private List<LocksInfo> locksInfo;
 
 	private List<InsertBill> insertBills = new ArrayList<InsertBill>();
 
@@ -208,6 +211,16 @@ public class UserInfo {
 
 	public void setLastLoginTime(LocalDateTime lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL,targetEntity=LocksInfo.class, mappedBy="users")
+	public List<LocksInfo> getLocksInfo() {
+		return locksInfo;
+	}
+
+	public void setLocksInfo(List<LocksInfo> locksInfo) {
+		this.locksInfo = locksInfo;
 	}
 
 	@Override
