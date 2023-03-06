@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safesmart.safesmart.dto.KioskResponse;
 import com.safesmart.safesmart.dto.RoleDto;
 import com.safesmart.safesmart.dto.RolesDto;
+import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
+import com.safesmart.safesmart.model.UserInfo;
 import com.safesmart.safesmart.service.UserService;
 import com.safesmart.safesmart.util.Base64BasicEncryption;
 
@@ -134,5 +137,11 @@ public class UserInfoController {
 		userService.changePassword(oldPassword,newPassword);
 	}
 	
+	
+	@RequestMapping(value = "usertokiosk/{userId}", method = RequestMethod.GET)
+	public List<KioskResponse> usertokiosk(@PathVariable("userId") Long userId) {
+		return userService.usertokiosk(userId);
 
+	}
+	
 }

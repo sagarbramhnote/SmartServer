@@ -1,6 +1,7 @@
 package com.safesmart.safesmart.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,13 +14,12 @@ public class Kiosk {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long id;	
 	
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String kioskId;
+	private String kioskId ;
 	
 	private String kioskName;
-	
+		
 	private String brandName;
 	
 	private String modelName;
@@ -32,6 +32,7 @@ public class Kiosk {
 	
 	private String screenSize;
 	
+	@Column(unique=true)
 	private String ipAddress;
 	
 	private String macAddress;

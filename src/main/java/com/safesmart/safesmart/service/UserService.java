@@ -17,16 +17,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.safesmart.safesmart.common.CommonException;
 import com.safesmart.safesmart.common.CommonExceptionMessage;
+import com.safesmart.safesmart.dto.KioskResponse;
 import com.safesmart.safesmart.dto.RoleConunt;
 import com.safesmart.safesmart.dto.RoleDto;
 import com.safesmart.safesmart.dto.RolesDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.dto.UserInfoRequest;
 import com.safesmart.safesmart.dto.UserInfoResponse;
+import com.safesmart.safesmart.model.Kiosk;
 import com.safesmart.safesmart.model.Role;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.model.UserInfo;
+import com.safesmart.safesmart.repository.KioskRepository;
 import com.safesmart.safesmart.repository.RoleRepository;
+import com.safesmart.safesmart.repository.StoreInfoRepository;
 import com.safesmart.safesmart.repository.UserInfoRepository;
 import com.safesmart.safesmart.util.Base64BasicEncryption;
 
@@ -42,6 +46,12 @@ public class UserService {
 	
 	@Autowired
 	private Base64BasicEncryption passwordEncrypt;
+	
+	@Autowired
+	private KioskRepository kioskRepository;
+	
+	@Autowired
+	private  StoreInfoRepository storeInfoRepository;
 
 	public void add(UserInfoRequest userInfoRequest) {
 
@@ -370,6 +380,24 @@ public class UserService {
 
 		userInfoRepository.save(userInfo);
 		
+	}
+
+	public List<KioskResponse> usertokiosk(Long userId) {
+		
+	UserInfo userInfo = userInfoRepository.findById(userId).get();
+
+	List<Kiosk> kioskInfo = kioskRepository.findByStoreinfok_Id(userInfo.getStoreInfo().getId());
+	
+	List<KioskResponse> infoResponses = new ArrayList<KioskResponse>();
+
+	for (Kiosk kiosk : kioskInfo) {
+
+		infoResponses.add(new KioskResponse(kiosk.getId(),kiosk.getKioskId(),kiosk.getKioskName(),kiosk.getBrandName(),
+				kiosk.getModelName(),kiosk.getCpu(),kiosk.getHdd(),kiosk.getRamMemory(),kiosk.getScreenSize(),
+				kiosk.getIpAddress(),kiosk.getMacAddress(),kiosk.isActive()));
+		
+	}	
+	return 	infoResponses;
 	}
 		
 }
