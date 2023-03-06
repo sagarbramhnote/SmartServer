@@ -46,6 +46,7 @@ public interface UserInfoRepository extends PagingAndSortingRepository<UserInfo,
 	List<UserInfo> findByStoreInfo(StoreInfo storeInfo);
 	
 	
+	
 
 
 

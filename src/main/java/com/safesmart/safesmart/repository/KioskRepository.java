@@ -19,6 +19,8 @@ public interface KioskRepository extends PagingAndSortingRepository<Kiosk, Long>
 	Kiosk findByKioskId(String kioskId);
 	
 	List<Kiosk> findByMacAddress(String macAddress);
+	
+	List<Kiosk> findByStoreinfok_Id(Long id);
 
 	
 }
