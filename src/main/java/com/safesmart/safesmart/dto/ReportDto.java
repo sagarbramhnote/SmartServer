@@ -7,6 +7,17 @@ public class ReportDto {
 	private String reportName;
 
 	private StoreInfoResponse storeInfoResponse;
+	
+	private String timeStamp;
+	
+
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
+	}
 
 	public String getUserName() {
 		return userName;

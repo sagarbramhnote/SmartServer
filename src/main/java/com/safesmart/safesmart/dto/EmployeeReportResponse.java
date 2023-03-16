@@ -13,6 +13,9 @@ public class EmployeeReportResponse {
 	private String name;
 
 	private Collection<BillResponse> data;
+	
+	private Collection<ChangedCurrencyDto> data1;
+
 
 	public String getName() {
 		return name;
@@ -29,5 +32,15 @@ public class EmployeeReportResponse {
 	public void setData(Collection<BillResponse> data) {
 		this.data = data;
 	}
+
+	public Collection<ChangedCurrencyDto> getData1() {
+		return data1;
+	}
+
+	public void setData1(Collection<ChangedCurrencyDto> data1) {
+		this.data1 = data1;
+	}
+	
+	
 
 }
