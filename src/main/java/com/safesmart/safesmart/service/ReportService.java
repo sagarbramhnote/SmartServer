@@ -30,6 +30,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.Now;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -118,9 +119,11 @@ public class ReportService {
 		ReprintReportDto reportDto = new ReprintReportDto();
 		reportDto.setReportName("Reprint Receipt");
 		reportDto.setStoreInfoResponse(storeInfoResponse);
+		reportDto.setTimeStamp(LocalDateTime.now().toString());
+
 
 		SequenceInfo sequenceInfo = sequenceInfoRepository.findByName("TRANSACTIONNO");
-
+		
 		List<InsertBill> insertBills = insertBillRepository.findByTransactionNumber(sequenceInfo.formatedValue());
 		Map<String, InsertBillResponse> map = new HashMap<>();
 		for (InsertBill bill : insertBills) {
@@ -169,6 +172,7 @@ public class ReportService {
 		ReportDto reportDto = new ReportDto();
 		reportDto.setReportName("Test Print Receipt");
 		reportDto.setStoreInfoResponse(storeInfoService.getStoreInfoService(storeName));
+		reportDto.setTimeStamp(LocalDateTime.now().toString());
 		System.out.println("testPrinterStore "+storeName);
 		return reportDto;
 	}
@@ -1706,6 +1710,264 @@ public class ReportService {
 
 				return employeeReport;
 			}
+	
+	public EmployeeReportDto managerReportDataStandMain(String type, Long userId, DateRangedto dateRangedto) {
+		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate endDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		if (stDate.isAfter(endDate)) {
+			throw new RuntimeException("Start Date should be less than the End Date");
+		}
+		ValetDenominations vD = valetDenominationsRepository.findByType(type);
+		LocalTime time =  LocalTime.of(0,0,0);
+		LocalTime time2 = LocalTime.of(23, 59,59);
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+		
+		LocalDateTime startDateTime = time.atDate(stDate);
+		LocalDateTime endDateTime = time2.atDate(endDate);
+		UserInfo user;
+		
+		EmployeeReportDto employeeReport = new EmployeeReportDto();
+		employeeReport.setReportName("Manager Report");
+
+		// for storeName
+				StoreInfo storeInfo = new StoreInfo();
+				Optional<UserInfo> optional = userInfoRepository.findById(userId);
+				if (optional.isPresent()) {
+
+					UserInfo dbUserInfo= optional.get();
+				storeInfo =	dbUserInfo.getStoreInfo();
+				}
+				String storeName = storeInfo.getStoreName();
+				System.out.println(storeName);		
+				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+				employeeReport.setStoreInfoResponse(storeInfoResponse);
+				employeeReport.setTimeStamp(LocalDateTime.now().toString());
+		
+				List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
+//			      for(Long userId : userIds) {
+						user = userInfoRepository.findById(userId).get();
+//						System.out.println("coming here");
+					// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
+//						List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
+					// This is the list of the transactions done by a particular user in between from date to the current date time
+						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, currentDateTime,vD);
+						List<ChangeValetDenominations> list1 = new ArrayList<ChangeValetDenominations>();
+						for(ChangeValetDenominations cVD : list2) {
+							if(cVD.getCreated().compareTo(endDateTime)<1 ||cVD.getCreated().compareTo(endDateTime)==0 ) {
+								list1.add(cVD);
+								}
+						}
+						if(!list1.isEmpty()) {
+						System.out.println("coming here 2");
+						//Sorting the ChangeValetDenominations records based on time created 
+						Collections.sort(list1, new Comparator<ChangeValetDenominations>() {
+						    @Override
+						    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+						        return c1.getCreated().compareTo(c2.getCreated());
+						    }
+						});
+						
+						Collections.sort(list2, new Comparator<ChangeValetDenominations>() {
+						    @Override
+						    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+						        return c1.getCreated().compareTo(c2.getCreated());
+						    }
+						});
+		
+				int size = list1.size();
+				int size2 = list2.size();
+				int j =0;
+				while( j <size) {
+				// Comparing every consecutive record 	
+				ChangeValetDenominationsDto c1 = new ChangeValetDenominationsDto();
+				BeanUtils.copyProperties(list1.get(j), c1);
+				ChangeValetDenominationsDto c2 = new ChangeValetDenominationsDto();
+				// to avoid index out of bound error we need to define up to when this operation should be carried out 
+				if(j+1<size&& j+1<size2) {
+					if(j+1<size) {
+				BeanUtils.copyProperties(list1.get(j+1), c2);
+					}else {
+						BeanUtils.copyProperties(list2.get(j+1), c2);
+
+					}
+					
+				// Checking which denominations are removed and which denominations are added in the requested Safe
+				List<ChangedCurrencyDto> changes = c1.difference(c2); // This gives a list of changes made in the requested safe 
+				// For reference check method "difference" defined in ChangeValetDenominationsDto class 
+				EmployeeReportResponse er = new EmployeeReportResponse();
+				Collection<ChangedCurrencyDto> result = new ArrayList<ChangedCurrencyDto>(); 
+				
+				for(ChangedCurrencyDto c:changes) {
+					// printing the Changed values 
+
+				
+				   c.getCurrency();
+			
+				c.getCurrencytotal();
+			
+				    c.getDepositedValue();
+			
+				  c.getChangeNeeded();
+			
+				    c.getCurrency();
+			
+				    c.getNewcurrencytotal();
+				   
+				    result.add(c);
+			
+					}
+
+		j++;
+		er.setData1(result);
+
+		employeeReportResponses.add(er);
+	}}
+				
+				}
+						
+						System.out.println(type);
+						System.out.println(userId);
+
+						System.out.println(stDate);
+
+						System.out.println(endDate);
+						
+      employeeReport.setData(employeeReportResponses);
+
+		return employeeReport;
+		
+		
+	}
+	
+	
+
+	public EmployeeReportDto managerReportDataChangeRequest(String orderStatus, Long userId,DateRangedto dateRangedto) {
+		
+		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate endDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		if (stDate.isAfter(endDate)) {
+			throw new RuntimeException("Start Date should be less than the End Date");
+		}
+		ValetDenominations vD = valetDenominationsRepository.findByType(orderStatus);
+		LocalTime time =  LocalTime.of(0,0,0);
+		LocalTime time2 = LocalTime.of(23, 59,59);
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+		
+		LocalDateTime startDateTime = time.atDate(stDate);
+		LocalDateTime endDateTime = time2.atDate(endDate);
+		UserInfo user;
+		
+		EmployeeReportDto employeeReport = new EmployeeReportDto();
+		employeeReport.setReportName("Manager Report");
+
+		// for storeName
+				StoreInfo storeInfo = new StoreInfo();
+				Optional<UserInfo> optional = userInfoRepository.findById(userId);
+				if (optional.isPresent()) {
+
+					UserInfo dbUserInfo= optional.get();
+				storeInfo =	dbUserInfo.getStoreInfo();
+				}
+				String storeName = storeInfo.getStoreName();
+				System.out.println(storeName);		
+				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+				employeeReport.setStoreInfoResponse(storeInfoResponse);
+				employeeReport.setTimeStamp(LocalDateTime.now().toString());
+		
+				List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
+//			      for(Long userId : userIds) {
+						user = userInfoRepository.findById(userId).get();
+//						System.out.println("coming here");
+					// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
+//						List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
+					// This is the list of the transactions done by a particular user in between from date to the current date time
+						List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, currentDateTime,vD);
+						List<ChangeValetDenominations> list1 = new ArrayList<ChangeValetDenominations>();
+						for(ChangeValetDenominations cVD : list2) {
+							if(cVD.getCreated().compareTo(endDateTime)<1 ||cVD.getCreated().compareTo(endDateTime)==0 ) {
+								list1.add(cVD);
+								}
+						}
+						if(!list1.isEmpty()) {
+						System.out.println("coming here 2");
+						//Sorting the ChangeValetDenominations records based on time created 
+						Collections.sort(list1, new Comparator<ChangeValetDenominations>() {
+						    @Override
+						    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+						        return c1.getCreated().compareTo(c2.getCreated());
+						    }
+						});
+						
+						Collections.sort(list2, new Comparator<ChangeValetDenominations>() {
+						    @Override
+						    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+						        return c1.getCreated().compareTo(c2.getCreated());
+						    }
+						});
+		
+				int size = list1.size();
+				int size2 = list2.size();
+				int j =0;
+				while( j <size) {
+				// Comparing every consecutive record 	
+				ChangeValetDenominationsDto c1 = new ChangeValetDenominationsDto();
+				BeanUtils.copyProperties(list1.get(j), c1);
+				ChangeValetDenominationsDto c2 = new ChangeValetDenominationsDto();
+				// to avoid index out of bound error we need to define up to when this operation should be carried out 
+				if(j+1<size&& j+1<size2) {
+					if(j+1<size) {
+				BeanUtils.copyProperties(list1.get(j+1), c2);
+					}else {
+						BeanUtils.copyProperties(list2.get(j+1), c2);
+
+					}
+					
+				// Checking which denominations are removed and which denominations are added in the requested Safe
+				List<ChangedCurrencyDto> changes = c1.difference(c2); // This gives a list of changes made in the requested safe 
+				// For reference check method "difference" defined in ChangeValetDenominationsDto class 
+				EmployeeReportResponse er = new EmployeeReportResponse();
+				Collection<ChangedCurrencyDto> result = new ArrayList<ChangedCurrencyDto>(); 
+				for(ChangedCurrencyDto c:changes) {
+					// printing the Changed values 
+
+				
+				   c.getCurrency();
+			
+				c.getCurrencytotal();
+			
+				    c.getDepositedValue();
+			
+				  c.getChangeNeeded();
+			
+				    c.getCurrency();
+			
+				    c.getNewcurrencytotal();
+				   
+				    result.add(c);
+			
+					}
+
+		j++;
+		er.setData1(result);
+
+		employeeReportResponses.add(er);
+	}}
+				
+				}
+						
+						System.out.println(orderStatus);
+						System.out.println(userId);
+
+						System.out.println(stDate);
+
+						System.out.println(endDate);
+						
+   employeeReport.setData(employeeReportResponses);
+
+		return employeeReport;
+	}
+
+	
 
 	// EOD Report with Employee Data for Owner
 	public void endOfDayReport1() {
@@ -2110,6 +2372,8 @@ public class ReportService {
 					
 			return eodReports;
 		}
+
+	
 
 	}
 

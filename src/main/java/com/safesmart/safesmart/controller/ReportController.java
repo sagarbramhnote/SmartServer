@@ -145,6 +145,19 @@ public class ReportController {
 		dateRangedto.validateRequest();
 		return reportService.managerReportData(userId,dateRangedto);
 	}
+	
+	@RequestMapping(value = "/managerReportforStandBank/{type}/{userId}",method = RequestMethod.POST)
+	public EmployeeReportDto managerReportDataStandMain(@PathVariable("type")String type,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
+		dateRangedto.validateRequest();
+		return reportService.managerReportDataStandMain(type,userId,dateRangedto);
+	}
+	
+	@RequestMapping(value = "/managerReportforChangeRequest/{OrderStatus}/{userId}",method = RequestMethod.POST)
+	public EmployeeReportDto managerReportDataChangeRequest(@PathVariable("OrderStatus")String OrderStatus,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
+		dateRangedto.validateRequest();
+		return reportService.managerReportDataChangeRequest(OrderStatus,userId,dateRangedto);
+	}
+	
 	//Eod reports for charts
 	@RequestMapping(value = "/EODReportExportCharts/{storeName}/{toDay}",method = RequestMethod.GET)
 	public Map<Set<String>, List<Integer>> EODReportsCharts(@PathVariable("storeName")String storeName, @PathVariable("toDay") boolean toDay) throws IOException {
