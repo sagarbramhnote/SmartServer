@@ -28,6 +28,7 @@ import com.safesmart.safesmart.dto.ReprintReportDto;
 import com.safesmart.safesmart.dto.StoreInfoResponse;
 import com.safesmart.safesmart.model.StoreInfo;
 import com.safesmart.safesmart.service.ReportService;
+import com.safesmart.safesmart.stand.standDto;
 
 @RestController
 @RequestMapping(value = "/reports")
@@ -147,13 +148,13 @@ public class ReportController {
 	}
 	
 	@RequestMapping(value = "/managerReportforStandBank/{type}/{userId}",method = RequestMethod.POST)
-	public EmployeeReportDto managerReportDataStandMain(@PathVariable("type")String type,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
+	public standDto managerReportDataStandMain(@PathVariable("type")String type,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();
 		return reportService.managerReportDataStandMain(type,userId,dateRangedto);
 	}
 	
 	@RequestMapping(value = "/managerReportforChangeRequest/{OrderStatus}/{userId}",method = RequestMethod.POST)
-	public EmployeeReportDto managerReportDataChangeRequest(@PathVariable("OrderStatus")String OrderStatus,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
+	public standDto managerReportDataChangeRequest(@PathVariable("OrderStatus")String OrderStatus,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();
 		return reportService.managerReportDataChangeRequest(OrderStatus,userId,dateRangedto);
 	}
