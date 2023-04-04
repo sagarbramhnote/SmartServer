@@ -96,112 +96,112 @@ public class changeValetDenomiDtoManger {
 		public List<denominationDto> difference(changeValetDenomiDtoManger c){
 		
 		List<denominationDto> list = new ArrayList<denominationDto>();			
-		int Deposited_Value = 0;
-		int Change_Needed = 0;
+		int in = 0;
+		int out = 0;
 				
 		
 		int diff = this.old_cents-c.old_cents;
 		if((diff)>0) {
-			list.add(new denominationDto("Pennies","$"+0,"$"+Integer.toString(diff)));
-			Change_Needed+=diff;
+			list.add(new denominationDto("Pennies","$"+Integer.toString(diff),"$"+0));
+			in+=diff;
 		}
 		if((diff)<=0) {
-			Deposited_Value+=diff*-1;
-			list.add(new denominationDto("Pennies","$"+Integer.toString(diff*-1),"$"+0));
+			out+=diff*-1;
+			list.add(new denominationDto("Pennies","$"+0,"$"+Integer.toString(diff*-1)));
 		}
 		diff = this.old_nickels-c.old_nickels;
 		if((diff)>0) {
-			list.add(new denominationDto("Nickels","$"+0,"$"+Integer.toString(diff)));
-			Change_Needed+=diff;
+			list.add(new denominationDto("Nickels","$"+Integer.toString(diff),"$"+0));
+			in+=diff;
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("Nickels","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("Nickels","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff= this.old_dimes-c.old_dimes;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("Dimes","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("Dimes","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("Dimes","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("Dimes","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_quarters -c.old_quarters;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("Quarters","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("Quarters","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("Quarters","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("Quarters","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_1$-c.old_den_1$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$1","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$1","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$1","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$1","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_5$-c.old_den_5$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$5","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$5","$"+Integer.toString(diff),"$"+0));
 		
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$5","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$5","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_10$-c.old_den_10$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$10","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$10","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$10","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$10","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_20$-c.old_den_20$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$20","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$20","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$20","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$20","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_50$-c.old_den_50$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$50","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$50","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$50","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$50","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		diff = this.old_den_100$-c.old_den_100$;
 		if((diff)>0) {
-			Change_Needed+=diff;
-			list.add(new denominationDto("$100","$"+0,"$"+Integer.toString(diff)));
+			in+=diff;
+			list.add(new denominationDto("$100","$"+Integer.toString(diff),"$"+0));
 		}
 		if((diff)<=0) {
-			Deposited_Value+=(diff*-1);
-			list.add(new denominationDto("$100","$"+Integer.toString(diff*-1),"$"+0));
+			out+=(diff*-1);
+			list.add(new denominationDto("$100","$"+0,"$"+Integer.toString(diff*-1)));
 
 		}
 		
-		list.add(new denominationDto("Total" ,"$"+Integer.toString(Deposited_Value),"$"+Integer.toString(Change_Needed)));
+		list.add(new denominationDto("Total" ,"$"+Integer.toString(in),"$"+Integer.toString(out)));
 		 
 		return list;
 	}

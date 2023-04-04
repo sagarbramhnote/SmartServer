@@ -23,4 +23,6 @@ public interface ChangeRquestDenominationsRepository
 	
 	List<ChangeValetDenominations> findBycreatedByAndCreatedBetweenAndChangeRequest(UserInfo user,LocalDateTime stDate,LocalDateTime endDate,ChangeRequest changeRequest);
 
+	List<ChangeValetDenominations> findBycreatedByAndCreatedBetween(UserInfo user,LocalDateTime stDate,LocalDateTime endDate);
+
 }

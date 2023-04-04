@@ -153,6 +153,12 @@ public class ReportController {
 		return reportService.managerReportDataStandMain(type,userId,dateRangedto);
 	}
 	
+	@RequestMapping(value = "/managerReportforStandBankInter/{userId}",method = RequestMethod.POST)
+	public standDto managerReportDataStandInter(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
+		dateRangedto.validateRequest();
+		return reportService.managerReportDataStandInter(userId,dateRangedto);
+	}
+	
 	@RequestMapping(value = "/managerReportforChangeRequest/{OrderStatus}/{userId}",method = RequestMethod.POST)
 	public standDto managerReportDataChangeRequest(@PathVariable("OrderStatus")String OrderStatus,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();

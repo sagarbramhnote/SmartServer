@@ -1716,6 +1716,7 @@ public class ReportService {
 				return employeeReport;
 			}
 	
+	// Kiosk StandBank MainSafe and Shiftmanager Report
 	public standDto managerReportDataStandMain(String type, Long userId, DateRangedto dateRangedto) {
 		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		LocalDate endDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -1806,8 +1807,8 @@ public class ReportService {
 					// printing the Changed values 
 			
 				   c.getDenominations();
-				   c.getDeposited_Value();
-				   c.getChange_Needed();
+				   c.getIn();
+				   c.getOut();
 
 				    result.add(c);
 			
@@ -1832,8 +1833,126 @@ public class ReportService {
 							
 	}
 	
-	
+	//Kiosk StandBank InterSafe Report
+	public standDto managerReportDataStandInter(Long userId, DateRangedto dateRangedto) {
+		
+		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate endDate = LocalDate.parse(dateRangedto.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		if (stDate.isAfter(endDate)) {
+			throw new RuntimeException("Start Date should be less than the End Date");
+		}
+		LocalTime time =  LocalTime.of(0,0,0);
+		LocalTime time2 = LocalTime.of(23, 59,59);
+	    LocalDateTime currentDateTime = LocalDateTime.now();
+		
+		LocalDateTime startDateTime = time.atDate(stDate);
+		LocalDateTime endDateTime = time2.atDate(endDate);
+		UserInfo user;
+		
+		standDto employeeReport = new standDto();
+		employeeReport.setReportName("Manager Report");
+		
+		// for storeName
+		StoreInfo storeInfo = new StoreInfo();
+		Optional<UserInfo> optional = userInfoRepository.findById(userId);
+		if (optional.isPresent()) {
 
+			UserInfo dbUserInfo= optional.get();
+		storeInfo =	dbUserInfo.getStoreInfo();
+		}
+		String storeName = storeInfo.getStoreName();
+		System.out.println(storeName);		
+		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
+		employeeReport.setStoreInfoResponse(storeInfoResponse);
+		employeeReport.setTimeStamp(LocalDateTime.now().toString());
+		
+		List<standResponse> employeeReportResponses = new ArrayList<standResponse>();
+//	      for(Long userId : userIds) {
+				user = userInfoRepository.findById(userId).get();
+//				System.out.println("coming here");
+			// This is the list of transactions done by a particular user present in the Change Valet Denominations table in between the given From and To dates. 
+//				List<ChangeValetDenominations> list1 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetweenAndValetDenominations(user, startDateTime, endDateTime,vD);
+			// This is the list of the transactions done by a particular user in between from date to the current date time
+				List<ChangeValetDenominations> list2 = changeRequestDenominationsRepository.findBycreatedByAndCreatedBetween(user, startDateTime, currentDateTime);
+				List<ChangeValetDenominations> list1 = new ArrayList<ChangeValetDenominations>();
+				for(ChangeValetDenominations cVD : list2) {
+					if(cVD.getCreated().compareTo(endDateTime)<1 ||cVD.getCreated().compareTo(endDateTime)==0 ) {
+						list1.add(cVD);
+						}
+				}
+				
+				if(!list1.isEmpty()) {
+				System.out.println("coming here 2");
+				//Sorting the ChangeValetDenominations records based on time created 
+				Collections.sort(list1, new Comparator<ChangeValetDenominations>() {
+				    @Override
+				    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+				        return c1.getCreated().compareTo(c2.getCreated());
+				    }
+				});
+				
+				Collections.sort(list2, new Comparator<ChangeValetDenominations>() {
+				    @Override
+				    public int compare(ChangeValetDenominations c1, ChangeValetDenominations c2) {
+				        return c1.getCreated().compareTo(c2.getCreated());
+				    }
+				});
+
+		int size = list1.size();
+		int size2 = list2.size();
+		int j =0;
+	//	while( j <size) {
+		// Comparing every consecutive record 	
+		changeValetDenomiDtoManger c1 = new changeValetDenomiDtoManger();
+		BeanUtils.copyProperties(list1.get(j), c1);
+		changeValetDenomiDtoManger c2 = new changeValetDenomiDtoManger();
+		// to avoid index out of bound error we need to define up to when this operation should be carried out 
+		if(j+1<size&& j+1<size2) {
+			if(j+1<size) {
+		BeanUtils.copyProperties(list1.get(j+1), c2);
+			}else {
+				BeanUtils.copyProperties(list2.get(j+1), c2);
+
+			}
+			
+		// Checking which denominations are removed and which denominations are added in the requested Safe
+		List<denominationDto> changes = c1.difference(c2); // This gives a list of changes made in the requested safe 
+		// For reference check method "difference" defined in ChangeValetDenominationsDto class 
+		standResponse er = new standResponse();
+		Collection<denominationDto> result = new ArrayList<denominationDto>(); 
+		
+		for(denominationDto c:changes) {
+			// printing the Changed values 
+	
+		   c.getDenominations();
+		   c.getIn();
+		   c.getOut();
+
+		    result.add(c);
+	
+			}
+
+j++;
+er.setData(result);
+
+employeeReportResponses.add(er);
+}}
+									
+			
+				System.out.println(userId);
+
+				System.out.println(stDate);
+
+				System.out.println(endDate);
+				
+employeeReport.setData(employeeReportResponses);
+				
+		
+		return employeeReport;
+	}
+	
+	
+   // Kiosk ChangeRequest Report
 	public standDto managerReportDataChangeRequest(String orderStatus, Long userId,DateRangedto dateRangedto) {
 		
 		LocalDate stDate = LocalDate.parse(dateRangedto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -1923,8 +2042,8 @@ public class ReportService {
 					// printing the Changed values 
 			
 				   c.getDenominations();
-				   c.getDeposited_Value();
-				   c.getChange_Needed();
+				   c.getIn();
+				   c.getOut();
 
 				    result.add(c);
 			
@@ -2354,6 +2473,8 @@ public class ReportService {
 					
 			return eodReports;
 		}
+
+	
 
 	
 

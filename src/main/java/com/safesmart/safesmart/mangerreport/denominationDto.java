@@ -2,42 +2,38 @@ package com.safesmart.safesmart.mangerreport;
 
 public class denominationDto {
 
-	private String Denominations;
-	private String Deposited_Value;
-	private String Change_Needed;
-	@Override
-	public String toString() {
-		return "denominationDto [Denominations=" + Denominations + ", Deposited_Value=" + Deposited_Value
-				+ ", Change_Needed=" + Change_Needed + "]";
-	}
+	private String denominations;
+	private String in;
+	private String out;
 	public String getDenominations() {
-		return Denominations;
+		return denominations;
 	}
 	public void setDenominations(String denominations) {
-		Denominations = denominations;
+		this.denominations = denominations;
 	}
-	public String getDeposited_Value() {
-		return Deposited_Value;
+	public String getIn() {
+		return in;
 	}
-	public void setDeposited_Value(String deposited_Value) {
-		Deposited_Value = deposited_Value;
+	public void setIn(String in) {
+		this.in = in;
 	}
-	public String getChange_Needed() {
-		return Change_Needed;
+	public String getOut() {
+		return out;
 	}
-	public void setChange_Needed(String change_Needed) {
-		Change_Needed = change_Needed;
+	public void setOut(String out) {
+		this.out = out;
 	}
-	public denominationDto(String denominations, String deposited_Value, String change_Needed) {
+	public denominationDto(String denominations, String in, String out) {
 		super();
-		Denominations = denominations;
-		Deposited_Value = deposited_Value;
-		Change_Needed = change_Needed;
+		this.denominations = denominations;
+		this.in = in;
+		this.out = out;
 	}
+	@Override
+	public String toString() {
+		return "denominationDto [denominations=" + denominations + ", in=" + in + ", out=" + out + "]";
+	}
+	
 
-	
-	
-
-	
 	
 }
