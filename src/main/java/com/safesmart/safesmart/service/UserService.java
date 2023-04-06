@@ -61,7 +61,7 @@ public class UserService {
 		if (userInfo != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Username");
 		}
-		UserInfo infoPassword = userInfoRepository.findByPassword(userInfoRequest.getPassword());
+		UserInfo infoPassword = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(userInfoRequest.getPassword()));
 		if (infoPassword != null) {
 			throw CommonException.CreateException(CommonExceptionMessage.ALREADY_EXISTS, "Password");
 		}
