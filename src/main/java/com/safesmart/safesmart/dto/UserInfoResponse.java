@@ -1,5 +1,8 @@
 package com.safesmart.safesmart.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,15 +34,40 @@ public class UserInfoResponse {
 	private String email;
 	private String mobile;
 
-	
+	private LocalDate create_time;
+	private LocalDateTime lastLoginTime;
+
+
+
 
 	@Override
 	public String toString() {
 		return "UserInfoResponse [userInfoRepository=" + userInfoRepository + ", id=" + id + ", username=" + username
 				+ ", password=" + password + ", role=" + role + ", storeInfo=" + storeInfo + ", address=" + address
 				+ ", active=" + active + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", mobile=" + mobile + ", passLenght=" + passLenght + "]";
+				+ ", mobile=" + mobile + ", create_time=" + create_time + ", lastLoginTime=" + lastLoginTime
+				+ ", passLenght=" + passLenght + "]";
 	}
+	
+	
+
+	public LocalDate getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(LocalDate create_time) {
+		this.create_time = create_time;
+	}
+
+	public LocalDateTime getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(LocalDateTime lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+
 
 	private String passLenght;
 	
@@ -127,10 +155,24 @@ public class UserInfoResponse {
 		this.mobile = mobile;
 		this.storeInfo= storeInfo;
 	}
+	
+	public UserInfoResponse(Long id, String username, String password, String role, boolean active,String firstName,String lastName,String email,String mobile) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.active = active;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.mobile = mobile;
+	}
 
 	public UserInfoResponse () {
 	}
-	
+
+
 
 	public Long getId() {
 		return id;

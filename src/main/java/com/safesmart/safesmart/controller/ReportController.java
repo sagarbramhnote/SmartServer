@@ -135,6 +135,8 @@ public class ReportController {
 
 //		return reportService.reportToExcel(userId,dateRangedto);
 	}
+	
+	//employee report for kiosk
 	@RequestMapping(value = "/employeeReport/{userId}",method = RequestMethod.POST)
 	public EmployeeReportDto employeeReportData(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();
@@ -147,18 +149,21 @@ public class ReportController {
 		return reportService.managerReportData(userId,dateRangedto);
 	}
 	
+	// standbnk report for kiosk
 	@RequestMapping(value = "/managerReportforStandBank/{type}/{userId}",method = RequestMethod.POST)
 	public standDto managerReportDataStandMain(@PathVariable("type")String type,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();
 		return reportService.managerReportDataStandMain(type,userId,dateRangedto);
 	}
 	
+	// Intersafe report for kiosk
 	@RequestMapping(value = "/managerReportforStandBankInter/{userId}",method = RequestMethod.POST)
 	public standDto managerReportDataStandInter(@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();
 		return reportService.managerReportDataStandInter(userId,dateRangedto);
 	}
 	
+	// change request report for kiosk
 	@RequestMapping(value = "/managerReportforChangeRequest/{OrderStatus}/{userId}",method = RequestMethod.POST)
 	public standDto managerReportDataChangeRequest(@PathVariable("OrderStatus")String OrderStatus,@PathVariable("userId")Long userId, @RequestBody DateRangedto dateRangedto) {
 		dateRangedto.validateRequest();

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +31,26 @@ public class UserInfoController {
 	private UserService userService;
 	@Autowired
 	private Base64BasicEncryption passwordEncrypt;
+	
+    @PostMapping("/pay")
+    public void create(@RequestBody Long amt) {
+    	System.out.println(amt);
+    //	System.out.println(orderReceipt);
+    	System.out.println("nn");
+    	//@RequestBody Long amt, @RequestBody String orderReceipt
+//    	Long amt = null;
+//    	String orderReceipt = null;
+//        try {
+//        	//return null;
+//          //  return paymentService.createOrders(amt, orderReceipt);
+//        } catch (HMSException hmsEx) {
+//            throw hmsEx;
+//        } catch (Exception ex) {
+//            log.error("Error occurred while saving CollegeCreditHistory", ex);
+//            throw new HMSException(ErrorCode.HMS0001, ErrorCode.HMS0001.getMessage(), ex.getMessage(), ex);
+//        }
+    //	return amt;
+    }
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void add(@RequestBody UserInfoRequest userInfoRequest) {
@@ -46,6 +67,12 @@ public class UserInfoController {
 	public void deleteByUser(@PathVariable("userId") Long userId) {
 		userService.deleteByUser(userId);
 	}
+	
+	@RequestMapping(value = "/basedOnDays/{days}", method = RequestMethod.GET)
+	public void deleteByUserD(@PathVariable("days") Long days) {
+		userService.deleteByUserD(days);
+	}
+	
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public UserInfoResponse UpdateUserForm(@PathVariable("userId") Long userId) {
 		System.out.println("coming into updateuserform");
@@ -56,9 +83,8 @@ public class UserInfoController {
 
 	@RequestMapping(value = "/loginKiosk", method = RequestMethod.POST)
 	public UserInfoResponse doLoginKiosk(@RequestBody UserInfoRequest infoRequest) {
-		System.out.println("coming here 2");
+		System.out.println("coming here 2");	
 		infoRequest.validateLoginRequired();
-		System.out.println("coming here 2");
 		return userService.doLoginkiosk(infoRequest);
 	}
 	

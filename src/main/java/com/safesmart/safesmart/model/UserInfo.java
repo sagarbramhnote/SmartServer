@@ -1,8 +1,10 @@
 package com.safesmart.safesmart.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -77,6 +79,8 @@ public class UserInfo {
 	private List<InsertBill> insertBills = new ArrayList<InsertBill>();
 
 	private LocalDateTime lastLoginTime;
+	
+	private Date lastLoginDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -229,6 +233,15 @@ public class UserInfo {
 				+ ", create_time=" + create_time + ", active=" + active + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", passLength=" + passLength + ", mobile=" + mobile + ", email=" + email + ", storeInfo="
 				+ storeInfo + ", insertBills=" + insertBills + ", lastLoginTime=" + lastLoginTime + "]";
+	}
+
+
+	public Date getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(Date lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
 	}
 	
 	

@@ -1,10 +1,21 @@
 package com.safesmart.safesmart.service;
 
 import java.awt.print.Pageable;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -117,12 +128,45 @@ public class UserService {
 					userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
 					userInfo.getStoreInfo().getStoreName()));
 		}
+		if (userInfo.getStoreInfo() ==null) {
+		infoResponses.add(new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile()
+				));
+		}
 	}
-		return infoResponses;
+			return infoResponses;
 	}
 
 	public void deleteByUser(Long userId) {
 		userInfoRepository.deleteById(userId);
+	}
+	
+
+	public void deleteByUserD(Long days) {
+		List<UserInfo> users = (List<UserInfo>) userInfoRepository.findAll();
+
+		for (UserInfo userInfo : users) {
+			
+			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String inputString1 = myFormat.format(userInfo.getLastLoginDate());
+					
+			
+			Date today = Calendar.getInstance().getTime();   
+			String inputString2 = myFormat.format(today);
+
+			try {
+			    Date date1 = myFormat.parse(inputString1);
+			    Date date2 = myFormat.parse(inputString2);
+			    long diff = date2.getTime() - date1.getTime();
+			    long d=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			    if(d>=days) {			    	
+			    	userInfoRepository.deleteById(userInfo.getId());
+			    }
+			} catch (ParseException e) {
+			    e.printStackTrace();
+			}
+			}
+		
 	}
 
 	public UserInfoResponse doLogin(UserInfoRequest infoRequest) {
@@ -141,13 +185,17 @@ public class UserService {
 	
 	public UserInfoResponse doLoginkiosk(UserInfoRequest infoRequest) {
 
-		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(infoRequest.getPassword()));
+		UserInfo userInfo = userInfoRepository.findByPassword(passwordEncrypt.encodePassword(infoRequest.getPassword()));		
 		if (userInfo == null) {
 			throw CommonException.CreateException(CommonExceptionMessage.INCORRECT_PIN);
+		}
+		if (userInfo.getStoreInfo() == null) {
+			throw CommonException.CreateException(CommonExceptionMessage.NOT_ASSIGN);
 		}
 		if (!userInfo.checkfeature(infoRequest.getFeature())) {
 			throw CommonException.CreateException(CommonExceptionMessage.PERMISSION_NOTEXISTS);
 		}
+		userInfo.setLastLoginDate(Calendar.getInstance().getTime());
 		return new UserInfoResponse(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword(),
 				userInfo.getRole().getName(), userInfo.isActive(),userInfo.getFirstName(),userInfo.getLastName(),userInfo.getEmail(),userInfo.getMobile(),
 				userInfo.getStoreInfo().getStoreName());
@@ -399,5 +447,6 @@ public class UserService {
 	}	
 	return 	infoResponses;
 	}
+
 		
 }
