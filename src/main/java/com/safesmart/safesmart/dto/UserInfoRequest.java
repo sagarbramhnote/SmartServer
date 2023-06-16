@@ -190,9 +190,16 @@ public class UserInfoRequest {
 	}
 
 	public void validateLoginRequired() {
+		
+		if (password==null) {
+			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Password");
+		}
+		
 		if (password.isEmpty()) {
 			throw CommonException.CreateException(CommonExceptionMessage.REQUIRED_ATTRIBUTE, "Password");
 		}
+	
+
 		String regex = "[0-9]+";
 		// Compile the ReGex
 		Pattern p = Pattern.compile(regex);

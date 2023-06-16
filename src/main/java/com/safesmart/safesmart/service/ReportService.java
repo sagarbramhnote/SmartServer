@@ -5,15 +5,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +29,7 @@ import javax.management.relation.RoleInfo;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xslf.util.DummyFormat;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -124,8 +128,9 @@ public class ReportService {
 		ReprintReportDto reportDto = new ReprintReportDto();
 		reportDto.setReportName("Reprint Receipt");
 		reportDto.setStoreInfoResponse(storeInfoResponse);
-		reportDto.setTimeStamp(LocalDateTime.now().toString());
-
+	//	reportDto.setTimeStamp(LocalDateTime.now().toString());
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		reportDto.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 
 		SequenceInfo sequenceInfo = sequenceInfoRepository.findByName("TRANSACTIONNO");
 		
@@ -177,7 +182,9 @@ public class ReportService {
 		ReportDto reportDto = new ReportDto();
 		reportDto.setReportName("Test Print Receipt");
 		reportDto.setStoreInfoResponse(storeInfoService.getStoreInfoService(storeName));
-		reportDto.setTimeStamp(LocalDateTime.now().toString());
+	//	reportDto.setTimeStamp(LocalDateTime.now().toString());
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		reportDto.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 		System.out.println("testPrinterStore "+storeName);
 		return reportDto;
 	}
@@ -188,8 +195,10 @@ public class ReportService {
 		System.out.println("storeName"+storeInfoResponse);
 		InsertBillsReportDto reportDto = new InsertBillsReportDto();
 		reportDto.setStoreInfoResponse(storeInfoResponse);
-		reportDto.setReportName("Insert Bills Receipt");
-		reportDto.setTimeStamp(LocalDateTime.now().toString());
+		reportDto.setReportName("Insert Bills Receipt");		
+	//	reportDto.setTimeStamp(LocalDateTime.now().toString());
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		reportDto.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 
 		List<InsertBill> insertBills = insertBillRepository.findByTransactionNumber(transactionNumber);
 		Map<String, InsertBillResponse> map = new HashMap<String, InsertBillResponse>();
@@ -239,6 +248,9 @@ public class ReportService {
 
 		StoreInfo storeInfo = new StoreInfo();
 		Optional<UserInfo> optional = userInfoRepository.findById(userId);
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+
 		if (optional.isPresent()) {
 
 			UserInfo dbUserInfo= optional.get();
@@ -246,7 +258,8 @@ public class ReportService {
 		}
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeInfo.getStoreName());
 		EODReport reportDto = new EODReport();
-		reportDto.setTimeStamp(LocalDateTime.now().toString());
+	//	reportDto.setTimeStamp(LocalDateTime.now().toString());
+		reportDto.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 		reportDto.setStoreInfoResponse(storeInfoResponse);
 		reportDto.setReportName("End of the Day Report");
 		List<InsertBill> insertBills = insertBillRepository.findByCreatedOnAndUser_IdIn(LocalDate.now(), storeInfoResponse.getUserIds());
@@ -1507,6 +1520,8 @@ public class ReportService {
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Employee Report");
 		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		
 		// for storeName
 		StoreInfo storeInfo = new StoreInfo();
 		Optional<UserInfo> optional = userInfoRepository.findById(userId);
@@ -1519,7 +1534,8 @@ public class ReportService {
 		System.out.println(storeName);		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 		employeeReport.setStoreInfoResponse(storeInfoResponse);
-		employeeReport.setTimeStamp(LocalDateTime.now().toString());
+	//	employeeReport.setTimeStamp(LocalDateTime.now().toString());
+		employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 
 		List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
 		for (Map.Entry<LocalDate, List<InsertBill>> entry : userByBills.entrySet()) {
@@ -1563,7 +1579,8 @@ public class ReportService {
 			response.setValue(sum);
 			result.add(response);
 			er.setData(result);
-			er.setName(entry.getKey().toString());
+			Date date = java.sql.Date.valueOf(entry.getKey());
+			er.setName(myFormat.format(date));
 			employeeReportResponses.add(er);
 		}
 
@@ -1650,6 +1667,8 @@ public class ReportService {
 
 		EmployeeReportDto employeeReport = new EmployeeReportDto();
 		employeeReport.setReportName("Manager Report");
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
 		// for storeName
 				StoreInfo storeInfo = new StoreInfo();
@@ -1663,7 +1682,8 @@ public class ReportService {
 				System.out.println(storeName);		
 				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 				employeeReport.setStoreInfoResponse(storeInfoResponse);
-				employeeReport.setTimeStamp(LocalDateTime.now().toString());
+			//	employeeReport.setTimeStamp(LocalDateTime.now().toString());
+				employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 
 				List<EmployeeReportResponse> employeeReportResponses = new ArrayList<EmployeeReportResponse>();
 				for (Map.Entry<LocalDate, List<InsertBill>> entry : userByBills.entrySet()) {
@@ -1734,6 +1754,8 @@ public class ReportService {
 		
 		standDto employeeReport = new standDto();
 		employeeReport.setReportName("Manager Report");
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
 		// for storeName
 				StoreInfo storeInfo = new StoreInfo();
@@ -1747,7 +1769,8 @@ public class ReportService {
 				System.out.println(storeName);		
 				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 				employeeReport.setStoreInfoResponse(storeInfoResponse);
-				employeeReport.setTimeStamp(LocalDateTime.now().toString());
+			//	employeeReport.setTimeStamp(LocalDateTime.now().toString());
+				employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 		
 				List<standResponse> employeeReportResponses = new ArrayList<standResponse>();
 //			      for(Long userId : userIds) {
@@ -1807,8 +1830,8 @@ public class ReportService {
 					// printing the Changed values 
 			
 				   c.getDenominations();
-				   c.getIn();
-				   c.getOut();
+				   c.getIn_Values();
+				   c.getOut_Values();
 
 				    result.add(c);
 			
@@ -1820,7 +1843,7 @@ public class ReportService {
 		employeeReportResponses.add(er);
 	}}
 											
-						System.out.println(type);
+						System.out.println("stand"+type);
 						System.out.println(userId);
 
 						System.out.println(stDate);
@@ -1852,6 +1875,8 @@ public class ReportService {
 		standDto employeeReport = new standDto();
 		employeeReport.setReportName("Manager Report");
 		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		
 		// for storeName
 		StoreInfo storeInfo = new StoreInfo();
 		Optional<UserInfo> optional = userInfoRepository.findById(userId);
@@ -1864,7 +1889,8 @@ public class ReportService {
 		System.out.println(storeName);		
 		StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 		employeeReport.setStoreInfoResponse(storeInfoResponse);
-		employeeReport.setTimeStamp(LocalDateTime.now().toString());
+	//	employeeReport.setTimeStamp(LocalDateTime.now().toString());
+		employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 		
 		List<standResponse> employeeReportResponses = new ArrayList<standResponse>();
 //	      for(Long userId : userIds) {
@@ -1925,8 +1951,8 @@ public class ReportService {
 			// printing the Changed values 
 	
 		   c.getDenominations();
-		   c.getIn();
-		   c.getOut();
+		   c.getIn_Values();
+		   c.getOut_Values();
 
 		    result.add(c);
 	
@@ -1971,6 +1997,9 @@ employeeReport.setData(employeeReportResponses);
 		
 		standDto employeeReport = new standDto();
 		employeeReport.setReportName("Manager Report");
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 
 		// for storeName
 				StoreInfo storeInfo = new StoreInfo();
@@ -1984,7 +2013,8 @@ employeeReport.setData(employeeReportResponses);
 				System.out.println(storeName);		
 				StoreInfoResponse storeInfoResponse = storeInfoService.getStoreInfoService(storeName);
 				employeeReport.setStoreInfoResponse(storeInfoResponse);
-				employeeReport.setTimeStamp(LocalDateTime.now().toString());
+			//	employeeReport.setTimeStamp(LocalDateTime.now().toString());
+				employeeReport.setTimeStamp(myFormat.format(Calendar.getInstance().getTime()));
 		
 				List<standResponse> employeeReportResponses = new ArrayList<standResponse>();	
 //			 for(Long userId : userIds) {
@@ -2042,8 +2072,8 @@ employeeReport.setData(employeeReportResponses);
 					// printing the Changed values 
 			
 				   c.getDenominations();
-				   c.getIn();
-				   c.getOut();
+				   c.getIn_Values();
+				   c.getOut_Values();
 
 				    result.add(c);
 			

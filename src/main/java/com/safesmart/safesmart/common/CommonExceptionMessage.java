@@ -12,8 +12,8 @@ public enum CommonExceptionMessage {
 	NOTFOUND(6,"%1$ not found."),
 	VALIDATE_SIX_PIN(7, "Please enter only 6 digit PIN"),
 	INCORRECT_UserNameAndPassword(8,"UserName and Password is incorrect."),
-	ALREADY_ASSIGN(9,"Kiosk Configured Already.");
-
+	ALREADY_ASSIGN(9,"Kiosk Configured Already."),
+	NOT_ASSIGN(9,"User Not Assign With Any Store.");
 	
 
 
