@@ -134,9 +134,9 @@ public class StoreInfoController {
 	@RequestMapping(value = "/assign/store/{storeId}/kiosk/{kId}/billValidator/{bId}/printer/{pId}/locks/{lId}", method = RequestMethod.POST)
 	public void assignStoreKBPL(@PathVariable(value = "storeId") Long storeId,
 			@PathVariable(value = "kId") Long kId ,
-			@PathVariable(value = "bId") Long bId ,
+			@PathVariable(value = "bId") List<Long> bId ,
 			@PathVariable(value = "pId") Long pId ,
-	         @PathVariable(value = "lId") Long lId) {
+	         @PathVariable(value = "lId") List<Long> lId) {
 
 		storeInfoService.assignStoreKBPL(storeId, kId, bId, pId, lId);
 	}
