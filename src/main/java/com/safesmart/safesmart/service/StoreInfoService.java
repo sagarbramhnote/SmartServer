@@ -181,60 +181,90 @@ public class StoreInfoService {
 		}
 	}	
 	
-	public void assignStoreKBPL(Long storeId, Long kId, Long bId, Long pId, Long lId) {
+//	public void assignStoreKBPL(Long storeId, Long kId, Long bId, Long pId, List<Long> lId) {
+//	
+//	StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
+//	
+//	Optional<Kiosk> optionalk = kioskRepository.findById(kId);
+//	
+//	Optional<BillValidator> optionalb = billValidatorRepository.findById(bId);
+//	
+//	Optional<Printer> optionalP = printerRepository.findById(pId);
+//	
+//	Optional<Locks> optionalL = locksRepository.findById(lId);
+//	
+//		if (optionalk.isPresent()) {
+//			Kiosk dbKiosk = optionalk.get();
+//		if (optionalb.isPresent()) {
+//			BillValidator dbBill = optionalb.get();
+//		if (optionalP.isPresent()) {
+//			Printer dbPrinter = optionalP.get();
+//		if (optionalL.isPresent()) {
+//			Locks dbLocks = optionalL.get();
+//		if (storeInfo != null) {
+//			dbKiosk.setStoreinfok(storeInfo);
+//			dbBill.setStoreinfob(storeInfo);
+//			dbPrinter.setStoreinfop(storeInfo);
+//			dbLocks.setStoreInfo(storeInfo);
+//		} else {
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store");
+//		}
+//		
+//		locksRepository.save(dbLocks);
+//		}			
+//		else {
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Locks");
+//		}
+//		
+//		printerRepository.save(dbPrinter);
+//		}
+//		else {
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Printer");
+//		}
+//		
+//		billValidatorRepository.save(dbBill);
+//		}
+//		else {
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "billValidator");
+//		}
+//		
+//		kioskRepository.save(dbKiosk);
+//		}
+//		else {
+//			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Kiosk");
+//		}
+//
+//     }
 	
-	StoreInfo storeInfo = storeInfoRepository.findById(storeId).get();
-	
-	Optional<Kiosk> optionalk = kioskRepository.findById(kId);
-	
-	Optional<BillValidator> optionalb = billValidatorRepository.findById(bId);
-	
-	Optional<Printer> optionalP = printerRepository.findById(pId);
-	
-	Optional<Locks> optionalL = locksRepository.findById(lId);
-	
-		if (optionalk.isPresent()) {
-			Kiosk dbKiosk = optionalk.get();
-		if (optionalb.isPresent()) {
-			BillValidator dbBill = optionalb.get();
-		if (optionalP.isPresent()) {
-			Printer dbPrinter = optionalP.get();
-		if (optionalL.isPresent()) {
-			Locks dbLocks = optionalL.get();
-		if (storeInfo != null) {
-			dbKiosk.setStoreinfok(storeInfo);
-			dbBill.setStoreinfob(storeInfo);
-			dbPrinter.setStoreinfop(storeInfo);
-			dbLocks.setStoreInfo(storeInfo);
-		} else {
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store");
-		}
-		
-		locksRepository.save(dbLocks);
-		}			
-		else {
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Locks");
-		}
-		
-		printerRepository.save(dbPrinter);
-		}
-		else {
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Printer");
-		}
-		
-		billValidatorRepository.save(dbBill);
-		}
-		else {
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "billValidator");
-		}
-		
-		kioskRepository.save(dbKiosk);
-		}
-		else {
-			throw CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Kiosk");
-		}
+	public void assignStoreKBPL(Long storeId, Long kId, List<Long> bId, Long pId, List<Long> lId) {
 
-     }
+	    StoreInfo storeInfo = storeInfoRepository.findById(storeId).orElseThrow(() -> CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Store"));
+	    Kiosk dbKiosk = kioskRepository.findById(kId).orElseThrow(() -> CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Kiosk"));
+	    Printer dbPrinter = printerRepository.findById(pId).orElseThrow(() -> CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Printer"));
+
+	    for (Long billId : bId) {
+	        BillValidator dbBill = billValidatorRepository.findById(billId).orElseThrow(() -> CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "BillValidator"));
+
+	        dbKiosk.setStoreinfok(storeInfo);
+	        dbBill.setStoreinfob(storeInfo);
+	        dbPrinter.setStoreinfop(storeInfo);
+
+	        billValidatorRepository.save(dbBill);
+	    }
+
+	    for (Long lockId : lId) {
+	        Locks dbLocks = locksRepository.findById(lockId).orElseThrow(() -> CommonException.CreateException(CommonExceptionMessage.NOTFOUND, "Locks"));
+
+	        dbKiosk.setStoreinfok(storeInfo);
+	        dbPrinter.setStoreinfop(storeInfo);
+	        dbLocks.setStoreInfo(storeInfo);
+
+	        locksRepository.save(dbLocks);
+	    }
+
+	    kioskRepository.save(dbKiosk);
+	    printerRepository.save(dbPrinter);
+	}
 
 
 	public List<StoreInfoResponse> findUnassignedStores() {
